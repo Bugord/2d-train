@@ -1,64 +1,80 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Extentions;
 using UnityEngine;
 
 public class TrainController : MonoBehaviour
 {
     public float Speed;
     public float RotationSpeed;
-    public Vector3 target;
+    public Vector3 TargetPoint;
+    public int TargetPointIndex;
+    public RailController TargetRail;
+    public bool Turning;
 
-    public bool turned;
-    public int RailRow;
-    public int RailIndex;
-    public int way;
-    public RailController RailController;
+    public List<Vector3> TargetPointList;
 
-    public Vector3[] CurrentWay;
-    public int CurrentPoint;
+    private Rigidbody2D _rigidbody2D;
+    private const float DistToChangeTarget = 0.63f;
 
-    private Rigidbody2D rigidbody2D;
-
-    void OnEnable()
+    void Awake()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        CurrentWay = RailController.CommonPoints;
-        target = CurrentWay[0];
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+    }
+
+    void Start()
+    {
+        TargetPointList = TargetRail.CommonPoints.ToList();
+        TargetPoint = TargetPointList[0];
     }
 
     void FixedUpdate()
     {
-        Vector3 vectorToTarget = target - transform.position + RailController.transform.position;
-        float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90;
-        Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * RotationSpeed);
+        var vectorToTarget = VectorToTarget();
 
-        rigidbody2D.velocity = Speed * Vector3.Normalize(target + RailController.transform.position - transform.position);
+        SetRotation(vectorToTarget);
+        SetVelocity(vectorToTarget);
 
-        if (Vector3.Distance(transform.position, target  + RailController.transform.position) < 0.4f)
+        if (Vector2.SqrMagnitude(vectorToTarget) < DistToChangeTarget)
+            ChangeTargetPoint();
+    }
+
+    private Vector2 VectorToTarget()
+    {
+        return TargetPoint + TargetRail.transform.position - transform.position;
+    }
+
+    private void SetRotation(Vector2 vectorToTarget)
+    {
+        var angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90;
+        var q = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, q, RotationSpeed);
+    }
+
+    private void SetVelocity(Vector2 vectorToTarget)
+    {
+        _rigidbody2D.velocity = Speed * Vector3.Normalize(vectorToTarget);
+    }
+
+    private void ChangeTargetPoint()
+    {
+        TargetPointIndex++;
+        if (TargetPointIndex >= TargetPointList.Count)
         {
-            CurrentPoint++;
-            if (CurrentPoint >= CurrentWay.Length)
+            TargetPointIndex = 0;
+            if (!Turning && !TargetRail.CurrentWayStruct.WayPoints.IsNullOrEmpty())
             {
-                if (!turned)
-                {
-                    turned = true;
-                    way = RailController.TypeRail;
-                    CurrentWay = RailController.PointLists[way].Points;
-                    CurrentPoint = 0;
-                }
-                else
-                {
-                    turned = false;
-                    RailController = RailController.NextRailControllers[way];
-                    RailRow = RailController.Row;
-                    RailIndex = RailController.index;
-                    way = RailController.TypeRail;
-                    CurrentWay = RailController.CommonPoints;
-                    CurrentPoint = 0;
-                }
+                Turning = true;
+                TargetPointList = TargetRail.CurrentWayStruct.WayPoints;
             }
-            target = CurrentWay[CurrentPoint];
+            else
+            {
+                Turning = false;
+                TargetRail = TargetRail.CurrentWayStruct.WayRailController;
+                TargetPointList = TargetRail.CommonPoints;
+            }
         }
+        TargetPoint = TargetPointList[TargetPointIndex];
     }
 }
