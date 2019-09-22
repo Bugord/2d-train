@@ -13,4 +13,10 @@ public class PausePanelController : PanelBase
     {
         _continueButton.onClick.AddListener(GoBack);
     }
+
+    public override void GoBack()
+    {
+        base.GoBack();
+        UIManager.IsInGame = true;
+    }
 }

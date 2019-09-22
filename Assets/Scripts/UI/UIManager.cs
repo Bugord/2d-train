@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private PausePanelController _pausePanelController;
     [SerializeField] private InGameUIController _inGameUiController;
 
+    public static bool IsInGame;
+
     public static PanelBase previousPanel;
 
     public void Start()
@@ -26,6 +28,7 @@ public class UIManager : MonoBehaviour
         Debug.Log("Game Started");
         _mainMenuController.SetActivePanel(false);
         _inGameUiController.SetActivePanel(true);
+        IsInGame = true;
     }
 
     private void OpenSettings()
@@ -33,6 +36,7 @@ public class UIManager : MonoBehaviour
         previousPanel = _mainMenuController;
         _mainMenuController.SetActivePanel(false);
         _settingsMenuController.SetActivePanel(true);
+        IsInGame = false;
     }
 
     public void OpenShop()
@@ -40,6 +44,7 @@ public class UIManager : MonoBehaviour
         previousPanel = _mainMenuController;
         _mainMenuController.SetActivePanel(false);
         _shopController.SetActivePanel(true);
+        IsInGame = false;
     }
 
     public void SetPause()
@@ -47,11 +52,13 @@ public class UIManager : MonoBehaviour
         previousPanel = _inGameUiController;
         _inGameUiController.SetActivePanel(false);
         _pausePanelController.SetActivePanel(true);
+        IsInGame = false;
     }
 
     public void ExitToMainMenu()
     {
         _pausePanelController.SetActivePanel(false);
         _mainMenuController.SetActivePanel(true);
+        IsInGame = false;
     }
 }
