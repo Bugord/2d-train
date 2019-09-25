@@ -24,7 +24,6 @@ public class RailController : MonoBehaviour
     public List<Vector3> CommonPoints;
     public WayStruct CurrentWayStruct;
 
-
     public int Row;
     public int index;
 
@@ -33,6 +32,8 @@ public class RailController : MonoBehaviour
 
     public List<WayStruct> WayStructs;
 
+    public RailController NextRail;
+
     private void OnEnable()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -40,21 +41,21 @@ public class RailController : MonoBehaviour
         CurrentWayStruct = WayStructs[0];
     }
 
-    void Start()
+    private void Start()
     {
         UpdateRailSprite();
     }
 
-    void Update()
+    private void Update()
     {
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
         if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
         {
-            var currentWayIndex = (int) Way;
+            var currentWayIndex = (int)Way;
             currentWayIndex++;
             if (currentWayIndex >= 3)
                 currentWayIndex = 0;
-            Way = (Way) currentWayIndex;
+            Way = (Way)currentWayIndex;
             UpdateRailSprite();
         }
     }
@@ -64,5 +65,4 @@ public class RailController : MonoBehaviour
         _spriteRenderer.sprite = CurrentWayStruct.Sprite;
         _spriteMask.sprite = CurrentWayStruct.Mask;
     }
-
 }
