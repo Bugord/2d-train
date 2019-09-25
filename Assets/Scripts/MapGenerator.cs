@@ -20,24 +20,24 @@ namespace Assets.Scripts
 
         private Dictionary<int, Dictionary<int, RailController>> RailRowsList;
 
-        private Dictionary<Way, List<Vector3>> _wayPoints = new Dictionary<Way, List<Vector3>>()
+        public static Dictionary<RailDirection, List<Vector3>> WayPoints = new Dictionary<RailDirection, List<Vector3>>()
         {
             {
-                Way.Forward, new List<Vector3>()
+                RailDirection.Forward, new List<Vector3>()
                     {
-                        Vector3.zero,
-                        Vector3.up
+                        new Vector3(0, -2, 0),
+                        new Vector3(0, 2, 0)
                     }
             },
             {
-                Way.Left, new List<Vector3>()
+                RailDirection.Left, new List<Vector3>()
                 {
                     Vector3.zero,
                     Vector3.left
                 }
             },
             {
-                Way.Right, new List<Vector3>()
+                RailDirection.Right, new List<Vector3>()
                 {
                     Vector3.zero,
                     Vector3.right

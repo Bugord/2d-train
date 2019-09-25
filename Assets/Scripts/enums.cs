@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-   public enum Way {
+   public enum RailDirection {
         Left,
         Forward,
         Right

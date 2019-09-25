@@ -10,7 +10,7 @@ using UnityEngine;
 [Serializable]
 public struct WayStruct
 {
-    public Way Way;
+    public RailDirection RailDirection;
     public List<Vector3> WayPoints;
     public RailController WayRailController;
     public Sprite Sprite;
@@ -20,7 +20,7 @@ public struct WayStruct
 [ExecuteInEditMode]
 public class RailController : MonoBehaviour
 {
-    public Way Way;
+    public RailDirection RailDirection;
     public List<Vector3> CommonPoints;
     public WayStruct CurrentWayStruct;
 
@@ -51,11 +51,11 @@ public class RailController : MonoBehaviour
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
         if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
         {
-            var currentWayIndex = (int)Way;
+            var currentWayIndex = (int)RailDirection;
             currentWayIndex++;
             if (currentWayIndex >= 3)
                 currentWayIndex = 0;
-            Way = (Way)currentWayIndex;
+            RailDirection = (RailDirection)currentWayIndex;
             UpdateRailSprite();
         }
     }
