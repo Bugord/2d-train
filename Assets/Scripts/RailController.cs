@@ -10,9 +10,6 @@ using UnityEngine;
 [Serializable]
 public struct WayStruct
 {
-    public RailDirection RailDirection;
-    public List<Vector3> WayPoints;
-    public RailController WayRailController;
     public Sprite Sprite;
     public Sprite Mask;
 }
@@ -21,7 +18,7 @@ public struct WayStruct
 public class RailController : MonoBehaviour
 {
     public RailDirection RailDirection;
-    public List<Vector3> CommonPoints;
+    public List<Vector3> WayPoints;
     public WayStruct CurrentWayStruct;
 
     public int Row;
@@ -30,20 +27,19 @@ public class RailController : MonoBehaviour
     public SpriteRenderer _spriteRenderer;
     public SpriteMask _spriteMask;
 
-    public List<WayStruct> WayStructs;
-
-    public RailController NextRail;
+    public List<RailController> NextRails;
+    public RailController NextActiveRail;
 
     private void OnEnable()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _spriteMask = GetComponent<SpriteMask>();
-        CurrentWayStruct = WayStructs[0];
     }
 
     private void Start()
     {
         UpdateRailSprite();
+        NextRails = new List<RailController>();
     }
 
     private void Update()
@@ -51,7 +47,7 @@ public class RailController : MonoBehaviour
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
         if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
         {
-            var currentWayIndex = (int)RailDirection;
+            var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
             currentWayIndex++;
             if (currentWayIndex >= 3)
                 currentWayIndex = 0;
