@@ -192,7 +192,8 @@ MonoBehaviour:
   - {fileID: 9168648565802650985, guid: 9fde28da3197fa84695632c0d19769f7, type: 3}
   Map: {fileID: 1868523421}
   SmallRail: {fileID: 1813215497290258, guid: a3f3d24319d7075438c516ced3ab441e, type: 3}
-  RailsIndexes: 
+  OldRaiControllers: []
+  NewRaiControllers: []
   CurrentRow: 1
   TrainController: {fileID: 39203789}
 --- !u!4 &507326456
@@ -470,12 +471,12 @@ PrefabInstance:
     - target: {fileID: 1664730702905287636, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.05
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 1664730702905287636, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.89
+      value: -6.63
       objectReference: {fileID: 0}
     - target: {fileID: 1664730702905287636, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
@@ -526,6 +527,11 @@ PrefabInstance:
         type: 3}
       propertyPath: NextRail
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: Row
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd66bc341b771684da7be92f7a35f6a5, type: 3}

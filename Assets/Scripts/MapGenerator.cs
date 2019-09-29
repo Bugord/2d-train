@@ -14,13 +14,12 @@ namespace Assets.Scripts
         public Transform Map;
         public GameObject SmallRail;
 
-        public Dictionary<int, RailController> OldRaiControllers;
-        public Dictionary<int, RailController> NewRaiControllers;
-        public List<int> RailsIndexes;
+        public List<RailController> OldRaiControllers;
+        public List<RailController> NewRaiControllers;
         public int CurrentRow;
         public TrainController TrainController;
 
-        private Dictionary<int, Dictionary<int, RailController>> RailRowsList;
+        private Dictionary<int, List<RailController>> RailRowsList;
 
         public static Dictionary<RailDirection, List<Vector3>> WayPoints = new Dictionary<RailDirection, List<Vector3>>()
         {
@@ -52,15 +51,12 @@ namespace Assets.Scripts
                 }
             },
         };
-
-        private int lastRailIndex = 0;
-
+        
         private void Start()
         {
-            //OldRaiControllers = new Dictionary<int, RailController>();
-            NewRaiControllers = new Dictionary<int, RailController>();
-            OldRaiControllers = new Dictionary<int, RailController> { { 0, InitialRailController } };
-            RailRowsList = new Dictionary<int, Dictionary<int, RailController>>();
+            NewRaiControllers = new List<RailController>();
+            OldRaiControllers = new List<RailController>{ InitialRailController };
+            RailRowsList = new Dictionary<int, List<RailController>>();
             RailRowsList.Add(0, OldRaiControllers);
         }
 
@@ -70,7 +66,7 @@ namespace Assets.Scripts
             {
                 Generate();
                 if (TrainController.TargetRail.Row - 3 >= 0)
-                    foreach (var oldRail in RailRowsList[TrainController.TargetRail.Row - 3].Values)
+                    foreach (var oldRail in RailRowsList[TrainController.TargetRail.Row - 3])
                     {
                         Destroy(oldRail.gameObject);
                     }
@@ -80,25 +76,12 @@ namespace Assets.Scripts
         public void Generate()
         {
             NewRaiControllers.Clear();
-            RailsIndexes.Clear();
-
-            foreach (var index in OldRaiControllers.Keys)
-            {
-                if (index > TrainController.TargetRail.index + 9 || index < TrainController.TargetRail.index - 9)
-                    continue;
-                RailsIndexes.Add(index);
-            }
-
-            RailsIndexes.Sort();
-            RailsIndexes = RailsIndexes.Distinct().ToList();
-
-            foreach (var railsIndex in RailsIndexes)
+            
+            foreach (var oldRail in OldRaiControllers)
             {
                 int newRailsCount = Random.Range(1, RailPrefabs.Length);
-                newRailsCount = 1;
-                Debug.LogError("railIndex: " + railsIndex);
                 List<int> indexes = new List<int>();
-                var oldRail = OldRaiControllers[railsIndex];
+                
                 for (int i = 0; i < newRailsCount; i++)
                 {
                     int index = Random.Range(0, RailPrefabs.Length);
@@ -113,20 +96,20 @@ namespace Assets.Scripts
                     }
 
                     GameObject newRailPref = RailPrefabs[index];
-                    lastRailIndex++;
                     var newRailController = Instantiate(newRailPref, Map).GetComponent<RailController>();
                     newRailController.Row = CurrentRow;
-                    newRailController.index = railsIndex;
-                    //newRailController.UpdateRailSprite();
-                    NewRaiControllers.Add(railsIndex, newRailController);
                     oldRail.NextActiveRail = newRailController;
-                    newRailController.transform.position = oldRail.transform.position + oldRail.WayPoints.Last();
-                    lastRailIndex++;
+                    oldRail.NextRails.Add(newRailController);
+                    if (oldRail != null)
+                    {
+                        newRailController.transform.position = oldRail.transform.position + oldRail.WayPoints.Last();
+                        NewRaiControllers.Add(newRailController);
+                    }
                 }
             }
-
-            RailRowsList.Add(CurrentRow, OldRaiControllers);
-            OldRaiControllers = new Dictionary<int, RailController>(NewRaiControllers);
+            
+            RailRowsList.Add(CurrentRow, NewRaiControllers);
+            OldRaiControllers = new List<RailController>(NewRaiControllers);
 
             CurrentRow++;
         }
