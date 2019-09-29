@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Point
+  - Stop
   layers:
   - Default
   - TransparentFX
@@ -13,8 +15,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Train
+  - Point
   - 
   - 
   - 
@@ -46,6 +48,9 @@ TagManager:
     locked: 0
   - name: Point
     uniqueID: 1158874523
+    locked: 0
+  - name: Train
+    uniqueID: 214380971
     locked: 0
   - name: UI
     uniqueID: 4093861611
