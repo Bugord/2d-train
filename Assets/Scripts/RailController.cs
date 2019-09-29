@@ -24,6 +24,7 @@ public class RailController : MonoBehaviour
     public List<Vector3> CommonPoints;
     public WayStruct CurrentWayStruct;
 
+
     public int Row;
     public int index;
 
@@ -31,7 +32,6 @@ public class RailController : MonoBehaviour
     public SpriteMask _spriteMask;
 
     public List<WayStruct> WayStructs;
-
 
     private void OnEnable()
     {
