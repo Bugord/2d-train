@@ -51,11 +51,11 @@ namespace Assets.Scripts
                 }
             },
         };
-        
+
         private void Start()
         {
             NewRaiControllers = new List<RailController>();
-            OldRaiControllers = new List<RailController>{ InitialRailController };
+            OldRaiControllers = new List<RailController> { InitialRailController };
             RailRowsList = new Dictionary<int, List<RailController>>();
             RailRowsList.Add(0, OldRaiControllers);
         }
@@ -65,23 +65,27 @@ namespace Assets.Scripts
             if (CurrentRow <= TrainController.TargetRail.Row + 3)
             {
                 Generate();
+
                 if (TrainController.TargetRail.Row - 3 >= 0)
+                {
                     foreach (var oldRail in RailRowsList[TrainController.TargetRail.Row - 3])
                     {
                         Destroy(oldRail.gameObject);
                     }
+                }
             }
         }
 
         public void Generate()
         {
             NewRaiControllers.Clear();
-            
+            Debug.LogError(OldRaiControllers.Count);
             foreach (var oldRail in OldRaiControllers)
             {
                 int newRailsCount = Random.Range(1, RailPrefabs.Length);
+                newRailsCount = 1;
                 List<int> indexes = new List<int>();
-                
+
                 for (int i = 0; i < newRailsCount; i++)
                 {
                     int index = Random.Range(0, RailPrefabs.Length);
@@ -94,20 +98,17 @@ namespace Assets.Scripts
                         }
                         index = Random.Range(0, RailPrefabs.Length);
                     }
-
+                    Debug.LogError(index);
                     GameObject newRailPref = RailPrefabs[index];
                     var newRailController = Instantiate(newRailPref, Map).GetComponent<RailController>();
                     newRailController.Row = CurrentRow;
                     oldRail.NextActiveRail = newRailController;
                     oldRail.NextRails.Add(newRailController);
-                    if (oldRail != null)
-                    {
-                        newRailController.transform.position = oldRail.transform.position + oldRail.WayPoints.Last();
-                        NewRaiControllers.Add(newRailController);
-                    }
+                    newRailController.transform.position = oldRail.transform.position + oldRail.WayPoints.Last();
+                    NewRaiControllers.Add(newRailController);
                 }
             }
-            
+
             RailRowsList.Add(CurrentRow, NewRaiControllers);
             OldRaiControllers = new List<RailController>(NewRaiControllers);
 
