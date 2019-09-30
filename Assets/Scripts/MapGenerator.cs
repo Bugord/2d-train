@@ -79,11 +79,41 @@ namespace Assets.Scripts
         public void Generate()
         {
             NewRaiControllers.Clear();
-            Debug.LogError(OldRaiControllers.Count);
-            foreach (var oldRail in OldRaiControllers)
+
+            List<RailController> NewOldRails = new List<RailController>();
+            for (int i = 0; i < OldRaiControllers.Count; i++)
+            {
+                var currentRail = OldRaiControllers[i];
+                var nextRail = i == OldRaiControllers.Count - 1 ? null : OldRaiControllers[i + 1];
+
+                if (nextRail == null) continue;
+
+                var currentCollider = currentRail.GetComponent<Collider2D>();
+                var nextCollider = nextRail.GetComponent<Collider2D>();
+
+                if (currentCollider.bounds.Intersects(nextCollider.bounds))
+                {
+                    if ((currentRail.RailDirection == RailDirection.Right &&
+                        nextRail.RailDirection == RailDirection.Forward) ||
+                        (currentRail.RailDirection == RailDirection.Forward &&
+                        nextRail.RailDirection == RailDirection.Left))
+                    {
+                        currentRail.NextRails = nextRail.NextRails;
+                        currentRail.NextActiveRail = nextRail.NextActiveRail;
+                        NewOldRails.Add(currentRail);
+                        i++;
+                    }
+                }
+                else
+                {
+                    NewOldRails.Add(currentRail);
+                }
+            }
+
+            foreach (var oldRail in NewOldRails)
             {
                 int newRailsCount = Random.Range(1, RailPrefabs.Length);
-                newRailsCount = 1;
+
                 List<int> indexes = new List<int>();
 
                 for (int i = 0; i < newRailsCount; i++)
@@ -98,8 +128,8 @@ namespace Assets.Scripts
                         }
                         index = Random.Range(0, RailPrefabs.Length);
                     }
-                    Debug.LogError(index);
                     GameObject newRailPref = RailPrefabs[index];
+
                     var newRailController = Instantiate(newRailPref, Map).GetComponent<RailController>();
                     newRailController.Row = CurrentRow;
                     oldRail.NextActiveRail = newRailController;
@@ -109,7 +139,7 @@ namespace Assets.Scripts
                 }
             }
 
-            RailRowsList.Add(CurrentRow, NewRaiControllers);
+            RailRowsList.Add(CurrentRow, new List<RailController>(NewRaiControllers));
             OldRaiControllers = new List<RailController>(NewRaiControllers);
 
             CurrentRow++;
