@@ -192,8 +192,6 @@ MonoBehaviour:
   - {fileID: 6429443425684498457, guid: 3c699937acad56745b7429a238d410ae, type: 3}
   Map: {fileID: 1868523421}
   SmallRail: {fileID: 1813215497290258, guid: a3f3d24319d7075438c516ced3ab441e, type: 3}
-  OldRaiControllers: []
-  NewRaiControllers: []
   CurrentRow: 1
   TrainController: {fileID: 39203789}
 --- !u!4 &507326456
@@ -463,11 +461,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1868523421}
     m_Modifications:
-    - target: {fileID: 4201040003240201475, guid: cd66bc341b771684da7be92f7a35f6a5,
-        type: 3}
-      propertyPath: m_Name
-      value: Rail_Strait_Big_Fat (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 1664730702905287636, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -532,6 +525,16 @@ PrefabInstance:
         type: 3}
       propertyPath: Row
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201040003240201475, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Name
+      value: Rail_Strait_Big_Fat (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd66bc341b771684da7be92f7a35f6a5, type: 3}

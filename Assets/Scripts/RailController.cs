@@ -7,22 +7,15 @@ using System.Reflection;
 using Assets.Scripts;
 using UnityEngine;
 
-[Serializable]
-public struct WayStruct
-{
-    public Sprite Sprite;
-    public Sprite Mask;
-}
-
 [ExecuteInEditMode]
 public class RailController : MonoBehaviour
 {
     public RailDirection RailDirection;
     public List<Vector3> WayPoints;
-    public WayStruct CurrentWayStruct;
 
     public int Row;
-    public int index;
+    public int InputId;
+    public int OutputId;
 
     public SpriteRenderer _spriteRenderer;
     public SpriteMask _spriteMask;
@@ -38,27 +31,24 @@ public class RailController : MonoBehaviour
 
     private void Start()
     {
-        UpdateRailSprite();
         NextRails = new List<RailController>();
     }
 
-    private void Update()
+    public void SwitchRail()
     {
-        var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
-        if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
-        {
-            var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
-            currentWayIndex++;
-            if (currentWayIndex >= 3)
-                currentWayIndex = 0;
-            RailDirection = (RailDirection)currentWayIndex;
-            UpdateRailSprite();
-        }
+        if (NextRails.Count == 0) return;
+        var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
+        currentWayIndex++;
+        if (currentWayIndex >= NextRails.Count)
+            currentWayIndex = 0;
+        NextActiveRail = NextRails[currentWayIndex];
     }
 
     public void UpdateRailSprite()
     {
-        _spriteRenderer.sprite = CurrentWayStruct.Sprite;
-        _spriteMask.sprite = CurrentWayStruct.Mask;
+        foreach (var rail in NextRails)
+        {
+            rail._spriteRenderer.color = rail == NextActiveRail ? new Color(1, 1, 1, 1f) : new Color(1, 1, 1, 0.2f);
+        }
     }
 }
