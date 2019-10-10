@@ -42,13 +42,19 @@ public class RailController : MonoBehaviour
         if (currentWayIndex >= NextRails.Count)
             currentWayIndex = 0;
         NextActiveRail = NextRails[currentWayIndex];
+
+        UpdateRailSprite();
+        NextActiveRail.SwitchRail();
     }
 
     public void UpdateRailSprite()
     {
-        foreach (var rail in NextRails)
+        if (NextActiveRail == null) return;
+
+        var rails = MapGenerator._rowsList[NextActiveRail.Row].Rails;
+        foreach (var rail in rails)
         {
-            rail._spriteRenderer.color = rail == NextActiveRail ? new Color(1, 1, 1, 1f) : new Color(1, 1, 1, 0.2f);
+            rail._spriteRenderer.color = rail == NextActiveRail ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.2f);
         }
     }
 }

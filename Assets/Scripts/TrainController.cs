@@ -35,7 +35,6 @@ public class TrainController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
         {
             TargetRail.SwitchRail();
-            TargetRail.UpdateRailSprite();
         }
     }
 
@@ -91,7 +90,6 @@ public class TrainController : MonoBehaviour
                 TargetRail = TargetRail.NextActiveRail;
                 TargetPointList = TargetRail.WayPoints;
                 var last = TargetRail;
-                last.UpdateRailSprite();
                 while (last != null)
                 {
                     last.UpdateRailSprite();

@@ -39,7 +39,7 @@ namespace Assets.Scripts
         public int CurrentRow;
         public TrainController TrainController;
 
-        private Dictionary<int, Row> _rowsList;
+        public static Dictionary<int, Row> _rowsList;
 
         public static Dictionary<RailDirection, List<Vector3>> WayPoints = new Dictionary<RailDirection, List<Vector3>>()
         {
@@ -104,21 +104,6 @@ namespace Assets.Scripts
             NewRow = new Row();
             int maxRailCountFromOutput = 3;
 
-            //switch (OldRow.Outputs.Count)
-            //{
-            //    case 1:
-            //        maxRailCountFromOutput = 4;
-            //        break;
-
-            //    case 2:
-            //        maxRailCountFromOutput = 3;
-            //        break;
-
-            //    default:
-            //        maxRailCountFromOutput = 1;
-            //        break;
-            //}
-
             foreach (var output in OldRow.Outputs)
             {
                 if (output.Value.Count == 0) continue;
@@ -128,16 +113,19 @@ namespace Assets.Scripts
                 var outputPosition = outputRail.transform.position + outputRail.WayPoints.Last();
 
                 List<GameObject> prefabs = RailPrefabs.ToList();
-                if (output.Value.Any(rail => rail.RailDirection != RailDirection.Forward))
+                if (CurrentRow % 2 == 0)
                 {
-                    prefabs = RailPrefabs.Where(prefab =>
-                        prefab.GetComponent<RailController>().RailDirection == RailDirection.Forward).ToList();
-                }
+                    if (output.Value.Any(rail => rail.RailDirection != RailDirection.Forward))
+                    {
+                        prefabs = RailPrefabs.Where(prefab =>
+                            prefab.GetComponent<RailController>().RailDirection == RailDirection.Forward).ToList();
+                    }
 
-                if (output.Value.Any(rail => rail.RailDirection == RailDirection.Forward) && output.Value.Count == 1)
-                {
-                    prefabs = RailPrefabs.Where(prefab =>
-                        prefab.GetComponent<RailController>().RailDirection != RailDirection.Forward).ToList();
+                    if (output.Value.Any(rail => rail.RailDirection == RailDirection.Forward) && output.Value.Count == 1)
+                    {
+                        prefabs = RailPrefabs.Where(prefab =>
+                            prefab.GetComponent<RailController>().RailDirection != RailDirection.Forward).ToList();
+                    }
                 }
 
                 switch (outputId)
@@ -147,7 +135,11 @@ namespace Assets.Scripts
                             prefab.GetComponent<RailController>().RailDirection != RailDirection.Left).ToList();
                         break;
 
-                    case 4:
+                    case 2:
+                        maxRailCountFromOutput = 4;
+                        break;
+
+                    case 3:
                         prefabs = prefabs.Where(prefab =>
                             prefab.GetComponent<RailController>().RailDirection != RailDirection.Right).ToList();
                         break;
@@ -204,13 +196,8 @@ namespace Assets.Scripts
                     }
                     newRailController.transform.position = outputPosition;
                     NewRow.Rails.Add(newRailController);
-                    var last = TrainController.TargetRail;
-                    last.UpdateRailSprite();
-                    while (last != null)
-                    {
-                        last.UpdateRailSprite();
-                        last = last.NextActiveRail;
-                    }
+                    newRailController._spriteRenderer.color = new Color(1, 1, 1, 0.2f);
+
                     if (NewRow.Outputs.ContainsKey(newRailController.OutputId))
                     {
                         NewRow.Outputs[newRailController.OutputId].Add(newRailController);
