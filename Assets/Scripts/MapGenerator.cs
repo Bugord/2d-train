@@ -196,7 +196,10 @@ namespace Assets.Scripts
                     }
                     newRailController.transform.position = outputPosition;
                     NewRow.Rails.Add(newRailController);
-                    newRailController._spriteRenderer.color = new Color(1, 1, 1, 0.2f);
+
+                    var smallRail = Instantiate(SmallRail, newRailController.transform);
+                    smallRail.transform.localPosition = Vector3.zero;
+                    newRailController.smallRail = smallRail.GetComponent<RailController>();
 
                     if (NewRow.Outputs.ContainsKey(newRailController.OutputId))
                     {

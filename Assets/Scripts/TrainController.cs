@@ -18,6 +18,8 @@ public class TrainController : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private const float DistToChangeTarget = 0.63f;
 
+    [SerializeField] private UIManager uiManager;
+
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -36,6 +38,8 @@ public class TrainController : MonoBehaviour
         {
             TargetRail.SwitchRail();
         }
+
+        uiManager._mainMenuController._lastScore.text = TargetRail.Row.ToString();
     }
 
     private void FixedUpdate()

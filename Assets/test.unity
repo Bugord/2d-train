@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -130,6 +131,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d21437ecc6cfe1a4199df7bfa673b21a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &52160265 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5641847226136617322, guid: 9bd7266369d945f4f871f8e05f1257bf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1199847778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b049d6560be3743a8fb34a58ded59f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &82253790 stripped
@@ -191,7 +204,8 @@ MonoBehaviour:
   - {fileID: 9168648565802650985, guid: 9fde28da3197fa84695632c0d19769f7, type: 3}
   - {fileID: 6429443425684498457, guid: 3c699937acad56745b7429a238d410ae, type: 3}
   Map: {fileID: 1868523421}
-  SmallRail: {fileID: 1813215497290258, guid: a3f3d24319d7075438c516ced3ab441e, type: 3}
+  SmallRail: {fileID: 4179670556773344800, guid: bcc25f4f7daa28c4098224b987eaf2d2,
+    type: 3}
   CurrentRow: 1
   TrainController: {fileID: 39203789}
 --- !u!4 &507326456
@@ -274,6 +288,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &669078639 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5641847226421619068, guid: 9bd7266369d945f4f871f8e05f1257bf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1199847778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829a508feb1189e4a81ae9c5b12510c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &706001349
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -296,6 +322,11 @@ PrefabInstance:
       propertyPath: TargetRail
       value: 
       objectReference: {fileID: 82253792}
+    - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
+        type: 3}
+      propertyPath: uiManager
+      value: 
+      objectReference: {fileID: 669078639}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5
@@ -536,6 +567,37 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4973b169a44c7a842af481f4309c9105,
+        type: 3}
+    - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd66bc341b771684da7be92f7a35f6a5, type: 3}
 --- !u!1001 &1199847778
@@ -680,8 +742,30 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5641847226421619068, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: _mainMenuController
+      value: 
+      objectReference: {fileID: 52160265}
+    - target: {fileID: 5641847226136617322, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: _lastScore
+      value: 
+      objectReference: {fileID: 1274378035}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bd7266369d945f4f871f8e05f1257bf, type: 3}
+--- !u!114 &1274378035 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1979214483348431964, guid: 9bd7266369d945f4f871f8e05f1257bf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1199847778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1802993109
 PrefabInstance:
   m_ObjectHideFlags: 0

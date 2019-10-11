@@ -20,6 +20,11 @@ public class RailController : MonoBehaviour
     public SpriteRenderer _spriteRenderer;
     public SpriteMask _spriteMask;
 
+    [SerializeField] private Sprite _fatSprite;
+    [SerializeField] private Sprite _thinSprite;
+
+    public RailController smallRail;
+
     public List<RailController> NextRails;
     public RailController NextActiveRail;
 
@@ -54,7 +59,18 @@ public class RailController : MonoBehaviour
         var rails = MapGenerator._rowsList[NextActiveRail.Row].Rails;
         foreach (var rail in rails)
         {
-            rail._spriteRenderer.color = rail == NextActiveRail ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.2f);
+            if (rail == NextActiveRail)
+            {
+                rail._spriteRenderer.sprite = rail._fatSprite;
+                rail._spriteMask.enabled = true;
+                rail.smallRail._spriteRenderer.sprite = rail.smallRail._fatSprite;
+            }
+            else
+            {
+                rail._spriteRenderer.sprite = rail._thinSprite;
+                rail._spriteMask.enabled = false;
+                rail.smallRail._spriteRenderer.sprite = rail.smallRail._thinSprite;
+            }
         }
     }
 }

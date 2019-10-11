@@ -10,7 +10,7 @@ public class MainMenuController : PanelBase
     public Button SettingButton;
     public Button ShopButton;
 
-    private Text _lastScore;
+    public Text _lastScore;
     private Text _bestScore;
     private Text _money;
     
