@@ -9,8 +9,6 @@ namespace Assets.Scripts
     public class Row
     {
         public List<RailController> Rails;
-        public int MaxInput = 3;
-        public int MaxOutput = 4;
         public Dictionary<int, List<RailController>> Outputs;
 
         public Row()
@@ -34,44 +32,15 @@ namespace Assets.Scripts
         public Transform Map;
         public GameObject SmallRail;
 
+        [SerializeField] private GameObject _point;
+
         public Row OldRow;
         public Row NewRow;
         public int CurrentRow;
         public TrainController TrainController;
 
         public static Dictionary<int, Row> _rowsList;
-
-        public static Dictionary<RailDirection, List<Vector3>> WayPoints = new Dictionary<RailDirection, List<Vector3>>()
-        {
-            {
-                RailDirection.Forward, new List<Vector3>()
-                    {
-                        new Vector3(0, 0, 0),
-                        new Vector3(0, 4, 0)
-                    }
-            },
-            {
-                RailDirection.Left, new List<Vector3>()
-                {
-                    new Vector3(0, 0, 0),
-                    new Vector3(-0.08f, 1.15f, 0),
-                    new Vector3(-0.5f, 2.09f, 0),
-                    new Vector3(-1.09f, 3.12f, 0),
-                    new Vector3(-1.18f, 4.22f, 0),
-                }
-            },
-            {
-                RailDirection.Right, new List<Vector3>()
-                {
-                    new Vector3(0, 0, 0),
-                    new Vector3(0.08f, 1.15f, 0),
-                    new Vector3(0.5f, 2.09f, 0),
-                    new Vector3(1.09f, 3.12f, 0),
-                    new Vector3(1.18f, 4.22f, 0),
-                }
-            },
-        };
-
+        
         private void Start()
         {
             NewRow = new Row();
@@ -201,6 +170,9 @@ namespace Assets.Scripts
                     smallRail.transform.localPosition = Vector3.zero;
                     newRailController.smallRail = smallRail.GetComponent<RailController>();
 
+                    var point = Instantiate(_point, newRailController.transform);
+                    point.transform.localPosition = Vector3.zero;
+                    
                     if (NewRow.Outputs.ContainsKey(newRailController.OutputId))
                     {
                         NewRow.Outputs[newRailController.OutputId].Add(newRailController);

@@ -13,16 +13,83 @@ public class TrainController : MonoBehaviour
     public RailController TargetRail;
     public bool Turning;
 
+    public Sprite[] TrainPointSprites;
+
+    public int Points = 1;
+    public bool IsHeadTrain;
+    public List<TrainController> Trains;
+
+    public GameObject TrainPrefab;
+
     public List<Vector3> TargetPointList;
 
     private Rigidbody2D _rigidbody2D;
+    public SpriteRenderer _spriteRenderer;
     private const float DistToChangeTarget = 0.63f;
 
     [SerializeField] private UIManager uiManager;
 
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (!IsHeadTrain)
+            return;
+        Destroy(col.gameObject);
+
+        if (col.tag == "Point")
+        {
+
+
+            Points++;
+            if (Points > 2 * Trains.Count)
+            {
+                GenerateNewTrain();
+                Points = 1;
+            }
+
+            for (var i = 0; i < Trains.Count; i++)
+            {
+                if (Points - 2 * i < 0)
+                    Trains[i]._spriteRenderer.sprite = TrainPointSprites[0];
+                else if (Points - 2 * i >= 2)
+                    Trains[i]._spriteRenderer.sprite = TrainPointSprites[2];
+                else
+                    Trains[i]._spriteRenderer.sprite = TrainPointSprites[Points - 2 * i];
+            }
+        }
+        else if (col.tag == "Stop")
+        {
+            if (Points > 2 * (Trains.Count - 1))
+            {
+                Points -= Points - 2 * (Trains.Count - 1);
+            }
+
+
+            var trainToRemove = Trains.Last();
+            Trains.Remove(trainToRemove);
+            Destroy(trainToRemove.gameObject);
+        }
+    }
+
+    void GenerateNewTrain()
+    {
+        if (!IsHeadTrain)
+            return;
+
+        var lastTrain = Trains.Last();
+        var newTrainPos = lastTrain.transform.position - lastTrain.transform.up * 0.8f;
+        var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
+        var newTrainController = newTrain.GetComponent<TrainController>();
+        newTrainController.TargetRail = TargetRail;
+        newTrainController.IsHeadTrain = false;
+        Trains.First(controller => controller.IsHeadTrain).Trains.Add(newTrainController);
+    }
+
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        if (IsHeadTrain)
+            Trains.Add(this);
     }
 
     private void Start()
