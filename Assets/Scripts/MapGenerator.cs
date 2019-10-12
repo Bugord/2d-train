@@ -1,9 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
+    public class Row
+    {
+        public List<RailController> Rails;
+        public Dictionary<int, List<RailController>> Outputs;
+
+        public Row()
+        {
+            Rails = new List<RailController>();
+            Outputs = new Dictionary<int, List<RailController>>();
+        }
+
+        public Row(Row row)
+        {
+            Rails = row.Rails;
+            Outputs = row.Outputs;
+        }
+    }
+
     public class MapGenerator : MonoBehaviour
     {
         public RailController InitialRailController;
@@ -12,118 +32,161 @@ namespace Assets.Scripts
         public Transform Map;
         public GameObject SmallRail;
 
-        public Dictionary<int, RailController> OldRaiControllers;
-        public Dictionary<int, RailController> NewRaiControllers;
-        public List<int> RailsIndexes;
+        [SerializeField] private GameObject _point;
+
+        public Row OldRow;
+        public Row NewRow;
         public int CurrentRow;
         public TrainController TrainController;
 
-        private Dictionary<int, Dictionary<int, RailController>> RailRowsList;
-
-        void Start()
+        public static Dictionary<int, Row> _rowsList;
+        
+        private void Start()
         {
-            //OldRaiControllers = new Dictionary<int, RailController>();
-            NewRaiControllers = new Dictionary<int, RailController>();
-            OldRaiControllers = new Dictionary<int, RailController> {{0, InitialRailController}};
-            RailRowsList = new Dictionary<int, Dictionary<int, RailController>>();
-            RailRowsList.Add(0, OldRaiControllers);
+            NewRow = new Row();
+            OldRow = new Row();
+            OldRow.Rails.Add(InitialRailController);
+            OldRow.Outputs.Add(InitialRailController.OutputId, new List<RailController> { InitialRailController });
+
+            _rowsList = new Dictionary<int, Row>();
+            _rowsList.Add(0, OldRow);
         }
 
-        void Update()
+        private void Update()
         {
-            //if (CurrentRow <= TrainController.TargetRail.Row + 3)
-            //{
-            //    Generate();
-            //    if (TrainController.TargetRail.Row - 3 >= 0)
-            //        foreach (var oldRail in RailRowsList[TrainController.TargetRail.Row - 3].Values)
-            //        {
-            //            Destroy(oldRail.gameObject);
-            //        }
-            //}
+            if (CurrentRow <= TrainController.TargetRail.Row + 3)
+            {
+                Generate();
+
+                if (TrainController.TargetRail.Row - 3 >= 0)
+                {
+                    foreach (var oldRail in _rowsList[TrainController.TargetRail.Row - 3].Rails)
+                    {
+                        Destroy(oldRail.gameObject);
+                    }
+                }
+            }
         }
 
-        //public void Generate()
-        //{
-        //    NewRaiControllers.Clear();
-        //    RailsIndexes.Clear();
+        public void Generate()
+        {
+            NewRow = new Row();
+            int maxRailCountFromOutput = 3;
 
-        //    foreach (var index in OldRaiControllers.Keys)
-        //    {
-        //        if (index > TrainController.TargetRail.index + 9 || index < TrainController.TargetRail.index - 9)
-        //            continue;
+            foreach (var output in OldRow.Outputs)
+            {
+                if (output.Value.Count == 0) continue;
 
-        //        if (OldRaiControllers[index].TurnsLeft)
-        //            RailsIndexes.Add(index - 1);
-        //        if (OldRaiControllers[index].TurnsMiddle)
-        //            RailsIndexes.Add(index);
-        //        if (OldRaiControllers[index].TurnsRight)
-        //            RailsIndexes.Add(index + 1);
-        //    }
+                var outputId = output.Key;
+                var outputRail = output.Value.First();
+                var outputPosition = outputRail.transform.position + outputRail.WayPoints.Last();
 
-        //    RailsIndexes.Sort();
-        //    RailsIndexes = RailsIndexes.Distinct().ToList();
-        //    foreach (var railsIndex in RailsIndexes)
-        //    {
-        //        int i = 0;
-        //        var valid = false;
-        //        GameObject newRailPref = RailPrefabs[Random.Range(0, RailPrefabs.Length)];
-        //        while (!valid)
-        //        {
-        //            i++;
-        //            newRailPref = RailPrefabs[Random.Range(0, RailPrefabs.Length)];
-        //            if (RailsIndexes[0] == railsIndex)
-        //            {
-        //                valid = true;
-        //                break;
-        //            }
-        //            if (RailsIndexes.Contains(railsIndex - 1))
-        //            {
-        //                var newController = newRailPref.GetComponent<RailController>();
-        //                if (NewRaiControllers[railsIndex - 1].TurnsRight != newController.TurnsLeft)
-        //                    valid = true;
-        //            }
-        //            else
-        //            {
-        //                valid = true;
-        //            }
-        //            if (i > 100)
-        //            {
-        //                Debug.LogError("Generation error");
-        //                break;
-        //            }
-        //        }
+                List<GameObject> prefabs = RailPrefabs.ToList();
+                if (CurrentRow % 2 == 0)
+                {
+                    if (output.Value.Any(rail => rail.RailDirection != RailDirection.Forward))
+                    {
+                        prefabs = RailPrefabs.Where(prefab =>
+                            prefab.GetComponent<RailController>().RailDirection == RailDirection.Forward).ToList();
+                    }
 
-        //        var newRail = Instantiate(newRailPref, Map);
-        //        var newSmallRail = Instantiate(SmallRail, newRail.transform);
-        //        newRail.transform.position = new Vector3(railsIndex * 1.175f, CurrentRow * 4.2f) + Map.position;
-        //        newSmallRail.transform.position =
-        //            new Vector3(railsIndex * 1.175f, CurrentRow * 4.2f - 2.1f) + Map.position;
-        //        var newRailController = newRail.GetComponent<RailController>();
-        //        newRailController.TypeRail = Random.Range(0, 3);
-        //        newRailController.Row = CurrentRow;
-        //        newRailController.index = railsIndex;
-        //        newRailController.UpdateRailSprite();
-        //        NewRaiControllers.Add(railsIndex, newRailController);
-        //    }
+                    if (output.Value.Any(rail => rail.RailDirection == RailDirection.Forward) && output.Value.Count == 1)
+                    {
+                        prefabs = RailPrefabs.Where(prefab =>
+                            prefab.GetComponent<RailController>().RailDirection != RailDirection.Forward).ToList();
+                    }
+                }
 
-        //    foreach (var oldRailController in OldRaiControllers)
-        //    {
-        //        if (oldRailController.Key > TrainController.TargetRail.index + 8 ||
-        //            oldRailController.Key < TrainController.TargetRail.index - 8)
-        //            continue;
-        //        if (oldRailController.Value.TurnsLeft)
-        //            oldRailController.Value.LeftRailControllers = NewRaiControllers[oldRailController.Key - 1];
-        //        if (oldRailController.Value.TurnsMiddle)
-        //            oldRailController.Value.MiddleRailControllers = NewRaiControllers[oldRailController.Key];
-        //        if (oldRailController.Value.TurnsRight)
-        //            oldRailController.Value.RightRailControllers = NewRaiControllers[oldRailController.Key + 1];
+                switch (outputId)
+                {
+                    case 0:
+                        prefabs = prefabs.Where(prefab =>
+                            prefab.GetComponent<RailController>().RailDirection != RailDirection.Left).ToList();
+                        break;
 
-        //        oldRailController.Value.Enable();
-        //    }
-        //    RailRowsList.Add(CurrentRow, OldRaiControllers);
-        //    OldRaiControllers = new Dictionary<int, RailController>(NewRaiControllers);
+                    case 2:
+                        maxRailCountFromOutput = 4;
+                        break;
 
-        //    CurrentRow++;
-        //}
+                    case 3:
+                        prefabs = prefabs.Where(prefab =>
+                            prefab.GetComponent<RailController>().RailDirection != RailDirection.Right).ToList();
+                        break;
+
+                    default:
+                        prefabs = prefabs.ToList();
+                        break;
+                }
+
+                int newRailsCount = Random.Range(1, maxRailCountFromOutput);
+
+                List<int> indexes = new List<int>();
+
+                for (int i = 0; i < newRailsCount; i++)
+                {
+                    int index = Random.Range(0, prefabs.Count);
+                    int check = 0;
+                    while (check <= 100)
+                    {
+                        if (!indexes.Contains(index))
+                        {
+                            indexes.Add(index);
+                            break;
+                        }
+                        index = Random.Range(0, prefabs.Count);
+                        check++;
+                    }
+                    GameObject newRailPref = prefabs[index];
+
+                    var newRailController = Instantiate(newRailPref, Map).GetComponent<RailController>();
+                    newRailController.Row = CurrentRow;
+                    output.Value.ForEach(rail =>
+                    {
+                        rail.NextActiveRail = newRailController;
+                        rail.NextRails.Add(newRailController);
+                    });
+                    newRailController.InputId = outputId;
+                    switch (newRailController.RailDirection)
+                    {
+                        case RailDirection.Left:
+                            newRailController.OutputId = outputId - 1;
+                            break;
+
+                        case RailDirection.Forward:
+                            newRailController.OutputId = outputId;
+                            break;
+
+                        case RailDirection.Right:
+                            newRailController.OutputId = outputId + 1;
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    newRailController.transform.position = outputPosition;
+                    NewRow.Rails.Add(newRailController);
+
+                    var smallRail = Instantiate(SmallRail, newRailController.transform);
+                    smallRail.transform.localPosition = Vector3.zero;
+                    newRailController.smallRail = smallRail.GetComponent<RailController>();
+
+                    var point = Instantiate(_point, newRailController.transform);
+                    point.transform.localPosition = Vector3.zero;
+                    
+                    if (NewRow.Outputs.ContainsKey(newRailController.OutputId))
+                    {
+                        NewRow.Outputs[newRailController.OutputId].Add(newRailController);
+                    }
+                    else
+                    {
+                        NewRow.Outputs.Add(newRailController.OutputId, new List<RailController> { newRailController });
+                    }
+                }
+            }
+            _rowsList.Add(CurrentRow, NewRow);
+            OldRow = new Row(NewRow);
+
+            CurrentRow++;
+        }
     }
 }

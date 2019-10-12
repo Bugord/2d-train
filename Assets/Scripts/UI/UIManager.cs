@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private MainMenuController _mainMenuController;
+    public MainMenuController _mainMenuController;
     [SerializeField] private SettingsMenuController _settingsMenuController;
     [SerializeField] private ShopController _shopController;
     [SerializeField] private PausePanelController _pausePanelController;

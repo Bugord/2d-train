@@ -7,62 +7,70 @@ using System.Reflection;
 using Assets.Scripts;
 using UnityEngine;
 
-[Serializable]
-public struct WayStruct
-{
-    public Way Way;
-    public List<Vector3> WayPoints;
-    public RailController WayRailController;
-    public Sprite Sprite;
-    public Sprite Mask;
-}
-
 [ExecuteInEditMode]
 public class RailController : MonoBehaviour
 {
-    public Way Way;
-    public List<Vector3> CommonPoints;
-    public WayStruct CurrentWayStruct;
-
+    public RailDirection RailDirection;
+    public List<Vector3> WayPoints;
 
     public int Row;
-    public int index;
+    public int InputId;
+    public int OutputId;
 
     public SpriteRenderer _spriteRenderer;
     public SpriteMask _spriteMask;
 
-    public List<WayStruct> WayStructs;
+    [SerializeField] private Sprite _fatSprite;
+    [SerializeField] private Sprite _thinSprite;
+
+    public RailController smallRail;
+
+    public List<RailController> NextRails;
+    public RailController NextActiveRail;
 
     private void OnEnable()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _spriteMask = GetComponent<SpriteMask>();
-        CurrentWayStruct = WayStructs[0];
     }
 
-    void Start()
+    private void Start()
     {
+        NextRails = new List<RailController>();
+    }
+
+    public void SwitchRail()
+    {
+        if (NextRails.Count == 0) return;
+        var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
+        currentWayIndex++;
+        if (currentWayIndex >= NextRails.Count)
+            currentWayIndex = 0;
+        NextActiveRail = NextRails[currentWayIndex];
+
         UpdateRailSprite();
-    }
-
-    void Update()
-    {
-        var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
-        if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
-        {
-            var currentWayIndex = (int) Way;
-            currentWayIndex++;
-            if (currentWayIndex >= 3)
-                currentWayIndex = 0;
-            Way = (Way) currentWayIndex;
-            UpdateRailSprite();
-        }
+        NextActiveRail.SwitchRail();
     }
 
     public void UpdateRailSprite()
     {
-        _spriteRenderer.sprite = CurrentWayStruct.Sprite;
-        _spriteMask.sprite = CurrentWayStruct.Mask;
-    }
+        if (NextActiveRail == null) return;
 
+        var rails = MapGenerator._rowsList[NextActiveRail.Row].Rails;
+        foreach (var rail in rails)
+        {
+            if (rail == NextActiveRail)
+            {
+                rail._spriteRenderer.sprite = rail._fatSprite;
+                rail._spriteMask.enabled = true;
+                rail.smallRail._spriteRenderer.sprite = rail.smallRail._fatSprite;
+            }
+            else
+            {
+                rail._spriteRenderer.sprite = rail._thinSprite;
+                rail._spriteMask.enabled = false;
+                rail.smallRail._spriteRenderer.sprite = rail.smallRail._thinSprite;
+            }
+        }
+    }
 }

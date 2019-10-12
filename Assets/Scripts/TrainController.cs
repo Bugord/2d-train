@@ -21,12 +21,13 @@ public class TrainController : MonoBehaviour
 
     public GameObject TrainPrefab;
 
-
     public List<Vector3> TargetPointList;
 
     private Rigidbody2D _rigidbody2D;
     public SpriteRenderer _spriteRenderer;
     private const float DistToChangeTarget = 0.63f;
+
+    [SerializeField] private UIManager uiManager;
 
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -83,21 +84,32 @@ public class TrainController : MonoBehaviour
         Trains.First(controller => controller.IsHeadTrain).Trains.Add(newTrainController);
     }
 
-    void Awake()
+    private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        if(IsHeadTrain)
+        if (IsHeadTrain)
             Trains.Add(this);
     }
 
-    void Start()
+    private void Start()
     {
-        TargetPointList = TargetRail.CommonPoints.ToList();
+        TargetPointList = TargetRail.WayPoints;
         TargetPoint = TargetPointList[0];
     }
 
-    void FixedUpdate()
+    private void Update()
+    {
+        var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
+        if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
+        {
+            TargetRail.SwitchRail();
+        }
+
+        uiManager._mainMenuController._lastScore.text = TargetRail.Row.ToString();
+    }
+
+    private void FixedUpdate()
     {
         var vectorToTarget = VectorToTarget();
 
@@ -131,19 +143,31 @@ public class TrainController : MonoBehaviour
         if (TargetPointIndex >= TargetPointList.Count)
         {
             TargetPointIndex = 0;
-            if (!Turning && !TargetRail.CurrentWayStruct.WayPoints.IsNullOrEmpty())
+            if (TargetRail.NextActiveRail == null)
             {
-                Turning = true;
-                TargetPointList = TargetRail.CurrentWayStruct.WayPoints;
+                if (!Turning && !TargetRail.WayPoints.IsNullOrEmpty())
+                {
+                    Turning = true;
+                    TargetPointList = TargetRail.WayPoints;
+                }
+                else
+                {
+                    Turning = false;
+                    TargetPointList = TargetRail.WayPoints;
+                }
             }
             else
             {
-                Turning = false;
-                TargetRail = TargetRail.CurrentWayStruct.WayRailController;
-                TargetPointList = TargetRail.CommonPoints;
+                TargetRail = TargetRail.NextActiveRail;
+                TargetPointList = TargetRail.WayPoints;
+                var last = TargetRail;
+                while (last != null)
+                {
+                    last.UpdateRailSprite();
+                    last = last.NextActiveRail;
+                }
             }
         }
-
         TargetPoint = TargetPointList[TargetPointIndex];
     }
 }
