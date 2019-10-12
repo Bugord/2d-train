@@ -100,6 +100,8 @@ public class TrainController : MonoBehaviour
 
     private void Update()
     {
+        if (!IsHeadTrain) return;
+        
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
         if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
         {
