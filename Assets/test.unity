@@ -206,6 +206,7 @@ MonoBehaviour:
   Map: {fileID: 1868523421}
   SmallRail: {fileID: 4179670556773344800, guid: bcc25f4f7daa28c4098224b987eaf2d2,
     type: 3}
+  _point: {fileID: 4251604158457889442, guid: 6fc30b595a88836468d1841cb461395f, type: 3}
   CurrentRow: 1
   TrainController: {fileID: 39203789}
 --- !u!4 &507326456
@@ -327,6 +328,11 @@ PrefabInstance:
       propertyPath: uiManager
       value: 
       objectReference: {fileID: 669078639}
+    - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
+        type: 3}
+      propertyPath: IsHeadTrain
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5
@@ -492,6 +498,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1868523421}
     m_Modifications:
+    - target: {fileID: 4201040003240201475, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Name
+      value: Rail_Strait_Big_Fat (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 1664730702905287636, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -556,11 +567,6 @@ PrefabInstance:
         type: 3}
       propertyPath: Row
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4201040003240201475, guid: cd66bc341b771684da7be92f7a35f6a5,
-        type: 3}
-      propertyPath: m_Name
-      value: Rail_Strait_Big_Fat (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
