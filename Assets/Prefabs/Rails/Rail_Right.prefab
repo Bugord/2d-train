@@ -47,7 +47,6 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -77,7 +76,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.52, y: 5.5}
+  m_Size: {x: 2.52, y: 5.29}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -109,6 +108,7 @@ MonoBehaviour:
   _spriteMask: {fileID: 4992538959097917334}
   _fatSprite: {fileID: 21300000, guid: d7edbf967f8a80f44976ef0ba71f0800, type: 3}
   _thinSprite: {fileID: 21300000, guid: f4dc3ffa1e96dd6438ed7c4ee9d5e2fc, type: 3}
+  smallRail: {fileID: 0}
   NextRails: []
   NextActiveRail: {fileID: 0}
 --- !u!331 &4992538959097917334
@@ -125,7 +125,6 @@ SpriteMask:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

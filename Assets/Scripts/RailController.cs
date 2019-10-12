@@ -62,22 +62,22 @@ public class RailController : MonoBehaviour
             if (rail == NextActiveRail)
             {
                 rail._spriteRenderer.sprite = rail._fatSprite;
-                //if (rails.Count(r => r.InputId == rail.InputId) == 1)
-                //{
-                //    rail._spriteMask.enabled = true;
-                //}
-                //else
-                //{
-                //    rail._spriteMask.enabled = false;
-                //}
+                if (rails.Count(r => r.InputId == rail.InputId) == 1)
+                {
+                    rail._spriteMask.enabled = true;
+                }
+                else
+                {
+                    rail._spriteMask.enabled = false;
+                }
                 rail._spriteMask.enabled = true;
-                rail.smallRail._spriteRenderer.sprite = rail.smallRail._fatSprite;
+                //rail.smallRail._spriteRenderer.sprite = rail.smallRail._fatSprite;
             }
             else
             {
                 rail._spriteRenderer.sprite = rail._thinSprite;
                 rail._spriteMask.enabled = false;
-                rail.smallRail._spriteRenderer.sprite = rail.smallRail._thinSprite;
+                //rail.smallRail._spriteRenderer.sprite = rail.smallRail._thinSprite;
             }
         }
     }

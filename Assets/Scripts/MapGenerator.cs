@@ -166,9 +166,9 @@ namespace Assets.Scripts
                     newRailController.transform.position = outputPosition;
                     NewRow.Rails.Add(newRailController);
 
-                    var smallRail = Instantiate(SmallRail, newRailController.transform);
-                    smallRail.transform.localPosition = Vector3.zero;
-                    newRailController.smallRail = smallRail.GetComponent<RailController>();
+                    //var smallRail = Instantiate(SmallRail, newRailController.transform);
+                    //smallRail.transform.localPosition = Vector3.zero;
+                    //newRailController.smallRail = smallRail.GetComponent<RailController>();
 
                     var point = Instantiate(_point, newRailController.transform);
                     point.transform.localPosition = Vector3.zero;
