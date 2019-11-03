@@ -9,6 +9,8 @@ namespace Assets.Scripts
    public enum RailDirection {
         Left,
         Forward,
-        Right
+        Right,
+        LeftCircle,
+        RightCircle
    }
 }
