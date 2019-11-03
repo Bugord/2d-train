@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class UIManager : MonoBehaviour
 
     public static PanelBase previousPanel;
 
+    public int HighScore;
+    
     public void Start()
     {
         _mainMenuController.StartButton.onClick.AddListener(StartGame);
@@ -21,6 +24,7 @@ public class UIManager : MonoBehaviour
         _mainMenuController.ShopButton.onClick.AddListener(OpenShop);
         _inGameUiController.PauseButton.onClick.AddListener(SetPause);
         _pausePanelController.ExitToMenuButton.onClick.AddListener(ExitToMainMenu);
+        _mainMenuController._lastScore.text = HighScore.ToString();
     }
 
     private void StartGame()
@@ -60,5 +64,8 @@ public class UIManager : MonoBehaviour
         _pausePanelController.SetActivePanel(false);
         _mainMenuController.SetActivePanel(true);
         IsInGame = false;
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameData.UpdateBestScore();
+        _mainMenuController._lastScore.text = GameData.BestScore.ToString();
     }
 }

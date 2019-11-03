@@ -30,9 +30,9 @@ namespace Assets.Scripts
 
         public GameObject[] RailPrefabs;
         public Transform Map;
-        public GameObject SmallRail;
-
+       
         [SerializeField] private GameObject _point;
+        [SerializeField] private GameObject _stop;
 
         public Row OldRow;
         public Row NewRow;
@@ -56,7 +56,7 @@ namespace Assets.Scripts
         {
             if (CurrentRow <= TrainController.TargetRail.Row + 3)
             {
-                Generate();
+                GenerateRails();
 
                 if (TrainController.TargetRail.Row - 3 >= 0)
                 {
@@ -68,8 +68,9 @@ namespace Assets.Scripts
             }
         }
 
-        public void Generate()
+        public void GenerateRails()
         {
+            //GenerateObjects();
             NewRow = new Row();
             int maxRailCountFromOutput = 3;
 
@@ -165,13 +166,6 @@ namespace Assets.Scripts
                     }
                     newRailController.transform.position = outputPosition;
                     NewRow.Rails.Add(newRailController);
-
-                    //var smallRail = Instantiate(SmallRail, newRailController.transform);
-                    //smallRail.transform.localPosition = Vector3.zero;
-                    //newRailController.smallRail = smallRail.GetComponent<RailController>();
-
-                    var point = Instantiate(_point, newRailController.transform);
-                    point.transform.localPosition = Vector3.zero;
                     
                     if (NewRow.Outputs.ContainsKey(newRailController.OutputId))
                     {
@@ -187,6 +181,34 @@ namespace Assets.Scripts
             OldRow = new Row(NewRow);
 
             CurrentRow++;
+        }
+        bool hasStop = true;
+        private void GenerateObjects()
+        {
+            if (OldRow.Outputs.Count == 1)
+            {
+                hasStop = true;
+            }
+            foreach (var rails in OldRow.Outputs.Values)
+            {
+                var rail = rails.First();
+                var point = Instantiate(_point, rail.transform);
+                point.transform.localPosition = rail.WayPoints.Last();
+                //if (!hasStop)
+                //{
+                //    var stop = Instantiate(_stop, rail.transform);
+                //    stop.transform.localPosition = rail.WayPoints.Last();
+                //    stop.transform.localRotation = Quaternion.Euler(0, 0, 90);
+                //    hasStop = true;
+                //}
+                //else
+                //{
+                //    var point = Instantiate(_point, rail.transform);
+                //    point.transform.localPosition = rail.WayPoints.Last();
+                //    hasStop = false;
+                    
+                //}
+            }
         }
     }
 }

@@ -62,6 +62,8 @@ public class RailController : MonoBehaviour
             if (rail == NextActiveRail)
             {
                 rail._spriteRenderer.sprite = rail._fatSprite;
+                if (rail.RailDirection == RailDirection.Forward) continue;
+                
                 if (rails.Count(r => r.InputId == rail.InputId) == 1)
                 {
                     rail._spriteMask.enabled = true;
@@ -70,13 +72,15 @@ public class RailController : MonoBehaviour
                 {
                     rail._spriteMask.enabled = false;
                 }
+
                 rail._spriteMask.enabled = true;
                 //rail.smallRail._spriteRenderer.sprite = rail.smallRail._fatSprite;
             }
             else
             {
                 rail._spriteRenderer.sprite = rail._thinSprite;
-                rail._spriteMask.enabled = false;
+                if (rail.RailDirection == RailDirection.Forward) continue;
+                rail._spriteMask.enabled = false; 
                 //rail.smallRail._spriteRenderer.sprite = rail.smallRail._thinSprite;
             }
         }

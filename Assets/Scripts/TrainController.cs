@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts;
 using Assets.Scripts.Extentions;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class TrainController : MonoBehaviour
     public Vector3 TargetPoint;
     public int TargetPointIndex;
     public RailController TargetRail;
+    
     public bool Turning;
 
     public Sprite[] TrainPointSprites;
@@ -26,9 +28,7 @@ public class TrainController : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     public SpriteRenderer _spriteRenderer;
     private const float DistToChangeTarget = 0.63f;
-
-    [SerializeField] private UIManager uiManager;
-
+    
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!IsHeadTrain)
@@ -107,12 +107,16 @@ public class TrainController : MonoBehaviour
         {
             TargetRail.SwitchRail();
         }
-
-        uiManager._mainMenuController._lastScore.text = TargetRail.Row.ToString();
     }
 
     private void FixedUpdate()
     {
+        if(!UIManager.IsInGame)
+        {
+            StopTheTrain();
+            return;
+        }
+
         var vectorToTarget = VectorToTarget();
 
         SetRotation(vectorToTarget);
@@ -139,6 +143,11 @@ public class TrainController : MonoBehaviour
         _rigidbody2D.velocity = Speed * Vector3.Normalize(vectorToTarget);
     }
 
+    private void StopTheTrain()
+    {
+        _rigidbody2D.velocity = Vector2.zero;
+    }
+
     private void ChangeTargetPoint()
     {
         TargetPointIndex++;
@@ -161,6 +170,7 @@ public class TrainController : MonoBehaviour
             else
             {
                 TargetRail = TargetRail.NextActiveRail;
+                GameData.LastScore++;
                 TargetPointList = TargetRail.WayPoints;
                 var last = TargetRail;
                 while (last != null)

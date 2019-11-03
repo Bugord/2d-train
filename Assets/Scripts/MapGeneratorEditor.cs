@@ -11,9 +11,9 @@ public class MapGeneratorEditor : Editor {
     //    DrawDefaultInspector();
 
     //    var myScript = (MapGenerator)target;
-    //    if (GUILayout.Button("Generate"))
+    //    if (GUILayout.Button("GenerateRails"))
     //    {
-    //        myScript.Generate();
+    //        myScript.GenerateRails();
     //    }
     //}
 }
