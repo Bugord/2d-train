@@ -199,11 +199,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitialRailController: {fileID: 82253792}
   RailPrefabs:
-  - {fileID: 4201040003240201475, guid: cd66bc341b771684da7be92f7a35f6a5, type: 3}
-  - {fileID: 9168648565802650985, guid: 9fde28da3197fa84695632c0d19769f7, type: 3}
-  - {fileID: 6429443425684498457, guid: 3c699937acad56745b7429a238d410ae, type: 3}
-  - {fileID: 4847030670012692095, guid: 010eeb805e7014e4ea8927234271c14b, type: 3}
-  - {fileID: 4539942167893510823, guid: be8c92ff28f09ef4dbf9862037a960b4, type: 3}
+  - {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5, type: 3}
+  - {fileID: 419978983906837451, guid: 3c699937acad56745b7429a238d410ae, type: 3}
+  - {fileID: 8333171960353069816, guid: 9fde28da3197fa84695632c0d19769f7, type: 3}
+  - {fileID: 8195411418207639312, guid: 010eeb805e7014e4ea8927234271c14b, type: 3}
+  - {fileID: 3181987689422082901, guid: be8c92ff28f09ef4dbf9862037a960b4, type: 3}
   Map: {fileID: 1868523421}
   _point: {fileID: 4251604158457889442, guid: 6fc30b595a88836468d1841cb461395f, type: 3}
   _stop: {fileID: 7101574944169868405, guid: 9a914f0c0835f704a9ad27a945ebc310, type: 3}
@@ -337,6 +337,11 @@ PrefabInstance:
       propertyPath: IsHeadTrain
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5
@@ -371,11 +376,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212868603171124608, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
@@ -447,7 +452,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -471,7 +476,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885805233}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 6.92, z: -120.5}
+  m_LocalPosition: {x: 1.5, y: 7.48, z: -120.5}
   m_LocalScale: {x: 0.52, y: 0.52, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -757,6 +762,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641847226548523891, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641847226548523891, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641847226548523891, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bd7266369d945f4f871f8e05f1257bf, type: 3}

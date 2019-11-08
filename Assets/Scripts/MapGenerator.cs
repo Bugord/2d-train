@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 using Random = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Assets.Scripts
 {
@@ -30,7 +32,8 @@ namespace Assets.Scripts
     {
         public RailController InitialRailController;
 
-        public GameObject[] RailPrefabs;
+        public List<RailController> RailPrefabs;
+        
         public Transform Map;
        
         [SerializeField] private GameObject _point;
@@ -54,9 +57,9 @@ namespace Assets.Scripts
             _rowsList.Add(0, OldRow);
         }
 
-        private void Update()
+        private void LateUpdate()
         {
-            if (CurrentRow <= TrainController.TargetRail.Row + 3)
+            if (CurrentRow <= TrainController.TargetRail.Row + 4)
             {
                 GenerateRails();
 
@@ -72,7 +75,6 @@ namespace Assets.Scripts
 
         public void GenerateRails()
         {
-            //GenerateObjects();
             NewRow = new Row();
             int maxRailCountFromOutput = 3;
 
@@ -82,93 +84,16 @@ namespace Assets.Scripts
 
                 var outputId = output.Key;
                 var outputRail = output.Value.First();
-                var outputPosition = outputRail.transform.position + outputRail.WayPoints.Last();
+                var outputPosition = outputRail.WayPoints.Last().position;
+                
+                List<RailController> prefabs = GetPrefabsList(outputId, output.Value);
 
-                List<GameObject> prefabs = RailPrefabs.ToList();
-                if (CurrentRow % 2 == 0)
+                int newRailsCount = Random.Range(1, maxRailCountFromOutput+1);
+
+                List<int> indexes = GetPrefabsIndexes(newRailsCount, prefabs.Count);
+
+                foreach (var newRailController in indexes.Select(index => Instantiate(prefabs[index], Map)))
                 {
-                    if (output.Value.Any(rail => rail.RailDirection != RailDirection.Forward))
-                    {
-                        prefabs = RailPrefabs.Where(prefab =>
-                            prefab.GetComponent<RailController>().RailDirection == RailDirection.Forward).ToList();
-                    }
-
-                    if (output.Value.Any(rail => rail.RailDirection == RailDirection.Forward) && output.Value.Count == 1)
-                    {
-                        prefabs = RailPrefabs.Where(prefab =>
-                            prefab.GetComponent<RailController>().RailDirection != RailDirection.Forward).ToList();
-                    }
-                    
-                }
-
-                switch (outputId)
-                {
-                    case 0:
-                        prefabs = prefabs.Where(prefab =>
-                            prefab.GetComponent<RailController>().RailDirection != RailDirection.Left && 
-                            prefab.GetComponent<RailController>().RailDirection != RailDirection.RightCircle).ToList();
-                        break;
-
-                    case 1:
-                    case 2:
-                        if (OldRow.Outputs.Count > 1)
-                        {
-                            prefabs = prefabs.Where(prefab =>
-                                prefab.GetComponent<RailController>().RailDirection != RailDirection.LeftCircle &&
-                                prefab.GetComponent<RailController>().RailDirection != RailDirection.RightCircle).ToList();
-                        }
-
-                        maxRailCountFromOutput = 4;
-                        break;
-
-                    case 3:
-                        prefabs = prefabs.Where(prefab =>
-                            prefab.GetComponent<RailController>().RailDirection != RailDirection.Right &&
-                            prefab.GetComponent<RailController>().RailDirection != RailDirection.LeftCircle).ToList();
-                        break;
-
-                    default:
-                        prefabs = prefabs.ToList();
-                        break;
-                }
-
-                if (CurrentRow % 2 == 0)
-                {
-                    if (prefabs.Any(prefab => prefab.GetComponent<RailController>().RailDirection == RailDirection.LeftCircle ||
-                                              prefab.GetComponent<RailController>().RailDirection == RailDirection.RightCircle))
-                    {
-                        prefabs.Remove(prefabs.FirstOrDefault(prefab => prefab.GetComponent<RailController>().RailDirection == RailDirection.Forward));
-                    }
-                }
-                else
-                {
-                    prefabs = prefabs.Where(prefab =>
-                        prefab.GetComponent<RailController>().RailDirection != RailDirection.LeftCircle &&
-                        prefab.GetComponent<RailController>().RailDirection != RailDirection.RightCircle).ToList();
-                }
-
-                int newRailsCount = Random.Range(1, maxRailCountFromOutput);
-
-                List<int> indexes = new List<int>();
-
-                for (int i = 0; i < newRailsCount; i++)
-                {
-                    int index = Random.Range(0, prefabs.Count);
-                    int check = 0;
-                    while (check <= 100)
-                    {
-                        if (!indexes.Contains(index))
-                        {
-                            indexes.Add(index);
-                            break;
-                        }
-                        index = Random.Range(0, prefabs.Count);
-                        check++;
-                    }
-                    
-                    GameObject newRailPref = prefabs[index];
-
-                    var newRailController = Instantiate(newRailPref, Map).GetComponent<RailController>();
                     newRailController.Row = CurrentRow;
                     output.Value.ForEach(rail =>
                     {
@@ -176,6 +101,13 @@ namespace Assets.Scripts
                         rail.NextRails.Add(newRailController);
                     });
                     newRailController.InputId = outputId;
+                    newRailController.transform.position = outputPosition;
+
+                    if (indexes.Count > 1)
+                    {
+                        newRailController._spriteMask.sprite = newRailController._splitMask;
+                    }
+
                     switch (newRailController.RailDirection)
                     {
                         case RailDirection.Left:
@@ -195,7 +127,7 @@ namespace Assets.Scripts
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                    newRailController.transform.position = outputPosition;
+                    
                     NewRow.Rails.Add(newRailController);
                     
                     if (NewRow.Outputs.ContainsKey(newRailController.OutputId))
@@ -213,33 +145,94 @@ namespace Assets.Scripts
 
             CurrentRow++;
         }
-        bool hasStop = true;
-        private void GenerateObjects()
+        
+        private List<int> GetPrefabsIndexes(int newRailsCount, int prefabsCount)
         {
-            if (OldRow.Outputs.Count == 1)
+            List<int> indexes = new List<int>();
+            for (int i = 0; i < newRailsCount; i++)
             {
-                hasStop = true;
+                int index = Random.Range(0, prefabsCount);
+                int check = 0;
+                while (check <= 100)
+                {
+                    if (!indexes.Contains(index))
+                    {
+                        indexes.Add(index);
+                        break;
+                    }
+                    index = Random.Range(0, prefabsCount);
+                    check++;
+                }
             }
-            foreach (var rails in OldRow.Outputs.Values)
+
+            return indexes;
+        }
+
+        private List<RailController> GetPrefabsList(int outputId, List<RailController> outputRails)
+        {
+            List<RailController> prefabs = RailPrefabs;
+            if (CurrentRow % 2 == 0)
             {
-                var rail = rails.First();
-                var point = Instantiate(_point, rail.transform);
-                point.transform.localPosition = rail.WayPoints.Last();
-                //if (!hasStop)
-                //{
-                //    var stop = Instantiate(_stop, rail.transform);
-                //    stop.transform.localPosition = rail.WayPoints.Last();
-                //    stop.transform.localRotation = Quaternion.Euler(0, 0, 90);
-                //    hasStop = true;
-                //}
-                //else
-                //{
-                //    var point = Instantiate(_point, rail.transform);
-                //    point.transform.localPosition = rail.WayPoints.Last();
-                //    hasStop = false;
-                    
-                //}
+                if (outputRails.Any(rail => rail.RailDirection != RailDirection.Forward))
+                {
+                    prefabs = prefabs.Where(prefab =>
+                        prefab.RailDirection == RailDirection.Forward).ToList();
+                }
+
+                if (outputRails.Any(rail => rail.RailDirection == RailDirection.Forward) && outputRails.Count == 1)
+                {
+                    prefabs = prefabs.Where(prefab =>
+                        prefab.RailDirection != RailDirection.Forward).ToList();
+                }
+
             }
+
+            switch (outputId)
+            {
+                case 0:
+                    prefabs = prefabs.Where(prefab =>
+                        prefab.RailDirection != RailDirection.Left &&
+                        prefab.RailDirection != RailDirection.RightCircle).ToList();
+                    break;
+
+                case 1:
+                case 2:
+                    if (OldRow.Outputs.Count > 1)
+                    {
+                        prefabs = prefabs.Where(prefab =>
+                            prefab.RailDirection != RailDirection.LeftCircle &&
+                            prefab.RailDirection != RailDirection.RightCircle).ToList();
+                    }
+
+                    break;
+
+                case 3:
+                    prefabs = prefabs.Where(prefab =>
+                        prefab.RailDirection != RailDirection.Right &&
+                        prefab.RailDirection != RailDirection.LeftCircle).ToList();
+                    break;
+
+                default:
+                    prefabs = prefabs.ToList();
+                    break;
+            }
+
+            if (CurrentRow % 2 == 0)
+            {
+                if (prefabs.Any(prefab => prefab.RailDirection == RailDirection.LeftCircle ||
+                                          prefab.RailDirection == RailDirection.RightCircle))
+                {
+                    prefabs.Remove(prefabs.FirstOrDefault(prefab => prefab.RailDirection == RailDirection.Forward));
+                }
+            }
+            else
+            {
+                prefabs = prefabs.Where(prefab =>
+                    prefab.RailDirection != RailDirection.LeftCircle &&
+                    prefab.RailDirection != RailDirection.RightCircle).ToList();
+            }
+
+            return prefabs;
         }
     }
 }

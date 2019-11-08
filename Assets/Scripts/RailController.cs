@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Assets.Scripts;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ using UnityEngine;
 public class RailController : MonoBehaviour
 {
     public RailDirection RailDirection;
-    public List<Vector3> WayPoints;
+    public List<Transform> WayPoints;
 
     public int Row;
     public int InputId;
@@ -22,6 +23,7 @@ public class RailController : MonoBehaviour
 
     [SerializeField] private Sprite _fatSprite;
     [SerializeField] private Sprite _thinSprite;
+    public Sprite _splitMask;
 
     public RailController smallRail;
 
@@ -42,6 +44,7 @@ public class RailController : MonoBehaviour
     public void SwitchRail()
     {
         if (NextRails.Count == 0) return;
+        NextRails = NextRails.OrderBy(rail => rail.InputId).ToList();
         var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
         currentWayIndex++;
         if (currentWayIndex >= NextRails.Count)
@@ -62,26 +65,24 @@ public class RailController : MonoBehaviour
             if (rail == NextActiveRail)
             {
                 rail._spriteRenderer.sprite = rail._fatSprite;
-                if (rail.RailDirection == RailDirection.Forward) continue;
+                //if (rail.RailDirection == RailDirection.Forward) continue;
                 
-                if (rails.Count(r => r.InputId == rail.InputId) == 1)
-                {
-                    rail._spriteMask.enabled = true;
-                }
-                else
-                {
-                    rail._spriteMask.enabled = false;
-                }
+                //if (rails.Count(r => r.InputId == rail.InputId) == 1)
+                //{
+                //    rail._spriteMask.enabled = true;
+                //}
+                //else
+                //{
+                //    rail._spriteMask.enabled = false;
+                //}
 
                 rail._spriteMask.enabled = true;
-                //rail.smallRail._spriteRenderer.sprite = rail.smallRail._fatSprite;
             }
             else
             {
                 rail._spriteRenderer.sprite = rail._thinSprite;
-                if (rail.RailDirection == RailDirection.Forward) continue;
+                //if (rail.RailDirection == RailDirection.Forward) continue;
                 rail._spriteMask.enabled = false; 
-                //rail.smallRail._spriteRenderer.sprite = rail.smallRail._thinSprite;
             }
         }
     }

@@ -23,11 +23,11 @@ public class TrainController : MonoBehaviour
 
     public GameObject TrainPrefab;
 
-    public List<Vector3> TargetPointList;
+    public List<Transform> TargetPointList;
 
     private Rigidbody2D _rigidbody2D;
     public SpriteRenderer _spriteRenderer;
-    private const float DistToChangeTarget = 0.63f;
+    private const float DistToChangeTarget = 0.1f;
     
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -95,7 +95,7 @@ public class TrainController : MonoBehaviour
     private void Start()
     {
         TargetPointList = TargetRail.WayPoints;
-        TargetPoint = TargetPointList[0];
+        TargetPoint = TargetPointList[0].localPosition;
     }
 
     private void Update()
@@ -180,6 +180,6 @@ public class TrainController : MonoBehaviour
                 }
             }
         }
-        TargetPoint = TargetPointList[TargetPointIndex];
+        TargetPoint = TargetPointList[TargetPointIndex].localPosition;
     }
 }
