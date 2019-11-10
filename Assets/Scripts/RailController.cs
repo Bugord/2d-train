@@ -30,6 +30,8 @@ public class RailController : MonoBehaviour
     public List<RailController> NextRails;
     public RailController NextActiveRail;
 
+    public bool IsActive;
+
     private void OnEnable()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -44,7 +46,7 @@ public class RailController : MonoBehaviour
     public void SwitchRail()
     {
         if (NextRails.Count == 0) return;
-        NextRails = NextRails.OrderBy(rail => rail.InputId).ToList();
+        NextRails = NextRails.OrderBy(rail => rail.OutputId).ToList();
         var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
         currentWayIndex++;
         if (currentWayIndex >= NextRails.Count)
@@ -65,24 +67,14 @@ public class RailController : MonoBehaviour
             if (rail == NextActiveRail)
             {
                 rail._spriteRenderer.sprite = rail._fatSprite;
-                //if (rail.RailDirection == RailDirection.Forward) continue;
-                
-                //if (rails.Count(r => r.InputId == rail.InputId) == 1)
-                //{
-                //    rail._spriteMask.enabled = true;
-                //}
-                //else
-                //{
-                //    rail._spriteMask.enabled = false;
-                //}
-
                 rail._spriteMask.enabled = true;
+                rail.IsActive = true;
             }
             else
             {
                 rail._spriteRenderer.sprite = rail._thinSprite;
-                //if (rail.RailDirection == RailDirection.Forward) continue;
-                rail._spriteMask.enabled = false; 
+                rail._spriteMask.enabled = false;
+                rail.IsActive = false;
             }
         }
     }

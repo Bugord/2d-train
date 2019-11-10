@@ -309,7 +309,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!114 &8195411418207639312
 MonoBehaviour:
@@ -355,6 +355,7 @@ MonoBehaviour:
   smallRail: {fileID: 0}
   NextRails: []
   NextActiveRail: {fileID: 0}
+  IsActive: 0
 --- !u!331 &178097870888359434
 SpriteMask:
   m_ObjectHideFlags: 0

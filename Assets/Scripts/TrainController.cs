@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts;
 using Assets.Scripts.Extentions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TrainController : MonoBehaviour
 {
@@ -27,7 +29,10 @@ public class TrainController : MonoBehaviour
 
     private Rigidbody2D _rigidbody2D;
     public SpriteRenderer _spriteRenderer;
-    private const float DistToChangeTarget = 0.1f;
+    private const float DistToChangeTarget = 0.05f;
+
+    public TrainController nextTrain;
+    public float distanceBetweenTrains;
     
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -38,7 +43,7 @@ public class TrainController : MonoBehaviour
         if (col.tag == "Point")
         {
 
-
+            GameData.InGameCoins++;
             Points++;
             if (Points > 2 * Trains.Count)
             {
@@ -67,6 +72,10 @@ public class TrainController : MonoBehaviour
             var trainToRemove = Trains.Last();
             Trains.Remove(trainToRemove);
             Destroy(trainToRemove.gameObject);
+            if (Trains.Count == 0)
+            {
+                UIManager.Instance.ExitToMainMenu();
+            }
         }
     }
 
@@ -76,11 +85,14 @@ public class TrainController : MonoBehaviour
             return;
 
         var lastTrain = Trains.Last();
-        var newTrainPos = lastTrain.transform.position - lastTrain.transform.up * 0.8f;
+        var newTrainPos = lastTrain.transform.position - lastTrain.transform.up*3;
         var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
+        Destroy(newTrain.GetComponent<CapsuleCollider2D>());
         var newTrainController = newTrain.GetComponent<TrainController>();
-        newTrainController.TargetRail = TargetRail;
+        newTrainController.TargetRail = lastTrain.TargetRail;   
+        newTrainController.ChangeTargetPoint(true);
         newTrainController.IsHeadTrain = false;
+        newTrainController.nextTrain = lastTrain;
         Trains.First(controller => controller.IsHeadTrain).Trains.Add(newTrainController);
     }
 
@@ -88,8 +100,8 @@ public class TrainController : MonoBehaviour
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        if (IsHeadTrain)
-            Trains.Add(this);
+        if (!IsHeadTrain) return;
+        Trains.Add(this);
     }
 
     private void Start()
@@ -102,8 +114,10 @@ public class TrainController : MonoBehaviour
     {
         if (!IsHeadTrain) return;
         
+        GameData.SetLastScore(TargetRail.Row);
+
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
-        if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
+        if ((Input.GetKeyDown(KeyCode.Mouse0) || touch) && IsHeadTrain)
         {
             TargetRail.SwitchRail();
         }
@@ -140,7 +154,25 @@ public class TrainController : MonoBehaviour
 
     private void SetVelocity(Vector2 vectorToTarget)
     {
-        _rigidbody2D.velocity = Speed * Vector3.Normalize(vectorToTarget);
+        var newSpeed = Speed;
+
+        if (!IsHeadTrain)
+        {
+            if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains)
+            {
+                newSpeed = Speed * 1.3f;
+            }
+            if (Vector3.Distance(transform.position, nextTrain.transform.position) < distanceBetweenTrains)
+            {
+                newSpeed = Speed * 0.7f;
+            }
+            if (Math.Abs(Vector3.Distance(transform.position, nextTrain.transform.position) - distanceBetweenTrains) <= 0)
+            {
+                newSpeed = Speed;
+            }
+        }
+
+        _rigidbody2D.velocity = newSpeed * Vector3.Normalize(vectorToTarget);
     }
 
     private void StopTheTrain()
@@ -148,7 +180,7 @@ public class TrainController : MonoBehaviour
         _rigidbody2D.velocity = Vector2.zero;
     }
 
-    private void ChangeTargetPoint()
+    private void ChangeTargetPoint(bool lastPoint = false)
     {
         TargetPointIndex++;
         if (TargetPointIndex >= TargetPointList.Count)
@@ -170,7 +202,6 @@ public class TrainController : MonoBehaviour
             else
             {
                 TargetRail = TargetRail.NextActiveRail;
-                GameData.LastScore++;
                 TargetPointList = TargetRail.WayPoints;
                 var last = TargetRail;
                 while (last != null)
@@ -180,6 +211,6 @@ public class TrainController : MonoBehaviour
                 }
             }
         }
-        TargetPoint = TargetPointList[TargetPointIndex].localPosition;
+        TargetPoint = TargetPointList[lastPoint ? TargetPointList.Count - 1 : TargetPointIndex].localPosition;
     }
 }

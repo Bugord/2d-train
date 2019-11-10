@@ -209,6 +209,8 @@ MonoBehaviour:
   _stop: {fileID: 7101574944169868405, guid: 9a914f0c0835f704a9ad27a945ebc310, type: 3}
   CurrentRow: 1
   TrainController: {fileID: 39203789}
+  RowsBefore: 5
+  RowsAfter: 5
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0
@@ -341,6 +343,11 @@ PrefabInstance:
         type: 3}
       propertyPath: RotationSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
+        type: 3}
+      propertyPath: distanceBetweenTrains
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalPosition.x

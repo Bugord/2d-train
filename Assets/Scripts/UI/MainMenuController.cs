@@ -10,9 +10,8 @@ public class MainMenuController : PanelBase
     public Button SettingButton;
     public Button ShopButton;
 
-    public Text _lastScore;
-    private Text _bestScore;
-    private Text _money;
+    public Text BestScore;
+    public Text Coins;
     
     // Start is called before the first frame update
     void Start()

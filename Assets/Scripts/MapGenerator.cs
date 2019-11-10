@@ -33,7 +33,8 @@ namespace Assets.Scripts
         public RailController InitialRailController;
 
         public List<RailController> RailPrefabs;
-        
+        private Dictionary<RailDirection, RailController> _railPrefabsDictionary;
+
         public Transform Map;
        
         [SerializeField] private GameObject _point;
@@ -45,7 +46,19 @@ namespace Assets.Scripts
         public TrainController TrainController;
 
         public static Dictionary<int, Row> _rowsList;
-        
+
+        public int RowsBefore;
+        public int RowsAfter;
+
+        private void Awake()
+        {
+            _railPrefabsDictionary = new Dictionary<RailDirection, RailController>();
+            foreach (var prefab in RailPrefabs)
+            {
+                _railPrefabsDictionary.Add(prefab.RailDirection, prefab);
+            }
+        }
+
         private void Start()
         {
             NewRow = new Row();
@@ -59,17 +72,22 @@ namespace Assets.Scripts
 
         private void LateUpdate()
         {
-            if (CurrentRow <= TrainController.TargetRail.Row + 4)
+            if (CurrentRow <= TrainController.TargetRail.Row + RowsAfter)
             {
                 GenerateRails();
 
-                if (TrainController.TargetRail.Row - 3 >= 0)
+                if (TrainController.TargetRail.Row - RowsBefore >= 0)
                 {
-                    foreach (var oldRail in _rowsList[TrainController.TargetRail.Row - 3].Rails)
+                    foreach (var oldRail in _rowsList[TrainController.TargetRail.Row - RowsBefore].Rails)
                     {
                         Destroy(oldRail.gameObject);
                     }
                 }
+            }
+
+            if (CurrentRow == RowsAfter - 1)
+            {
+                InitialRailController.SwitchRail();
             }
         }
 
@@ -77,6 +95,8 @@ namespace Assets.Scripts
         {
             NewRow = new Row();
             int maxRailCountFromOutput = 3;
+
+            var enabledPrefabs = GetRailPrefabs(OldRow.Outputs);
 
             foreach (var output in OldRow.Outputs)
             {
@@ -86,7 +106,7 @@ namespace Assets.Scripts
                 var outputRail = output.Value.First();
                 var outputPosition = outputRail.WayPoints.Last().position;
                 
-                List<RailController> prefabs = GetPrefabsList(outputId, output.Value);
+                List<RailController> prefabs = enabledPrefabs[outputId];
 
                 int newRailsCount = Random.Range(1, maxRailCountFromOutput+1);
 
@@ -140,6 +160,7 @@ namespace Assets.Scripts
                     }
                 }
             }
+            GenerateItems(OldRow, NewRow);
             _rowsList.Add(CurrentRow, NewRow);
             OldRow = new Row(NewRow);
 
@@ -168,71 +189,128 @@ namespace Assets.Scripts
             return indexes;
         }
 
-        private List<RailController> GetPrefabsList(int outputId, List<RailController> outputRails)
+        private Dictionary<int, List<RailController>> GetRailPrefabs(Dictionary<int, List<RailController>> outputs)
         {
-            List<RailController> prefabs = RailPrefabs;
-            if (CurrentRow % 2 == 0)
+            Dictionary<int, List<RailController>> prefabs = new Dictionary<int, List<RailController>>();
+
+            foreach (var output in outputs)
             {
-                if (outputRails.Any(rail => rail.RailDirection != RailDirection.Forward))
+                var outputId = output.Key;
+                var outputRails = output.Value;
+
+                List<RailController> newRails = new List<RailController>();
+                
+                switch (outputId)
                 {
-                    prefabs = prefabs.Where(prefab =>
-                        prefab.RailDirection == RailDirection.Forward).ToList();
+                    case 0:
+                        if (outputRails.Count == 1)
+                        {
+                            newRails.Add(CurrentRow % 2 == 0
+                                ? _railPrefabsDictionary[RailDirection.Forward]
+                                : _railPrefabsDictionary[RailDirection.LeftCircle]);
+
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
+                        }
+                        if (outputRails.Count > 1)
+                        {
+                            newRails.Add(CurrentRow % 2 == 0
+                                ? _railPrefabsDictionary[RailDirection.Forward]
+                                : _railPrefabsDictionary[RailDirection.LeftCircle]);
+                            if (outputRails.Any(rail => rail.RailDirection == RailDirection.Left))
+                            {
+                                newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
+                            }
+                        }
+                        break;
+                    case 1:
+                    case 2:
+                        if (outputRails.Count == 1)
+                        {
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Forward]);
+                            if (prefabs.ContainsKey(outputId - 1))
+                            {
+                                newRails.Add(
+                                    prefabs[outputId - 1].Any(rail => rail.RailDirection == RailDirection.Right)
+                                        ? _railPrefabsDictionary[RailDirection.Right]
+                                        : _railPrefabsDictionary[RailDirection.Left]);
+                            }
+                            else
+                            {
+                                newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
+                                newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
+                            }
+                        }
+                        if (outputRails.Count > 1)
+                        {
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Forward]);
+                            if (outputRails.Any(rail => rail.RailDirection == RailDirection.Left))
+                            {
+                                newRails.Add(CurrentRow % 2 == 0
+                                    ? _railPrefabsDictionary[RailDirection.Left]
+                                    : _railPrefabsDictionary[RailDirection.Right]);
+                            }
+                            if (outputRails.Any(rail => rail.RailDirection == RailDirection.Right))
+                            {
+                                newRails.Add(CurrentRow % 2 == 0
+                                    ? _railPrefabsDictionary[RailDirection.Right]
+                                    : _railPrefabsDictionary[RailDirection.Left]);
+                            }
+                        }
+                        break;
+                    case 3:
+                        if (outputRails.Count == 1)
+                        {
+                            newRails.Add(CurrentRow % 2 != 0
+                                ? _railPrefabsDictionary[RailDirection.Forward]
+                                : _railPrefabsDictionary[RailDirection.RightCircle]);
+
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
+                        }
+                        if (outputRails.Count > 1)
+                        {
+                            newRails.Add(CurrentRow % 2 != 0
+                                ? _railPrefabsDictionary[RailDirection.Forward]
+                                : _railPrefabsDictionary[RailDirection.RightCircle]);
+
+                            if (outputRails.Any(rail => rail.RailDirection == RailDirection.Right))
+                            {
+                                newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
+                            }
+                        }
+                        break;
                 }
 
-                if (outputRails.Any(rail => rail.RailDirection == RailDirection.Forward) && outputRails.Count == 1)
-                {
-                    prefabs = prefabs.Where(prefab =>
-                        prefab.RailDirection != RailDirection.Forward).ToList();
-                }
-
-            }
-
-            switch (outputId)
-            {
-                case 0:
-                    prefabs = prefabs.Where(prefab =>
-                        prefab.RailDirection != RailDirection.Left &&
-                        prefab.RailDirection != RailDirection.RightCircle).ToList();
-                    break;
-
-                case 1:
-                case 2:
-                    if (OldRow.Outputs.Count > 1)
-                    {
-                        prefabs = prefabs.Where(prefab =>
-                            prefab.RailDirection != RailDirection.LeftCircle &&
-                            prefab.RailDirection != RailDirection.RightCircle).ToList();
-                    }
-
-                    break;
-
-                case 3:
-                    prefabs = prefabs.Where(prefab =>
-                        prefab.RailDirection != RailDirection.Right &&
-                        prefab.RailDirection != RailDirection.LeftCircle).ToList();
-                    break;
-
-                default:
-                    prefabs = prefabs.ToList();
-                    break;
-            }
-
-            if (CurrentRow % 2 == 0)
-            {
-                if (prefabs.Any(prefab => prefab.RailDirection == RailDirection.LeftCircle ||
-                                          prefab.RailDirection == RailDirection.RightCircle))
-                {
-                    prefabs.Remove(prefabs.FirstOrDefault(prefab => prefab.RailDirection == RailDirection.Forward));
-                }
-            }
-            else
-            {
-                prefabs = prefabs.Where(prefab =>
-                    prefab.RailDirection != RailDirection.LeftCircle &&
-                    prefab.RailDirection != RailDirection.RightCircle).ToList();
+                prefabs.Add(outputId, newRails);
             }
 
             return prefabs;
+        }
+
+        private void GenerateItems(Row oldRow, Row newRow)
+        {
+            foreach (var output in OldRow.Outputs)
+            {
+                var outputRails = output.Value;
+                if (outputRails.Any(rail => rail.IsActive))
+                {
+                    outputRails.ForEach(rail =>
+                    {
+                        if (!rail.IsActive)
+                        {
+                            var point = Instantiate(_point, rail.transform);
+                            point.transform.localPosition = Vector3.zero;
+                        }
+                        else
+                        {
+                            if (CurrentRow > 20 && CurrentRow % 5 == 0)
+                            {
+                                var stop = Instantiate(_stop, rail.transform);
+                                stop.transform.localPosition = Vector3.zero;
+                            }
+                        }
+                    });
+                }
+            }
         }
     }
 }

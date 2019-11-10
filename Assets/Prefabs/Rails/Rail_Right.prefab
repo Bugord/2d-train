@@ -243,6 +243,7 @@ MonoBehaviour:
   smallRail: {fileID: 0}
   NextRails: []
   NextActiveRail: {fileID: 0}
+  IsActive: 0
 --- !u!331 &4992538959097917334
 SpriteMask:
   m_ObjectHideFlags: 0

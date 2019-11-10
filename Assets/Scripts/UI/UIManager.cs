@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance;
+
     public MainMenuController _mainMenuController;
     [SerializeField] private SettingsMenuController _settingsMenuController;
     [SerializeField] private ShopController _shopController;
@@ -14,17 +16,17 @@ public class UIManager : MonoBehaviour
     public static bool IsInGame;
 
     public static PanelBase previousPanel;
-
-    public int HighScore;
     
     public void Start()
     {
+        Instance = this;
         _mainMenuController.StartButton.onClick.AddListener(StartGame);
         _mainMenuController.SettingButton.onClick.AddListener(OpenSettings);
         _mainMenuController.ShopButton.onClick.AddListener(OpenShop);
         _inGameUiController.PauseButton.onClick.AddListener(SetPause);
         _pausePanelController.ExitToMenuButton.onClick.AddListener(ExitToMainMenu);
-        _mainMenuController._lastScore.text = HighScore.ToString();
+        _mainMenuController.BestScore.text = PlayerPrefs.GetInt(GameDataFields.BestScore.ToString()).ToString();
+        _mainMenuController.Coins.text = PlayerPrefs.GetInt(GameDataFields.Coins.ToString()).ToString();
     }
 
     private void StartGame()
@@ -33,6 +35,7 @@ public class UIManager : MonoBehaviour
         _mainMenuController.SetActivePanel(false);
         _inGameUiController.SetActivePanel(true);
         IsInGame = true;
+        GameData.InGameCoins = 0;
     }
 
     private void OpenSettings()
@@ -64,8 +67,13 @@ public class UIManager : MonoBehaviour
         _pausePanelController.SetActivePanel(false);
         _mainMenuController.SetActivePanel(true);
         IsInGame = false;
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         GameData.UpdateBestScore();
-        _mainMenuController._lastScore.text = GameData.BestScore.ToString();
+        GameData.AddCoins();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void SetScore(int score)
+    {
+        _inGameUiController.Score.text = score.ToString();
     }
 }

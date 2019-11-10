@@ -6,5 +6,5 @@ using UnityEngine.UI;
 public class InGameUIController : PanelBase
 {
     public Button PauseButton;
-    
+    public Text Score;
 }
