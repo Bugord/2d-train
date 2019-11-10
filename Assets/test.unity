@@ -210,7 +210,7 @@ MonoBehaviour:
   CurrentRow: 1
   TrainController: {fileID: 39203789}
   RowsBefore: 5
-  RowsAfter: 5
+  RowsAfter: 4
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0

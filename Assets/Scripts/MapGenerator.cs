@@ -160,7 +160,7 @@ namespace Assets.Scripts
                     }
                 }
             }
-            GenerateItems(OldRow, NewRow);
+            GenerateItems();
             _rowsList.Add(CurrentRow, NewRow);
             OldRow = new Row(NewRow);
 
@@ -286,7 +286,7 @@ namespace Assets.Scripts
             return prefabs;
         }
 
-        private void GenerateItems(Row oldRow, Row newRow)
+        private void GenerateItems()
         {
             foreach (var output in OldRow.Outputs)
             {
@@ -302,10 +302,24 @@ namespace Assets.Scripts
                         }
                         else
                         {
-                            if (CurrentRow > 20 && CurrentRow % 5 == 0)
+                            if (CurrentRow > 5 && CurrentRow % 2 == 0)
                             {
-                                var stop = Instantiate(_stop, rail.transform);
-                                stop.transform.localPosition = Vector3.zero;
+                                var previousRow = _rowsList[rail.Row-1];
+
+                                var center = previousRow.Rails.Where(rowRail => rowRail.InputId == rail.InputId).Any(rowRail => rowRail.InputId == rowRail.OutputId + 1 ||
+                                                                                                                                rowRail.InputId == rowRail.OutputId - 1);
+
+                                var left = previousRow.Rails.Where(rowRail => rowRail.InputId == rail.InputId - 1).Any(rowRail => rowRail.InputId == rowRail.OutputId ||
+                                                                                                                                  rowRail.InputId == rowRail.OutputId + 1);
+
+                                var right = previousRow.Rails.Where(rowRail => rowRail.InputId == rail.InputId + 1).Any(rowRail => rowRail.InputId == rowRail.OutputId ||
+                                                                                                                                   rowRail.InputId == rowRail.OutputId - 1);
+
+                                if (center && (left || right))
+                                {
+                                    var stop = Instantiate(_stop, rail.transform);
+                                    stop.transform.localPosition = Vector3.zero;
+                                }
                             }
                         }
                     });
