@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Assets.Scripts;
 using Assets.Scripts.Extentions;
@@ -100,8 +101,19 @@ public class TrainController : MonoBehaviour
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        InputManager.Swipe += InputManagerOnSwipe;
         if (!IsHeadTrain) return;
         Trains.Add(this);
+    }
+
+    private void InputManagerOnSwipe(SwipeDirection direction)
+    {
+#if !UNITY_EDITOR
+        if (IsHeadTrain)
+        {
+            TargetRail.SwitchRail(direction);
+        }
+#endif
     }
 
     private void Start()
@@ -115,12 +127,14 @@ public class TrainController : MonoBehaviour
         if (!IsHeadTrain) return;
         
         GameData.SetLastScore(TargetRail.Row);
-
+#if UNITY_EDITOR
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
+        
         if ((Input.GetKeyDown(KeyCode.Mouse0) || touch) && IsHeadTrain)
         {
             TargetRail.SwitchRail();
         }
+#endif
     }
 
     private void FixedUpdate()

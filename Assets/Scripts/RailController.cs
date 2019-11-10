@@ -57,6 +57,33 @@ public class RailController : MonoBehaviour
         NextActiveRail.SwitchRail();
     }
 
+    public void SwitchRail(SwipeDirection direction)
+    {
+        if (NextRails.Count == 0) return;
+        NextRails = NextRails.OrderBy(rail => rail.OutputId).ToList();
+        var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
+        if (direction == SwipeDirection.Left)
+        {
+            currentWayIndex--;
+        }
+
+        if (direction == SwipeDirection.Right)
+        {
+            currentWayIndex++;
+        }
+        
+        if (currentWayIndex >= NextRails.Count)
+            currentWayIndex = NextRails.Count-1;
+
+        if (currentWayIndex < 0)
+            currentWayIndex = 0;
+
+        NextActiveRail = NextRails[currentWayIndex];
+
+        UpdateRailSprite();
+        NextActiveRail.SwitchRail(direction);
+    }
+
     public void UpdateRailSprite()
     {
         if (NextActiveRail == null) return;

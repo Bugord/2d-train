@@ -13,4 +13,12 @@ namespace Assets.Scripts
         LeftCircle,
         RightCircle
    }
+
+   public enum SwipeDirection
+   {
+       Up,
+       Down,
+       Right,
+       Left
+   }
 }
