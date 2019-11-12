@@ -29,7 +29,7 @@ namespace Assets.Scripts
 
                 if (!eventSent)
                 {
-                    if (Swipe != null && touch.phase == TouchPhase.Ended)
+                    if (Swipe != null && touch.phase == TouchPhase.Moved)
                     {
                         Vector2 direction = touch.position - lastPosition;
 

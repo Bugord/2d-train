@@ -24,13 +24,14 @@ public class RailController : MonoBehaviour
     [SerializeField] private Sprite _fatSprite;
     [SerializeField] private Sprite _thinSprite;
     public Sprite _splitMask;
-
-    public RailController smallRail;
-
+    
     public List<RailController> NextRails;
     public RailController NextActiveRail;
 
+    public Transform EndPoint;
+
     public bool IsActive;
+    public bool HasStop;
 
     private void OnEnable()
     {

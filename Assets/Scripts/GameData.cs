@@ -19,10 +19,10 @@ public static class GameData
         if (LastScore > BestScore)
         {
             BestScore = LastScore;
+            PlayerPrefs.SetInt(GameDataFields.BestScore.ToString(), BestScore);
         }
 
         LastScore = 0;
-        PlayerPrefs.SetInt(GameDataFields.BestScore.ToString(), BestScore);
         PlayerPrefs.Save();
     }
 
@@ -50,5 +50,6 @@ public static class GameData
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
+        UIManager.Instance.UpdateUI();
     }
 }

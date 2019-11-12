@@ -25,6 +25,12 @@ public class UIManager : MonoBehaviour
         _mainMenuController.ShopButton.onClick.AddListener(OpenShop);
         _inGameUiController.PauseButton.onClick.AddListener(SetPause);
         _pausePanelController.ExitToMenuButton.onClick.AddListener(ExitToMainMenu);
+        UpdateUI();
+        
+    }
+
+    public void UpdateUI()
+    {
         _mainMenuController.BestScore.text = PlayerPrefs.GetInt(GameDataFields.BestScore.ToString()).ToString();
         _mainMenuController.Coins.text = PlayerPrefs.GetInt(GameDataFields.Coins.ToString()).ToString();
     }

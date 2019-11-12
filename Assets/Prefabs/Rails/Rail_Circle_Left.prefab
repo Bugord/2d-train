@@ -90,6 +90,36 @@ Transform:
   m_Father: {fileID: 3780777230476333611}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1742812915253020770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 782215594122641360}
+  m_Layer: 0
+  m_Name: EndPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &782215594122641360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742812915253020770}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 5.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3780777230476333611}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1924729067034280407
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,7 +144,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924729067034280407}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.02, z: 0}
+  m_LocalPosition: {x: 0, y: 6.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3780777230476333611}
@@ -409,6 +439,7 @@ Transform:
   - {fileID: 3059971470064765522}
   - {fileID: 6003313651110024471}
   - {fileID: 6493639437962526416}
+  - {fileID: 782215594122641360}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -502,9 +533,9 @@ MonoBehaviour:
   _fatSprite: {fileID: 21300000, guid: f93e5cc062083bb49a21a82b6f434cf7, type: 3}
   _thinSprite: {fileID: 21300000, guid: 58b79abd430e32746b5528474bc72637, type: 3}
   _splitMask: {fileID: 21300000, guid: 9b336172e9e845c458915cb7e597167c, type: 3}
-  smallRail: {fileID: 0}
   NextRails: []
   NextActiveRail: {fileID: 0}
+  EndPoint: {fileID: 782215594122641360}
   IsActive: 0
 --- !u!331 &8845973555599862876
 SpriteMask:

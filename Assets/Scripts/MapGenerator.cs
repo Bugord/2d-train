@@ -104,7 +104,7 @@ namespace Assets.Scripts
 
                 var outputId = output.Key;
                 var outputRail = output.Value.First();
-                var outputPosition = outputRail.WayPoints.Last().position;
+                var outputPosition = outputRail.EndPoint.position;
                 
                 List<RailController> prefabs = enabledPrefabs[outputId];
 
@@ -288,41 +288,107 @@ namespace Assets.Scripts
 
         private void GenerateItems()
         {
-            foreach (var output in OldRow.Outputs)
+            if(CurrentRow < 5) return; 
+            
+            bool hasStop = false;
+            
+            List<RailController> newRails = new List<RailController>();
+            
+            for (int i = 0; i < 4; i++)
             {
-                var outputRails = output.Value;
-                if (outputRails.Any(rail => rail.IsActive))
+                var newRail = OldRow.Rails.FirstOrDefault(rail => rail.InputId == i);
+                if (newRail != null) newRails.Add(newRail);
+            }
+            
+            foreach (var rail in newRails.OrderBy(rail => rail.OutputId))
+            {
+                if (hasStop)
                 {
-                    outputRails.ForEach(rail =>
+                    hasStop = false;
+                }
+                
+                var previousRow = _rowsList[rail.Row-1];
+
+                var center = previousRow.Outputs[rail.InputId].Count > 1;
+                var left = rail.InputId != 0 && previousRow.Outputs.ContainsKey(rail.InputId - 1) &&
+                           previousRow.Outputs[rail.InputId - 1].Count > 1 && 
+                           previousRow.Outputs[rail.InputId - 1].All(rowRail => rowRail.RailDirection != RailDirection.Right);
+                var right = rail.InputId != 3 && previousRow.Outputs.ContainsKey(rail.InputId + 1) &&
+                            previousRow.Outputs[rail.InputId + 1].Count > 1 && 
+                            previousRow.Outputs[rail.InputId + 1].All(rowRail => rowRail.RailDirection != RailDirection.Left);
+
+                switch (rail.InputId)
+                {
+                    case 0:
+                        {
+                            if (center && right)
+                            {
+                                hasStop = true;
+                            }
+
+                            break;
+                        }
+                    case 1:
+                    case 2:
+                        {
+                            if (center && right && left)
+                            {
+                                int railIndex = newRails.IndexOf(rail);
+                                if (railIndex > 0 && !newRails[railIndex - 1].HasStop)
+                                {
+                                    hasStop = true;
+                                }
+
+                                if (railIndex == 0)
+                                {
+                                    hasStop = true;
+                                }
+                            }
+
+                            break;
+                        }
+                    case 3:
+                        {
+                            if (center && left)
+                            {
+                                int railIndex = newRails.IndexOf(rail);
+                                if (railIndex > 0 && !newRails[railIndex - 1].HasStop)
+                                {
+                                    hasStop = true;
+                                }
+
+                                if (railIndex == 0)
+                                {
+                                    hasStop = true;
+                                }
+                            }
+
+                            break;
+                        }
+                }
+
+                if (hasStop)
+                {
+                    var stop = Instantiate(_stop, rail.transform);
+                    stop.transform.localPosition = Vector3.zero;
+                    rail.HasStop = true;
+                }
+                else
+                {
+                    if (!rail.IsActive)
                     {
-                        if (!rail.IsActive)
+                        if (CurrentRow % 2 == 0 && rail.InputId % 2 != 0)
                         {
                             var point = Instantiate(_point, rail.transform);
                             point.transform.localPosition = Vector3.zero;
                         }
-                        else
+
+                        if (CurrentRow % 2 != 0 && rail.InputId % 2 == 0)
                         {
-                            if (CurrentRow > 5 && CurrentRow % 2 == 0)
-                            {
-                                var previousRow = _rowsList[rail.Row-1];
-
-                                var center = previousRow.Rails.Where(rowRail => rowRail.InputId == rail.InputId).Any(rowRail => rowRail.InputId == rowRail.OutputId + 1 ||
-                                                                                                                                rowRail.InputId == rowRail.OutputId - 1);
-
-                                var left = previousRow.Rails.Where(rowRail => rowRail.InputId == rail.InputId - 1).Any(rowRail => rowRail.InputId == rowRail.OutputId ||
-                                                                                                                                  rowRail.InputId == rowRail.OutputId + 1);
-
-                                var right = previousRow.Rails.Where(rowRail => rowRail.InputId == rail.InputId + 1).Any(rowRail => rowRail.InputId == rowRail.OutputId ||
-                                                                                                                                   rowRail.InputId == rowRail.OutputId - 1);
-
-                                if (center && (left || right))
-                                {
-                                    var stop = Instantiate(_stop, rail.transform);
-                                    stop.transform.localPosition = Vector3.zero;
-                                }
-                            }
+                            var point = Instantiate(_point, rail.transform);
+                            point.transform.localPosition = Vector3.zero;
                         }
-                    });
+                    }
                 }
             }
         }

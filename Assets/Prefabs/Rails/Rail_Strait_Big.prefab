@@ -61,6 +61,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5654305516534788633}
+  - {fileID: 5379828178164508699}
   - {fileID: 4279602146235229702}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -129,7 +130,7 @@ MonoBehaviour:
   RailDirection: 1
   WayPoints:
   - {fileID: 5654305516534788633}
-  - {fileID: 4279602146235229702}
+  - {fileID: 5379828178164508699}
   Row: 0
   InputId: 0
   OutputId: 0
@@ -138,9 +139,9 @@ MonoBehaviour:
   _fatSprite: {fileID: 21300000, guid: 4973b169a44c7a842af481f4309c9105, type: 3}
   _thinSprite: {fileID: 21300000, guid: 8672cba5670e20549bae400fe7b44781, type: 3}
   _splitMask: {fileID: 21300000, guid: 07d6a9092b960d94fafc83aaee8a71ee, type: 3}
-  smallRail: {fileID: 0}
   NextRails: []
   NextActiveRail: {fileID: 0}
+  EndPoint: {fileID: 4279602146235229702}
   IsActive: 0
 --- !u!331 &45074064105203521
 SpriteMask:
@@ -200,7 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4279602146235229702}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: EndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -215,6 +216,36 @@ Transform:
   m_GameObject: {fileID: 8607993555216574295}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1664730702905287636}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9212967031299324168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5379828178164508699}
+  m_Layer: 0
+  m_Name: GameObject(1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5379828178164508699
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9212967031299324168}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 6.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1664730702905287636}

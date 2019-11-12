@@ -34,6 +34,8 @@ public class TrainController : MonoBehaviour
 
     public TrainController nextTrain;
     public float distanceBetweenTrains;
+
+    public RailController LastRail;
     
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -72,7 +74,8 @@ public class TrainController : MonoBehaviour
 
             var trainToRemove = Trains.Last();
             Trains.Remove(trainToRemove);
-            Destroy(trainToRemove.gameObject);
+            trainToRemove.Speed = Speed*0.3f;
+            Destroy(trainToRemove.gameObject, 1.5f);
             if (Trains.Count == 0)
             {
                 UIManager.Instance.ExitToMainMenu();
@@ -90,7 +93,7 @@ public class TrainController : MonoBehaviour
         var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
         Destroy(newTrain.GetComponent<CapsuleCollider2D>());
         var newTrainController = newTrain.GetComponent<TrainController>();
-        newTrainController.TargetRail = lastTrain.TargetRail;   
+        newTrainController.TargetRail = lastTrain.LastRail;   
         newTrainController.ChangeTargetPoint(true);
         newTrainController.IsHeadTrain = false;
         newTrainController.nextTrain = lastTrain;
@@ -215,6 +218,7 @@ public class TrainController : MonoBehaviour
             }
             else
             {
+                LastRail = TargetRail;
                 TargetRail = TargetRail.NextActiveRail;
                 TargetPointList = TargetRail.WayPoints;
                 var last = TargetRail;
