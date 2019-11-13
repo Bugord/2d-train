@@ -72,6 +72,11 @@ namespace Assets.Scripts
 
         private void LateUpdate()
         {
+            if (TrainController.Trains.Count % 4 == 0)
+            {
+                RowsBefore = (int)(TrainController.Trains.Count * 0.25f) + 3;
+            }
+            
             if (CurrentRow <= TrainController.TargetRail.Row + RowsAfter)
             {
                 GenerateRails();
@@ -80,7 +85,7 @@ namespace Assets.Scripts
                 {
                     foreach (var oldRail in _rowsList[TrainController.TargetRail.Row - RowsBefore].Rails)
                     {
-                        Destroy(oldRail.gameObject);
+                        if (oldRail != null) Destroy(oldRail.gameObject);
                     }
                 }
             }

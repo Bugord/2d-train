@@ -11,6 +11,10 @@ using UnityEngine.SceneManagement;
 public class TrainController : MonoBehaviour
 {
     public float Speed;
+    public float DefaultSpeed;
+    public float MaxSpeed;
+    public float SpeedStep;
+    public float SpeedReduceStep;
     public float RotationSpeed;
     public Vector3 TargetPoint;
     public int TargetPointIndex;
@@ -71,6 +75,10 @@ public class TrainController : MonoBehaviour
                 Points -= Points - 2 * (Trains.Count - 1);
             }
 
+            if (Speed > DefaultSpeed)
+            {
+                Trains.ForEach(train => train.Speed -= SpeedReduceStep);
+            }
 
             var trainToRemove = Trains.Last();
             Trains.Remove(trainToRemove);
@@ -89,7 +97,7 @@ public class TrainController : MonoBehaviour
             return;
 
         var lastTrain = Trains.Last();
-        var newTrainPos = lastTrain.transform.position - lastTrain.transform.up*3;
+        var newTrainPos = lastTrain.transform.position - Vector3.up*3;
         var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
         Destroy(newTrain.GetComponent<CapsuleCollider2D>());
         var newTrainController = newTrain.GetComponent<TrainController>();
@@ -171,6 +179,11 @@ public class TrainController : MonoBehaviour
 
     private void SetVelocity(Vector2 vectorToTarget)
     {
+        if (Speed < MaxSpeed)
+        {
+            Speed += SpeedStep;
+        }
+
         var newSpeed = Speed;
 
         if (!IsHeadTrain)

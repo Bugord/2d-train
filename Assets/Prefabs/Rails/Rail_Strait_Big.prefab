@@ -143,6 +143,7 @@ MonoBehaviour:
   NextActiveRail: {fileID: 0}
   EndPoint: {fileID: 4279602146235229702}
   IsActive: 0
+  HasStop: 0
 --- !u!331 &45074064105203521
 SpriteMask:
   m_ObjectHideFlags: 0
