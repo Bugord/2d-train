@@ -10,6 +10,30 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Assets.Scripts
 {
+    [Serializable]
+    public class Level
+    {
+        public int PointsCountToBe;
+        public int PointsCount;
+        public int StopsCountToBe;
+        public int StopsCount;
+        public int RowsCountToBe;
+        public int RowsCount;
+
+        public float PointsPerRow;
+        public int MaxRailsSplitCount;
+
+        public Level(int pointsCount, int stopsCount, int rowsCount, int maxRailsSplit)
+        {
+            PointsCountToBe = pointsCount;
+            StopsCountToBe = stopsCount;
+            RowsCountToBe = rowsCount;
+
+            PointsPerRow = (float)PointsCountToBe / RowsCountToBe;      
+            MaxRailsSplitCount = maxRailsSplit;
+        }
+    }
+
     public class Row
     {
         public List<RailController> Rails;
@@ -49,6 +73,8 @@ namespace Assets.Scripts
 
         public int RowsBefore;
         public int RowsAfter;
+
+        public List<Level> Levels = new List<Level>();
 
         private void Awake()
         {

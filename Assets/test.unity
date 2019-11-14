@@ -211,6 +211,31 @@ MonoBehaviour:
   TrainController: {fileID: 39203789}
   RowsBefore: 5
   RowsAfter: 4
+  Levels:
+  - PointsCountToBe: 3
+    PointsCount: 0
+    StopsCountToBe: 0
+    StopsCount: 0
+    RowsCountToBe: 3
+    RowsCount: 0
+    PointsPerRow: 1
+    MaxRailsSplitCount: 1
+  - PointsCountToBe: 7
+    PointsCount: 0
+    StopsCountToBe: 5
+    StopsCount: 0
+    RowsCountToBe: 5
+    RowsCount: 0
+    PointsPerRow: 0
+    MaxRailsSplitCount: 0
+  - PointsCountToBe: 0
+    PointsCount: 0
+    StopsCountToBe: 0
+    StopsCount: 0
+    RowsCountToBe: 0
+    RowsCount: 0
+    PointsPerRow: 0
+    MaxRailsSplitCount: 0
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private ShopController _shopController;
     [SerializeField] private PausePanelController _pausePanelController;
     [SerializeField] private InGameUIController _inGameUiController;
+    [SerializeField] private Button _removeAdsButton;
 
     public static bool IsInGame;
 
@@ -33,6 +36,20 @@ public class UIManager : MonoBehaviour
     {
         _mainMenuController.BestScore.text = PlayerPrefs.GetInt(GameDataFields.BestScore.ToString()).ToString();
         _mainMenuController.Coins.text = PlayerPrefs.GetInt(GameDataFields.Coins.ToString()).ToString();
+    }
+
+    private void RemoveAds()
+    {
+        if (PlayerPrefs.HasKey("AdsFree"))
+        {
+            print("Ads already removed");
+        }
+        else
+        {
+                
+            PlayerPrefs.SetInt("AdsFree", 1);
+            PlayerPrefs.Save();
+        }
     }
 
     private void StartGame()
