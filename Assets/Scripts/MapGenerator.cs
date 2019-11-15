@@ -10,39 +10,15 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Assets.Scripts
 {
-    [Serializable]
-    public class Level
-    {
-        public int PointsCountToBe;
-        public int PointsCount;
-        public int StopsCountToBe;
-        public int StopsCount;
-        public int RowsCountToBe;
-        public int RowsCount;
-
-        public float PointsPerRow;
-        public int MaxRailsSplitCount;
-
-        public Level(int pointsCount, int stopsCount, int rowsCount, int maxRailsSplit)
-        {
-            PointsCountToBe = pointsCount;
-            StopsCountToBe = stopsCount;
-            RowsCountToBe = rowsCount;
-
-            PointsPerRow = (float)PointsCountToBe / RowsCountToBe;      
-            MaxRailsSplitCount = maxRailsSplit;
-        }
-    }
-
     public class Row
     {
         public List<RailController> Rails;
-        public Dictionary<int, List<RailController>> Outputs;
+        public Dictionary<int, Output> Outputs;
 
         public Row()
         {
             Rails = new List<RailController>();
-            Outputs = new Dictionary<int, List<RailController>>();
+            Outputs = new Dictionary<int, Output>();
         }
 
         public Row(Row row)
@@ -50,6 +26,12 @@ namespace Assets.Scripts
             Rails = row.Rails;
             Outputs = row.Outputs;
         }
+    }
+
+    public class Output
+    {
+        public List<RailController> OutputRails;
+        public bool HasObject;
     }
 
     public class MapGenerator : MonoBehaviour
@@ -74,8 +56,6 @@ namespace Assets.Scripts
         public int RowsBefore;
         public int RowsAfter;
 
-        public List<Level> Levels = new List<Level>();
-
         private void Awake()
         {
             _railPrefabsDictionary = new Dictionary<RailDirection, RailController>();
@@ -90,7 +70,7 @@ namespace Assets.Scripts
             NewRow = new Row();
             OldRow = new Row();
             OldRow.Rails.Add(InitialRailController);
-            OldRow.Outputs.Add(InitialRailController.OutputId, new List<RailController> { InitialRailController });
+            OldRow.Outputs.Add(InitialRailController.OutputId, new Output{ OutputRails = new List < RailController > { InitialRailController } });
 
             _rowsList = new Dictionary<int, Row>();
             _rowsList.Add(0, OldRow);
@@ -131,10 +111,10 @@ namespace Assets.Scripts
 
             foreach (var output in OldRow.Outputs)
             {
-                if (output.Value.Count == 0) continue;
+                if (output.Value.OutputRails.Count == 0) continue;
 
                 var outputId = output.Key;
-                var outputRail = output.Value.First();
+                var outputRail = output.Value.OutputRails.First();
                 var outputPosition = outputRail.EndPoint.position;
                 
                 List<RailController> prefabs = enabledPrefabs[outputId];
@@ -146,7 +126,7 @@ namespace Assets.Scripts
                 foreach (var newRailController in indexes.Select(index => Instantiate(prefabs[index], Map)))
                 {
                     newRailController.Row = CurrentRow;
-                    output.Value.ForEach(rail =>
+                    output.Value.OutputRails.ForEach(rail =>
                     {
                         rail.NextActiveRail = newRailController;
                         rail.NextRails.Add(newRailController);
@@ -183,11 +163,11 @@ namespace Assets.Scripts
                     
                     if (NewRow.Outputs.ContainsKey(newRailController.OutputId))
                     {
-                        NewRow.Outputs[newRailController.OutputId].Add(newRailController);
+                        NewRow.Outputs[newRailController.OutputId].OutputRails.Add(newRailController);
                     }
                     else
                     {
-                        NewRow.Outputs.Add(newRailController.OutputId, new List<RailController> { newRailController });
+                        NewRow.Outputs.Add(newRailController.OutputId, new Output{OutputRails = new List<RailController> { newRailController } } );
                     }
                 }
             }
@@ -220,14 +200,14 @@ namespace Assets.Scripts
             return indexes;
         }
 
-        private Dictionary<int, List<RailController>> GetRailPrefabs(Dictionary<int, List<RailController>> outputs)
+        private Dictionary<int, List<RailController>> GetRailPrefabs(Dictionary<int, Output> outputs)
         {
             Dictionary<int, List<RailController>> prefabs = new Dictionary<int, List<RailController>>();
 
             foreach (var output in outputs)
             {
                 var outputId = output.Key;
-                var outputRails = output.Value;
+                var outputRails = output.Value.OutputRails;
 
                 List<RailController> newRails = new List<RailController>();
                 
@@ -319,108 +299,59 @@ namespace Assets.Scripts
 
         private void GenerateItems()
         {
-            if(CurrentRow < 5) return; 
-            
-            bool hasStop = false;
-            
-            List<RailController> newRails = new List<RailController>();
-            
-            for (int i = 0; i < 4; i++)
+            if(CurrentRow < 5) return;
+
+            var outputs = NewRow.Outputs.OrderBy(o => o.Key).ToList();
+
+            if (CurrentRow % 2 == 0)
             {
-                var newRail = OldRow.Rails.FirstOrDefault(rail => rail.InputId == i);
-                if (newRail != null) newRails.Add(newRail);
+                outputs.RemoveAt(0);
+                outputs.Reverse();
             }
-            
-            foreach (var rail in newRails.OrderBy(rail => rail.OutputId))
+
+            for (int i = 0; i < outputs.Count; i++)
             {
-                if (hasStop)
-                {
-                    hasStop = false;
-                }
+                var keyValuePair = outputs[i];
+                var previousOutput = i == 0 ? new Output{HasObject = false} : outputs[i - 1].Value;
+                var outputId = keyValuePair.Key;
+                var output = keyValuePair.Value;
+                var outputRails = keyValuePair.Value.OutputRails;
                 
-                var previousRow = _rowsList[rail.Row-1];
-
-                var center = previousRow.Outputs[rail.InputId].Count > 1;
-                var left = rail.InputId != 0 && previousRow.Outputs.ContainsKey(rail.InputId - 1) &&
-                           previousRow.Outputs[rail.InputId - 1].Count > 1 && 
-                           previousRow.Outputs[rail.InputId - 1].All(rowRail => rowRail.RailDirection != RailDirection.Right);
-                var right = rail.InputId != 3 && previousRow.Outputs.ContainsKey(rail.InputId + 1) &&
-                            previousRow.Outputs[rail.InputId + 1].Count > 1 && 
-                            previousRow.Outputs[rail.InputId + 1].All(rowRail => rowRail.RailDirection != RailDirection.Left);
-
-                switch (rail.InputId)
+                var ok = outputRails.TrueForAll(rail => NewRow.Rails.Count(r => r.InputId == rail.InputId) > 1 && !previousOutput.HasObject);
+                
+                if (NewRow.Rails.Count(rail => rail.InputId == outputId) > 1 &&  ok)
                 {
-                    case 0:
-                        {
-                            if (center && right)
-                            {
-                                hasStop = true;
-                            }
-
-                            break;
-                        }
-                    case 1:
-                    case 2:
-                        {
-                            if (center && right && left)
-                            {
-                                int railIndex = newRails.IndexOf(rail);
-                                if (railIndex > 0 && !newRails[railIndex - 1].HasStop)
-                                {
-                                    hasStop = true;
-                                }
-
-                                if (railIndex == 0)
-                                {
-                                    hasStop = true;
-                                }
-                            }
-
-                            break;
-                        }
-                    case 3:
-                        {
-                            if (center && left)
-                            {
-                                int railIndex = newRails.IndexOf(rail);
-                                if (railIndex > 0 && !newRails[railIndex - 1].HasStop)
-                                {
-                                    hasStop = true;
-                                }
-
-                                if (railIndex == 0)
-                                {
-                                    hasStop = true;
-                                }
-                            }
-
-                            break;
-                        }
-                }
-
-                if (hasStop)
-                {
-                    var stop = Instantiate(_stop, rail.transform);
-                    stop.transform.localPosition = Vector3.zero;
-                    rail.HasStop = true;
+                    var check = outputRails.TrueForAll(rail =>
+                        NewRow.Rails.Where(r => r.InputId == rail.InputId).ToList()
+                            .TrueForAll(r => Mathf.Abs(r.OutputId - rail.OutputId) <= 1));
+                    
+                    var stopRail = outputRails.FirstOrDefault();
+                    if (stopRail != null && check)
+                    {
+                        output.HasObject = true;
+                        var stop = Instantiate(_stop, stopRail.transform);
+                        stop.transform.localPosition = stopRail.EndPoint.localPosition;
+                    }
                 }
                 else
                 {
-                    if (!rail.IsActive)
-                    {
-                        if (CurrentRow % 2 == 0 && rail.InputId % 2 != 0)
-                        {
-                            var point = Instantiate(_point, rail.transform);
-                            point.transform.localPosition = Vector3.zero;
-                        }
+                    var rail = outputRails.FirstOrDefault();
+                    if (rail == null) continue;
+                    rail.HasStop = true;
 
-                        if (CurrentRow % 2 != 0 && rail.InputId % 2 == 0)
-                        {
-                            var point = Instantiate(_point, rail.transform);
-                            point.transform.localPosition = Vector3.zero;
-                        }
+                    if (CurrentRow % 2 == 0 && rail.OutputId % 2 == 0)
+                    {
+                        var point = Instantiate(_point, rail.transform);
+                        point.transform.localPosition = rail.EndPoint.localPosition;
+                    }
+
+                    if (CurrentRow % 2 != 0 && rail.OutputId % 2 != 0)
+                    {
+                        var point = Instantiate(_point, rail.transform);
+                        point.transform.localPosition = rail.EndPoint.localPosition;
                     }
                 }
+
             }
         }
     }

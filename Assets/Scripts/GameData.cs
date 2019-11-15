@@ -32,6 +32,12 @@ public static class GameData
         UIManager.Instance.SetScore(score);
     }
 
+    public static void SetInGameCoins()
+    {
+        InGameCoins++;
+        UIManager.Instance.SetCoins(InGameCoins);
+    }
+
     public static void AddCoins()
     {
         var currentCoins = PlayerPrefs.GetInt(GameDataFields.Coins.ToString());

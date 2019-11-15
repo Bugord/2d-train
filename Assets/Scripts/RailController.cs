@@ -30,9 +30,11 @@ public class RailController : MonoBehaviour
 
     public Transform EndPoint;
 
+    public Transform PointPosition;
+
     public bool IsActive;
     public bool HasStop;
-
+    
     private void OnEnable()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -48,6 +50,7 @@ public class RailController : MonoBehaviour
     {
         if (NextRails.Count == 0) return;
         NextRails = NextRails.OrderBy(rail => rail.OutputId).ToList();
+        
         var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
         currentWayIndex++;
         if (currentWayIndex >= NextRails.Count)
@@ -62,6 +65,7 @@ public class RailController : MonoBehaviour
     {
         if (NextRails.Count == 0) return;
         NextRails = NextRails.OrderBy(rail => rail.OutputId).ToList();
+        
         var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
         if (direction == SwipeDirection.Left)
         {
@@ -72,15 +76,15 @@ public class RailController : MonoBehaviour
         {
             currentWayIndex++;
         }
-        
+
         if (currentWayIndex >= NextRails.Count)
-            currentWayIndex = NextRails.Count-1;
+            currentWayIndex = NextRails.Count - 1;
 
         if (currentWayIndex < 0)
             currentWayIndex = 0;
 
         NextActiveRail = NextRails[currentWayIndex];
-
+    
         UpdateRailSprite();
         NextActiveRail.SwitchRail(direction);
     }

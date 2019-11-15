@@ -97,6 +97,11 @@ public class UIManager : MonoBehaviour
 
     public void SetScore(int score)
     {
-        _inGameUiController.Score.text = score.ToString();
+        //_inGameUiController.Score.text = score.ToString();
+    }
+
+    public void SetCoins(int coins)
+    {
+        _inGameUiController.Score.text = coins.ToString();
     }
 }

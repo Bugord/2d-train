@@ -211,31 +211,6 @@ MonoBehaviour:
   TrainController: {fileID: 39203789}
   RowsBefore: 5
   RowsAfter: 4
-  Levels:
-  - PointsCountToBe: 3
-    PointsCount: 0
-    StopsCountToBe: 0
-    StopsCount: 0
-    RowsCountToBe: 3
-    RowsCount: 0
-    PointsPerRow: 1
-    MaxRailsSplitCount: 1
-  - PointsCountToBe: 7
-    PointsCount: 0
-    StopsCountToBe: 5
-    StopsCount: 0
-    RowsCountToBe: 5
-    RowsCount: 0
-    PointsPerRow: 0
-    MaxRailsSplitCount: 0
-  - PointsCountToBe: 0
-    PointsCount: 0
-    StopsCountToBe: 0
-    StopsCount: 0
-    RowsCountToBe: 0
-    RowsCount: 0
-    PointsPerRow: 0
-    MaxRailsSplitCount: 0
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0
@@ -387,12 +362,12 @@ PrefabInstance:
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: SpeedStep
-      value: 0.001
+      value: 0.005
       objectReference: {fileID: 0}
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: SpeedReduceStep
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalPosition.x
@@ -896,7 +871,7 @@ PrefabInstance:
     - target: {fileID: 1979214483348431964, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}
       propertyPath: m_Text
-      value: 711
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1979214483348431964, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}

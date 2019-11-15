@@ -50,7 +50,7 @@ public class TrainController : MonoBehaviour
         if (col.tag == "Point")
         {
 
-            GameData.InGameCoins++;
+            GameData.SetInGameCoins();
             Points++;
             if (Points > 2 * Trains.Count)
             {
