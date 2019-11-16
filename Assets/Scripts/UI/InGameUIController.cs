@@ -7,4 +7,5 @@ public class InGameUIController : PanelBase
 {
     public Button PauseButton;
     public Text Score;
+    public Text Distance;
 }

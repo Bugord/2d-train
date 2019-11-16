@@ -49,7 +49,6 @@ public class TrainController : MonoBehaviour
 
         if (col.tag == "Point")
         {
-
             GameData.SetInGameCoins();
             Points++;
             if (Points > 2 * Trains.Count)
@@ -81,12 +80,22 @@ public class TrainController : MonoBehaviour
             }
 
             var trainToRemove = Trains.Last();
-            Trains.Remove(trainToRemove);
-            trainToRemove.Speed = Speed*0.3f;
-            Destroy(trainToRemove.gameObject, 1.5f);
+
+            if (!trainToRemove.IsHeadTrain)
+            {
+                Trains.Remove(trainToRemove);
+                trainToRemove.Speed = Speed * 0.3f;
+                Destroy(trainToRemove.gameObject, 1.5f);
+            }
+            else
+            {
+                UIManager.IsInGame = false;
+                UIManager.Instance.ShowEndGameMenu(true);
+            }
+            
             if (Trains.Count == 0)
             {
-                UIManager.Instance.ExitToMainMenu();
+                UIManager.Instance.ShowEndGameMenu(true);
             }
         }
     }
@@ -115,6 +124,15 @@ public class TrainController : MonoBehaviour
         InputManager.Swipe += InputManagerOnSwipe;
         if (!IsHeadTrain) return;
         Trains.Add(this);
+        AdsManager.TrainRevive += ReviveTrain;
+    }
+
+    private void ReviveTrain()
+    {
+        Speed = DefaultSpeed;
+        UIManager.Instance.HideEndGameMenu();
+        UIManager.Instance.SetPause();
+        GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(Destroy);
     }
 
     private void InputManagerOnSwipe(SwipeDirection direction)

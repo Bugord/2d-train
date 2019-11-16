@@ -10,7 +10,7 @@ enum GameDataFields
 
 public static class GameData
 {
-    private static int LastScore;
+    public static int LastScore;
     private static int BestScore;
     public static int InGameCoins;
     

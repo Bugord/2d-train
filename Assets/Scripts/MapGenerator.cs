@@ -96,7 +96,7 @@ namespace Assets.Scripts
                 }
             }
 
-            if (CurrentRow == RowsAfter - 1)
+            if (CurrentRow == RowsAfter)
             {
                 InitialRailController.SwitchRail();
             }

@@ -12,6 +12,13 @@ public class PausePanelController : PanelBase
     void Start()
     {
         _continueButton.onClick.AddListener(GoBack);
+        ExitToMenuButton.onClick.AddListener(ExitToMainMenu);
+    }
+
+    private void ExitToMainMenu()
+    {
+        SetActivePanel(false);
+        UIManager.Instance.ShowEndGameMenu();
     }
 
     public override void GoBack()

@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private PausePanelController _pausePanelController;
     [SerializeField] private InGameUIController _inGameUiController;
     [SerializeField] private Button _removeAdsButton;
+    [SerializeField] private EndGameMenuController _endGameMenuController;
 
     public static bool IsInGame;
 
@@ -27,7 +28,6 @@ public class UIManager : MonoBehaviour
         _mainMenuController.SettingButton.onClick.AddListener(OpenSettings);
         _mainMenuController.ShopButton.onClick.AddListener(OpenShop);
         _inGameUiController.PauseButton.onClick.AddListener(SetPause);
-        _pausePanelController.ExitToMenuButton.onClick.AddListener(ExitToMainMenu);
         UpdateUI();
         
     }
@@ -36,6 +36,18 @@ public class UIManager : MonoBehaviour
     {
         _mainMenuController.BestScore.text = PlayerPrefs.GetInt(GameDataFields.BestScore.ToString()).ToString();
         _mainMenuController.Coins.text = PlayerPrefs.GetInt(GameDataFields.Coins.ToString()).ToString();
+    }
+
+    public void ShowEndGameMenu(bool canRevive = false)
+    {
+        _endGameMenuController.ReviveButton.SetActive(canRevive);
+        _endGameMenuController.SetEndGameData();
+        _endGameMenuController.SetActivePanel(true);
+    }
+
+    public void HideEndGameMenu()
+    {
+        _endGameMenuController.SetActivePanel(false);
     }
 
     private void RemoveAds()
@@ -97,7 +109,7 @@ public class UIManager : MonoBehaviour
 
     public void SetScore(int score)
     {
-        //_inGameUiController.Score.text = score.ToString();
+        //_inGameUiController.Distance.text = score.ToString();
     }
 
     public void SetCoins(int coins)
