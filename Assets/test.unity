@@ -211,6 +211,7 @@ MonoBehaviour:
   TrainController: {fileID: 39203789}
   RowsBefore: 5
   RowsAfter: 4
+  _stopCount: 1
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0
@@ -369,17 +370,17 @@ PrefabInstance:
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: MaxSpeed
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: SpeedStep
-      value: 0.005
+      value: 0.003
       objectReference: {fileID: 0}
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: SpeedReduceStep
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalPosition.x

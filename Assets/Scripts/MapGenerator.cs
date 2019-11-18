@@ -56,6 +56,8 @@ namespace Assets.Scripts
         public int RowsBefore;
         public int RowsAfter;
 
+        [SerializeField] int _stopCount = 1;
+
         private void Awake()
         {
             _railPrefabsDictionary = new Dictionary<RailDirection, RailController>();
@@ -82,9 +84,13 @@ namespace Assets.Scripts
             {
                 RowsBefore = (int)(TrainController.Trains.Count * 0.25f) + 3;
             }
-            
+
             if (CurrentRow <= TrainController.TargetRail.Row + RowsAfter)
             {
+                if (CurrentRow % 50 == 0)
+                {
+                    _stopCount++;
+                }
                 GenerateRails();
 
                 if (TrainController.TargetRail.Row - RowsBefore >= 0)
@@ -98,7 +104,7 @@ namespace Assets.Scripts
 
             if (CurrentRow == RowsAfter)
             {
-                InitialRailController.SwitchRail();
+                InitialRailController.SwitchRail(false);
             }
         }
 
@@ -329,8 +335,11 @@ namespace Assets.Scripts
                     if (stopRail != null && check)
                     {
                         output.HasObject = true;
-                        var stop = Instantiate(_stop, stopRail.transform);
-                        stop.transform.localPosition = stopRail.EndPoint.localPosition;
+                        for (int j = 0; j < _stopCount; j++)
+                        {
+                            var stop = Instantiate(_stop, stopRail.transform);
+                            stop.transform.localPosition = stopRail.EndPoint.localPosition;
+                        }
                     }
                 }
                 else

@@ -46,47 +46,102 @@ public class RailController : MonoBehaviour
         NextRails = new List<RailController>();
     }
 
-    public void SwitchRail()
+    public void SwitchRail(bool isFirst = true)
     {
         if (NextRails.Count == 0) return;
         NextRails = NextRails.OrderBy(rail => rail.OutputId).ToList();
-        
-        var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
-        currentWayIndex++;
-        if (currentWayIndex >= NextRails.Count)
-            currentWayIndex = 0;
-        NextActiveRail = NextRails[currentWayIndex];
+
+        bool normalVariant = true;
+
+        if (isFirst)
+        {
+            var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
+            currentWayIndex++;
+            if (currentWayIndex >= NextRails.Count)
+                currentWayIndex = 0;
+            NextActiveRail = NextRails[currentWayIndex];
+        }
+        else
+        {
+            if (NextRails.TrueForAll(rail => !rail.transform.Find("Stop_Line(Clone)")))
+            {
+                var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
+                currentWayIndex++;
+                if (currentWayIndex >= NextRails.Count)
+                    currentWayIndex = 0;
+                NextActiveRail = NextRails[currentWayIndex];
+            }
+            else
+            {
+                NextActiveRail = NextRails.First(rail => rail.transform.Find("Stop_Line(Clone)"));
+                normalVariant = false;
+            }
+        }
 
         UpdateRailSprite();
-        NextActiveRail.SwitchRail();
+        NextActiveRail.SwitchRail(normalVariant);
     }
 
-    public void SwitchRail(SwipeDirection direction)
+    public void SwitchRail(SwipeDirection direction, bool isFirst = true)
     {
         if (NextRails.Count == 0) return;
         NextRails = NextRails.OrderBy(rail => rail.OutputId).ToList();
         
-        var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
-        if (direction == SwipeDirection.Left)
+        bool normalVariant = true;
+
+        if (isFirst)
         {
-            currentWayIndex--;
+            var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
+            if (direction == SwipeDirection.Left)
+            {
+                currentWayIndex--;
+            }
+
+            if (direction == SwipeDirection.Right)
+            {
+                currentWayIndex++;
+            }
+
+            if (currentWayIndex >= NextRails.Count)
+                currentWayIndex = NextRails.Count - 1;
+
+            if (currentWayIndex < 0)
+                currentWayIndex = 0;
+
+            NextActiveRail = NextRails[currentWayIndex];
+        }
+        else
+        {
+            if (NextRails.TrueForAll(rail => !rail.transform.Find("Stop_Line(Clone)")))
+            {
+                var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
+                if (direction == SwipeDirection.Left)
+                {
+                    currentWayIndex--;
+                }
+
+                if (direction == SwipeDirection.Right)
+                {
+                    currentWayIndex++;
+                }
+
+                if (currentWayIndex >= NextRails.Count)
+                    currentWayIndex = NextRails.Count - 1;
+
+                if (currentWayIndex < 0)
+                    currentWayIndex = 0;
+
+                NextActiveRail = NextRails[currentWayIndex];
+            }
+            else
+            {
+                NextActiveRail = NextRails.First(rail => rail.transform.Find("Stop_Line(Clone)"));
+                normalVariant = false;
+            }
         }
 
-        if (direction == SwipeDirection.Right)
-        {
-            currentWayIndex++;
-        }
-
-        if (currentWayIndex >= NextRails.Count)
-            currentWayIndex = NextRails.Count - 1;
-
-        if (currentWayIndex < 0)
-            currentWayIndex = 0;
-
-        NextActiveRail = NextRails[currentWayIndex];
-    
         UpdateRailSprite();
-        NextActiveRail.SwitchRail(direction);
+        NextActiveRail.SwitchRail(direction, normalVariant);
     }
 
     public void UpdateRailSprite()
