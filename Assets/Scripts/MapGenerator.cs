@@ -138,7 +138,7 @@ namespace Assets.Scripts
                         rail.NextRails.Add(newRailController);
                     });
                     newRailController.InputId = outputId;
-                    newRailController.transform.position = outputPosition;
+                    newRailController.transform.position = outputPosition-Vector3.up*0.01f;
 
                     if (indexes.Count > 1)
                     {
@@ -335,10 +335,12 @@ namespace Assets.Scripts
                     if (stopRail != null && check)
                     {
                         output.HasObject = true;
+                        float stopOffset = 0;
                         for (int j = 0; j < _stopCount; j++)
                         {
                             var stop = Instantiate(_stop, stopRail.transform);
-                            stop.transform.localPosition = stopRail.EndPoint.localPosition;
+                            stop.transform.localPosition = stopRail.EndPoint.localPosition + Vector3.down*stopOffset;
+                            stopOffset += 0.25f;
                         }
                     }
                 }

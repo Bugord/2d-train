@@ -7,6 +7,7 @@ using Assets.Scripts;
 using Assets.Scripts.Extentions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Debug = System.Diagnostics.Debug;
 
 public class TrainController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class TrainController : MonoBehaviour
     public float DefaultSpeed;
     public float MaxSpeed;
     public float SpeedStep;
-    public float SpeedReduceStep;
+    
     public float RotationSpeed;
     public Vector3 TargetPoint;
     public int TargetPointIndex;
@@ -22,7 +23,7 @@ public class TrainController : MonoBehaviour
     
     public bool Turning;
 
-    public Sprite[] TrainPointSprites;
+    public GameObject[] TrainPointSprites;
 
     public int Points = 1;
     public bool IsHeadTrain;
@@ -40,7 +41,10 @@ public class TrainController : MonoBehaviour
     public float distanceBetweenTrains;
 
     public RailController LastRail;
-    
+
+    public float step = 0;
+    public bool isDead = false;
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!IsHeadTrain)
@@ -60,11 +64,30 @@ public class TrainController : MonoBehaviour
             for (var i = 0; i < Trains.Count; i++)
             {
                 if (Points - 2 * i < 0)
-                    Trains[i]._spriteRenderer.sprite = TrainPointSprites[0];
+                {
+                    Trains[i].TrainPointSprites[0].SetActive(false);
+                    Trains[i].TrainPointSprites[1].SetActive(false);
+                }
                 else if (Points - 2 * i >= 2)
-                    Trains[i]._spriteRenderer.sprite = TrainPointSprites[2];
+                {
+                    Trains[i].TrainPointSprites[0].SetActive(true);
+                    Trains[i].TrainPointSprites[1].SetActive(true);
+                }
                 else
-                    Trains[i]._spriteRenderer.sprite = TrainPointSprites[Points - 2 * i];
+                {
+                    switch (Points - 2 * i)
+                    {
+                        case 0:
+                            Trains[i].TrainPointSprites[0].SetActive(false);
+                            Trains[i].TrainPointSprites[1].SetActive(false);
+                            break;
+                        case 1:
+                            Trains[i].TrainPointSprites[0].SetActive(true);
+                            Trains[i].TrainPointSprites[1].SetActive(false);
+                            break;
+                    }
+                    
+                }
             }
         }
         else if (col.tag == "Stop")
@@ -76,7 +99,11 @@ public class TrainController : MonoBehaviour
 
             if (Speed > DefaultSpeed)
             {
-                Trains.ForEach(train => train.Speed -= SpeedReduceStep);
+                Trains.ForEach(train =>
+                {
+                    train.Speed = DefaultSpeed;
+                    train.step = 0;
+                });
             }
 
             var trainToRemove = Trains.Last();
@@ -84,7 +111,8 @@ public class TrainController : MonoBehaviour
             if (!trainToRemove.IsHeadTrain)
             {
                 Trains.Remove(trainToRemove);
-                trainToRemove.Speed = Speed * 0.3f;
+                trainToRemove.Speed = Speed * 0.1f;
+                trainToRemove.isDead = true;
                 Destroy(trainToRemove.gameObject, 1.5f);
             }
             else
@@ -165,7 +193,7 @@ public class TrainController : MonoBehaviour
         }
 #endif
     }
-
+   
     private void FixedUpdate()
     {
         if(!UIManager.IsInGame)
@@ -194,12 +222,13 @@ public class TrainController : MonoBehaviour
         var q = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = Quaternion.Slerp(transform.rotation, q, RotationSpeed);
     }
-
+    
     private void SetVelocity(Vector2 vectorToTarget)
     {
-        if (Speed < MaxSpeed)
+        if (Speed < MaxSpeed && !isDead)
         {
-            Speed += SpeedStep;
+           Speed = Speed + (MaxSpeed - DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, step));
+           step += SpeedStep;
         }
 
         var newSpeed = Speed;

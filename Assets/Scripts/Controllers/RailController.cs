@@ -154,12 +154,14 @@ public class RailController : MonoBehaviour
             if (rail == NextActiveRail)
             {
                 rail._spriteRenderer.sprite = rail._fatSprite;
+                rail._spriteRenderer.sortingOrder = 1;
                 rail._spriteMask.enabled = true;
                 rail.IsActive = true;
             }
             else
             {
                 rail._spriteRenderer.sprite = rail._thinSprite;
+                rail._spriteRenderer.sortingOrder = 0;
                 rail._spriteMask.enabled = false;
                 rail.IsActive = false;
             }
