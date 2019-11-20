@@ -13,14 +13,13 @@ public class TrainController : MonoBehaviour
 {
     public float Speed;
     public float DefaultSpeed;
-    public float MaxSpeed;
     public float SpeedStep;
-    
+
     public float RotationSpeed;
     public Vector3 TargetPoint;
     public int TargetPointIndex;
     public RailController TargetRail;
-    
+
     public bool Turning;
 
     public GameObject[] TrainPointSprites;
@@ -61,34 +60,7 @@ public class TrainController : MonoBehaviour
                 Points = 1;
             }
 
-            for (var i = 0; i < Trains.Count; i++)
-            {
-                if (Points - 2 * i < 0)
-                {
-                    Trains[i].TrainPointSprites[0].SetActive(false);
-                    Trains[i].TrainPointSprites[1].SetActive(false);
-                }
-                else if (Points - 2 * i >= 2)
-                {
-                    Trains[i].TrainPointSprites[0].SetActive(true);
-                    Trains[i].TrainPointSprites[1].SetActive(true);
-                }
-                else
-                {
-                    switch (Points - 2 * i)
-                    {
-                        case 0:
-                            Trains[i].TrainPointSprites[0].SetActive(false);
-                            Trains[i].TrainPointSprites[1].SetActive(false);
-                            break;
-                        case 1:
-                            Trains[i].TrainPointSprites[0].SetActive(true);
-                            Trains[i].TrainPointSprites[1].SetActive(false);
-                            break;
-                    }
-                    
-                }
-            }
+            UpdateTrainPoints();
         }
         else if (col.tag == "Stop")
         {
@@ -120,7 +92,7 @@ public class TrainController : MonoBehaviour
                 UIManager.IsInGame = false;
                 UIManager.Instance.ShowEndGameMenu(true);
             }
-            
+
             if (Trains.Count == 0)
             {
                 UIManager.Instance.ShowEndGameMenu(true);
@@ -128,17 +100,49 @@ public class TrainController : MonoBehaviour
         }
     }
 
-    void GenerateNewTrain()
+    private void UpdateTrainPoints()
+    {
+        for (var i = 0; i < Trains.Count; i++)
+        {
+            if (Points - 2 * i < 0)
+            {
+                Trains[i].TrainPointSprites[0].SetActive(false);
+                Trains[i].TrainPointSprites[1].SetActive(false);
+            }
+            else if (Points - 2 * i >= 2)
+            {
+                Trains[i].TrainPointSprites[0].SetActive(true);
+                Trains[i].TrainPointSprites[1].SetActive(true);
+            }
+            else
+            {
+                switch (Points - 2 * i)
+                {
+                    case 0:
+                        Trains[i].TrainPointSprites[0].SetActive(false);
+                        Trains[i].TrainPointSprites[1].SetActive(false);
+                        break;
+
+                    case 1:
+                        Trains[i].TrainPointSprites[0].SetActive(true);
+                        Trains[i].TrainPointSprites[1].SetActive(false);
+                        break;
+                }
+            }
+        }
+    }
+
+    private void GenerateNewTrain()
     {
         if (!IsHeadTrain)
             return;
 
         var lastTrain = Trains.Last();
-        var newTrainPos = lastTrain.transform.position - Vector3.up*3;
+        var newTrainPos = lastTrain.transform.position - Vector3.up * 3;
         var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
         Destroy(newTrain.GetComponent<CapsuleCollider2D>());
         var newTrainController = newTrain.GetComponent<TrainController>();
-        newTrainController.TargetRail = lastTrain.LastRail;   
+        newTrainController.TargetRail = lastTrain.LastRail;
         newTrainController.ChangeTargetPoint(true);
         newTrainController.IsHeadTrain = false;
         newTrainController.nextTrain = lastTrain;
@@ -158,6 +162,8 @@ public class TrainController : MonoBehaviour
     private void ReviveTrain()
     {
         Speed = DefaultSpeed;
+        Points = 0;
+        UpdateTrainPoints();
         UIManager.Instance.HideEndGameMenu();
         UIManager.Instance.SetPause();
         GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(Destroy);
@@ -182,21 +188,21 @@ public class TrainController : MonoBehaviour
     private void Update()
     {
         if (!IsHeadTrain) return;
-        
+
         GameData.SetLastScore(TargetRail.Row);
 #if UNITY_EDITOR
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
-        
+
         if ((Input.GetKeyDown(KeyCode.Mouse0) || touch) && IsHeadTrain)
         {
             TargetRail.SwitchRail();
         }
 #endif
     }
-   
+
     private void FixedUpdate()
     {
-        if(!UIManager.IsInGame)
+        if (!UIManager.IsInGame)
         {
             StopTheTrain();
             return;
@@ -222,13 +228,13 @@ public class TrainController : MonoBehaviour
         var q = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = Quaternion.Slerp(transform.rotation, q, RotationSpeed);
     }
-    
+
     private void SetVelocity(Vector2 vectorToTarget)
     {
-        if (Speed < MaxSpeed && !isDead)
+        if (Speed < LevelManager.Instance.MaxSpeed && !isDead)
         {
-           Speed = Speed + (MaxSpeed - DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, step));
-           step += SpeedStep;
+            Speed = Speed + (LevelManager.Instance.MaxSpeed - DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, step));
+            step += SpeedStep;
         }
 
         var newSpeed = Speed;

@@ -211,7 +211,6 @@ MonoBehaviour:
   TrainController: {fileID: 39203789}
   RowsBefore: 5
   RowsAfter: 4
-  _stopCount: 1
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0
@@ -341,7 +340,7 @@ PrefabInstance:
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: Speed
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
@@ -371,7 +370,7 @@ PrefabInstance:
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: DefaultSpeed
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
@@ -422,11 +421,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212868603171124608, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
@@ -487,7 +486,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.33490568, g: 0.6, b: 1, a: 0}
+  m_BackGroundColor: {r: 0.33490568, g: 0.6, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -561,6 +560,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rail_Strait_Big_Fat (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: NextRail
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: Row
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1664730702905287636, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -616,16 +625,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
-        type: 3}
-      propertyPath: NextRail
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
-        type: 3}
-      propertyPath: Row
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
       propertyPath: m_Color.a
@@ -676,6 +675,7 @@ GameObject:
   - component: {fileID: 1189255204}
   - component: {fileID: 1189255206}
   - component: {fileID: 1189255207}
+  - component: {fileID: 1189255208}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -736,6 +736,20 @@ MonoBehaviour:
   _testADS: {fileID: 593822420}
   _reviveButton: {fileID: 1286963329}
   _testMode: 1
+--- !u!114 &1189255208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189255203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9903a1ed2929f6c469cc26e03ab12891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Level: 0
+  StopsCount: 0
 --- !u!1001 &1199847778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -753,11 +767,6 @@ PrefabInstance:
       propertyPath: _lastScore
       value: 
       objectReference: {fileID: 1274378035}
-    - target: {fileID: 5641847226421619068, guid: 9bd7266369d945f4f871f8e05f1257bf,
-        type: 3}
-      propertyPath: _mainMenuController
-      value: 
-      objectReference: {fileID: 52160265}
     - target: {fileID: 5641847226421619065, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -878,6 +887,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.008333334
       objectReference: {fileID: 0}
+    - target: {fileID: 5641847226421619068, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: _mainMenuController
+      value: 
+      objectReference: {fileID: 52160265}
     - target: {fileID: 5641847226421619064, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}
       propertyPath: m_Camera

@@ -42,7 +42,7 @@ namespace Assets.Scripts
         private Dictionary<RailDirection, RailController> _railPrefabsDictionary;
 
         public Transform Map;
-       
+
         [SerializeField] private GameObject _point;
         [SerializeField] private GameObject _stop;
 
@@ -56,7 +56,7 @@ namespace Assets.Scripts
         public int RowsBefore;
         public int RowsAfter;
 
-        [SerializeField] int _stopCount = 1;
+        public static event Action LevelUp;
 
         private void Awake()
         {
@@ -72,7 +72,7 @@ namespace Assets.Scripts
             NewRow = new Row();
             OldRow = new Row();
             OldRow.Rails.Add(InitialRailController);
-            OldRow.Outputs.Add(InitialRailController.OutputId, new Output{ OutputRails = new List < RailController > { InitialRailController } });
+            OldRow.Outputs.Add(InitialRailController.OutputId, new Output { OutputRails = new List<RailController> { InitialRailController } });
 
             _rowsList = new Dictionary<int, Row>();
             _rowsList.Add(0, OldRow);
@@ -87,9 +87,9 @@ namespace Assets.Scripts
 
             if (CurrentRow <= TrainController.TargetRail.Row + RowsAfter)
             {
-                if (CurrentRow % 50 == 0)
+                if (CurrentRow % 10 == 0)
                 {
-                    _stopCount++;
+                    LevelUp?.Invoke();
                 }
                 GenerateRails();
 
@@ -122,10 +122,10 @@ namespace Assets.Scripts
                 var outputId = output.Key;
                 var outputRail = output.Value.OutputRails.First();
                 var outputPosition = outputRail.EndPoint.position;
-                
+
                 List<RailController> prefabs = enabledPrefabs[outputId];
 
-                int newRailsCount = Random.Range(1, maxRailCountFromOutput+1);
+                int newRailsCount = Random.Range(1, maxRailCountFromOutput + 1);
 
                 List<int> indexes = GetPrefabsIndexes(newRailsCount, prefabs.Count);
 
@@ -138,7 +138,7 @@ namespace Assets.Scripts
                         rail.NextRails.Add(newRailController);
                     });
                     newRailController.InputId = outputId;
-                    newRailController.transform.position = outputPosition-Vector3.up*0.01f;
+                    newRailController.transform.position = outputPosition - Vector3.up * 0.01f;
 
                     if (indexes.Count > 1)
                     {
@@ -164,16 +164,16 @@ namespace Assets.Scripts
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                    
+
                     NewRow.Rails.Add(newRailController);
-                    
+
                     if (NewRow.Outputs.ContainsKey(newRailController.OutputId))
                     {
                         NewRow.Outputs[newRailController.OutputId].OutputRails.Add(newRailController);
                     }
                     else
                     {
-                        NewRow.Outputs.Add(newRailController.OutputId, new Output{OutputRails = new List<RailController> { newRailController } } );
+                        NewRow.Outputs.Add(newRailController.OutputId, new Output { OutputRails = new List<RailController> { newRailController } });
                     }
                 }
             }
@@ -183,7 +183,7 @@ namespace Assets.Scripts
 
             CurrentRow++;
         }
-        
+
         private List<int> GetPrefabsIndexes(int newRailsCount, int prefabsCount)
         {
             List<int> indexes = new List<int>();
@@ -216,7 +216,7 @@ namespace Assets.Scripts
                 var outputRails = output.Value.OutputRails;
 
                 List<RailController> newRails = new List<RailController>();
-                
+
                 switch (outputId)
                 {
                     case 0:
@@ -239,6 +239,7 @@ namespace Assets.Scripts
                             }
                         }
                         break;
+
                     case 1:
                     case 2:
                         if (outputRails.Count == 1)
@@ -274,6 +275,7 @@ namespace Assets.Scripts
                             }
                         }
                         break;
+
                     case 3:
                         if (outputRails.Count == 1)
                         {
@@ -305,7 +307,7 @@ namespace Assets.Scripts
 
         private void GenerateItems()
         {
-            if(CurrentRow < 5) return;
+            if (CurrentRow < 5) return;
 
             var outputs = NewRow.Outputs.OrderBy(o => o.Key).ToList();
 
@@ -318,28 +320,28 @@ namespace Assets.Scripts
             for (int i = 0; i < outputs.Count; i++)
             {
                 var keyValuePair = outputs[i];
-                var previousOutput = i == 0 ? new Output{HasObject = false} : outputs[i - 1].Value;
+                var previousOutput = i == 0 ? new Output { HasObject = false } : outputs[i - 1].Value;
                 var outputId = keyValuePair.Key;
                 var output = keyValuePair.Value;
                 var outputRails = keyValuePair.Value.OutputRails;
-                
+
                 var ok = outputRails.TrueForAll(rail => NewRow.Rails.Count(r => r.InputId == rail.InputId) > 1 && !previousOutput.HasObject);
-                
-                if (NewRow.Rails.Count(rail => rail.InputId == outputId) > 1 &&  ok)
+
+                if (NewRow.Rails.Count(rail => rail.InputId == outputId) > 1 && ok)
                 {
                     var check = outputRails.TrueForAll(rail =>
                         NewRow.Rails.Where(r => r.InputId == rail.InputId).ToList()
                             .TrueForAll(r => Mathf.Abs(r.OutputId - rail.OutputId) <= 1));
-                    
+
                     var stopRail = outputRails.FirstOrDefault();
                     if (stopRail != null && check)
                     {
                         output.HasObject = true;
                         float stopOffset = 0;
-                        for (int j = 0; j < _stopCount; j++)
+                        for (int j = 0; j < LevelManager.Instance.StopsCount; j++)
                         {
                             var stop = Instantiate(_stop, stopRail.transform);
-                            stop.transform.localPosition = stopRail.EndPoint.localPosition + Vector3.down*stopOffset;
+                            stop.transform.localPosition = stopRail.EndPoint.localPosition + Vector3.down * stopOffset;
                             stopOffset += 0.25f;
                         }
                     }
@@ -362,7 +364,6 @@ namespace Assets.Scripts
                         point.transform.localPosition = rail.EndPoint.localPosition;
                     }
                 }
-
             }
         }
     }

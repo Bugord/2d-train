@@ -24,7 +24,7 @@ public class RailController : MonoBehaviour
     [SerializeField] private Sprite _fatSprite;
     [SerializeField] private Sprite _thinSprite;
     public Sprite _splitMask;
-    
+
     public List<RailController> NextRails;
     public RailController NextActiveRail;
 
@@ -34,7 +34,7 @@ public class RailController : MonoBehaviour
 
     public bool IsActive;
     public bool HasStop;
-    
+
     private void OnEnable()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -86,7 +86,7 @@ public class RailController : MonoBehaviour
     {
         if (NextRails.Count == 0) return;
         NextRails = NextRails.OrderBy(rail => rail.OutputId).ToList();
-        
+
         bool normalVariant = true;
 
         if (isFirst)
@@ -154,13 +154,17 @@ public class RailController : MonoBehaviour
             if (rail == NextActiveRail)
             {
                 rail._spriteRenderer.sprite = rail._fatSprite;
-                rail._spriteRenderer.sortingOrder = 1;
+                rail._spriteRenderer.color = Color.white;
+                rail._spriteRenderer.sortingOrder = 2;
                 rail._spriteMask.enabled = true;
                 rail.IsActive = true;
             }
             else
             {
                 rail._spriteRenderer.sprite = rail._thinSprite;
+                float h, s, v;
+                Color.RGBToHSV(Camera.main.backgroundColor, out h, out s, out v);
+                rail._spriteRenderer.color = Color.HSVToRGB(h, s + 0.2f, v - 0.2f);
                 rail._spriteRenderer.sortingOrder = 0;
                 rail._spriteMask.enabled = false;
                 rail.IsActive = false;
