@@ -164,7 +164,7 @@ public class RailController : MonoBehaviour
                 rail._spriteRenderer.sprite = rail._thinSprite;
                 float h, s, v;
                 Color.RGBToHSV(Camera.main.backgroundColor, out h, out s, out v);
-                rail._spriteRenderer.color = Color.HSVToRGB(h, s + 0.2f, v - 0.2f);
+                rail._spriteRenderer.color = Color.HSVToRGB(h, s +0.1f, v - 0.45f);
                 rail._spriteRenderer.sortingOrder = 0;
                 rail._spriteMask.enabled = false;
                 rail.IsActive = false;

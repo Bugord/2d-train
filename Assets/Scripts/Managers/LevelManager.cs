@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
             StopsCount = 1;
         }
 
-        if (Level % 5 == 0)
+        if (Level % 5 == 0 && StopsCount < 5)
         {
             StopsCount++;
         }

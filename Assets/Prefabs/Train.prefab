@@ -120,7 +120,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 2
   DefaultSpeed: 0
-  MaxSpeed: 0
   SpeedStep: 0
   RotationSpeed: 10
   TargetPoint: {x: 0, y: 0, z: 0}
@@ -167,7 +166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2261541881967198722}
   - component: {fileID: 2394267918876805827}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Light_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +224,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 214380971
   m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 3d162931019517246a720ad3b1d959da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -247,7 +246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 925037600772301644}
   - component: {fileID: 6171713710251437211}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Light_0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +304,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 214380971
   m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 3d162931019517246a720ad3b1d959da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

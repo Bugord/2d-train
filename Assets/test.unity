@@ -438,6 +438,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: dc96cc8b2e5de8c43a0770d949162956,
         type: 3}
+    - target: {fileID: 6187848124708379374, guid: 55797d3e8087b6248a403cc2bbdecf00,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342386746283277645, guid: 55797d3e8087b6248a403cc2bbdecf00,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
 --- !u!1 &885805233
@@ -750,6 +760,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Level: 0
   StopsCount: 0
+  MaxSpeed: 0
 --- !u!1001 &1199847778
 PrefabInstance:
   m_ObjectHideFlags: 0

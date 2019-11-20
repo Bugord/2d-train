@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,6 +37,7 @@ public class UIManager : MonoBehaviour
     {
         _mainMenuController.BestScore.text = PlayerPrefs.GetInt(GameDataFields.BestScore.ToString()).ToString();
         _mainMenuController.Coins.text = PlayerPrefs.GetInt(GameDataFields.Coins.ToString()).ToString();
+        GameObject.FindGameObjectsWithTag("Mask").ToList().ForEach(mask => mask.GetComponent<Image>().color = Camera.main.backgroundColor);
     }
 
     public void ShowEndGameMenu(bool canRevive = false)

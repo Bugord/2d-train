@@ -338,7 +338,7 @@ namespace Assets.Scripts
                     {
                         output.HasObject = true;
                         float stopOffset = 0;
-                        for (int j = 0; j < LevelManager.Instance.StopsCount; j++)
+                        for (int j = 0; j < Random.Range(1, LevelManager.Instance.StopsCount); j++)
                         {
                             var stop = Instantiate(_stop, stopRail.transform);
                             stop.transform.localPosition = stopRail.EndPoint.localPosition + Vector3.down * stopOffset;
