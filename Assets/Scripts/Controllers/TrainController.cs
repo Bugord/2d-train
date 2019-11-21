@@ -42,7 +42,7 @@ public class TrainController : MonoBehaviour
     public RailController LastRail;
 
     public float step = 0;
-    public bool isDead = false;
+    public bool IsDead;
 
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -53,14 +53,18 @@ public class TrainController : MonoBehaviour
         if (col.tag == "Point")
         {
             GameData.SetInGameCoins();
-            Points++;
-            if (Points > 2 * Trains.Count)
-            {
-                GenerateNewTrain();
-                Points = 1;
-            }
 
-            UpdateTrainPoints();
+            if (Trains.Count <= 5)
+            {
+                Points++;
+                if (Points > 2 * Trains.Count && Trains.Count < 5)
+                {
+                    GenerateNewTrain();
+                    Points = 1;
+                }
+
+                UpdateTrainPoints();
+            }
         }
         else if (col.tag == "Stop")
         {
@@ -84,7 +88,7 @@ public class TrainController : MonoBehaviour
             {
                 Trains.Remove(trainToRemove);
                 trainToRemove.Speed = Speed * 0.1f;
-                trainToRemove.isDead = true;
+                trainToRemove.IsDead = true;
                 Destroy(trainToRemove.gameObject, 1.5f);
             }
             else
@@ -231,7 +235,7 @@ public class TrainController : MonoBehaviour
 
     private void SetVelocity(Vector2 vectorToTarget)
     {
-        if (Speed < LevelManager.Instance.MaxSpeed && !isDead)
+        if (Speed < LevelManager.Instance.MaxSpeed && !IsDead)
         {
             Speed = Speed + (LevelManager.Instance.MaxSpeed - DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, step));
             step += SpeedStep;

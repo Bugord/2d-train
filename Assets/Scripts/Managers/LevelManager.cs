@@ -40,7 +40,7 @@ public class LevelManager : MonoBehaviour
 
     private void UpdateMaxSpeed()
     {
-        MaxSpeed = Mathf.Atan(Level * 0.1f + 0.8f) * 4.5f + 3;
+        MaxSpeed = Mathf.Atan(Level / 12f + 0.63f) * 5.3f + 3;
     }
 
     // Start is called before the first frame update

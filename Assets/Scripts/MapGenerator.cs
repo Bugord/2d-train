@@ -111,7 +111,7 @@ namespace Assets.Scripts
         public void GenerateRails()
         {
             NewRow = new Row();
-            int maxRailCountFromOutput = 3;
+            int maxRailCountFromOutput = CurrentRow <= 3 ? 1 : 3;
 
             var enabledPrefabs = GetRailPrefabs(OldRow.Outputs);
 
@@ -177,7 +177,19 @@ namespace Assets.Scripts
                     }
                 }
             }
-            GenerateItems();
+
+            CircleRailConfig circleConfig;
+            if (CircleRailsConfig.ToList().Any(kv => !kv.Value))
+            {
+                circleConfig = GetRandomCircleConfig();
+            }
+            else
+            {
+                UpdateCircleRailsConfigDictionary();
+                circleConfig = GetRandomCircleConfig();
+            }
+
+            GenerateItems(circleConfig);
             _rowsList.Add(CurrentRow, NewRow);
             OldRow = new Row(NewRow);
 
@@ -305,8 +317,36 @@ namespace Assets.Scripts
             return prefabs;
         }
 
-        private void GenerateItems()
+        private Dictionary<CircleRailConfig, bool> CircleRailsConfig = new Dictionary<CircleRailConfig, bool>();
+
+        private void UpdateCircleRailsConfigDictionary()
         {
+            CircleRailsConfig.Clear();
+            CircleRailsConfig.Add(CircleRailConfig.Points, false);
+            CircleRailsConfig.Add(CircleRailConfig.Stop, false);
+            CircleRailsConfig.Add(CircleRailConfig.StopWithPoints, false);
+            CircleRailsConfig.Add(CircleRailConfig.Clear, false);
+        }
+
+        private CircleRailConfig GetRandomCircleConfig()
+        {
+            System.Random rand = new System.Random();
+            return CircleRailsConfig.ToList().Where(kv => !kv.Value).OrderBy(kv => rand.Next()).First().Key;
+        }
+
+        private void GenerateItems(CircleRailConfig circleConfig)
+        {
+            if (CurrentRow <= 3)
+            {
+                var rail = NewRow.Rails.FirstOrDefault();
+                if (rail != null)
+                    foreach (var pos in rail.PointPositions)
+                    {
+                        var point = Instantiate(_point, rail.transform);
+                        point.transform.localPosition = pos.localPosition;
+                    }
+            }
+
             if (CurrentRow < 5) return;
 
             var outputs = NewRow.Outputs.OrderBy(o => o.Key).ToList();
@@ -338,11 +378,29 @@ namespace Assets.Scripts
                     {
                         output.HasObject = true;
                         float stopOffset = 0;
-                        for (int j = 0; j < Random.Range(1, LevelManager.Instance.StopsCount); j++)
+
+                        if (stopRail.RailDirection == RailDirection.LeftCircle || stopRail.RailDirection == RailDirection.RightCircle)
                         {
-                            var stop = Instantiate(_stop, stopRail.transform);
-                            stop.transform.localPosition = stopRail.EndPoint.localPosition + Vector3.down * stopOffset;
-                            stopOffset += 0.25f;
+                            if (circleConfig == CircleRailConfig.Stop || circleConfig == CircleRailConfig.StopWithPoints)
+                            {
+                                CircleRailsConfig[circleConfig] = true;
+                                print(circleConfig);
+                                for (int j = 0; j < Random.Range(1, LevelManager.Instance.StopsCount); j++)
+                                {
+                                    var stop = Instantiate(_stop, stopRail.transform);
+                                    stop.transform.localPosition = stopRail.EndPoint.localPosition + Vector3.down * stopOffset;
+                                    stopOffset += 0.25f;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int j = 0; j < Random.Range(1, LevelManager.Instance.StopsCount); j++)
+                            {
+                                var stop = Instantiate(_stop, stopRail.transform);
+                                stop.transform.localPosition = stopRail.EndPoint.localPosition + Vector3.down * stopOffset;
+                                stopOffset += 0.25f;
+                            }
                         }
                     }
                 }
@@ -372,24 +430,36 @@ namespace Assets.Scripts
             }
 
             outputs = NewRow.Outputs.OrderBy(o => o.Key).ToList();
-            for (int i = 0; i < outputs.Count; i++)
+            foreach (var keyValuePair in outputs)
             {
-                var keyValuePair = outputs[i];
-                var outputId = keyValuePair.Key;
                 var output = keyValuePair.Value;
                 var outputRails = output.OutputRails;
 
-                if (!output.HasObject)
+                if ((!output.HasObject && circleConfig == CircleRailConfig.Points) || circleConfig == CircleRailConfig.StopWithPoints)
                 {
                     foreach (var r in outputRails)
                     {
                         if (r.RailDirection == RailDirection.LeftCircle || r.RailDirection == RailDirection.RightCircle)
                         {
+                            print(circleConfig);
+                            CircleRailsConfig[circleConfig] = true;
                             foreach (var pos in r.PointPositions)
                             {
                                 var point = Instantiate(_point, r.transform);
                                 point.transform.localPosition = pos.localPosition;
                             }
+                        }
+                    }
+                }
+
+                if (circleConfig == CircleRailConfig.Clear)
+                {
+                    foreach (var r in outputRails)
+                    {
+                        if (r.RailDirection == RailDirection.LeftCircle || r.RailDirection == RailDirection.RightCircle)
+                        {
+                            print(circleConfig);
+                            CircleRailsConfig[circleConfig] = true;
                         }
                     }
                 }

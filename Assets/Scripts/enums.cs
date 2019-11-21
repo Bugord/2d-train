@@ -21,4 +21,12 @@ namespace Assets.Scripts
        Right,
        Left
    }
+
+   public enum CircleRailConfig
+   {
+       Stop,
+       Points,
+       StopWithPoints,
+       Clear
+   }
 }
