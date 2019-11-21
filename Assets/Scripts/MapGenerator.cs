@@ -222,7 +222,7 @@ namespace Assets.Scripts
                     case 0:
                         if (outputRails.Count == 1)
                         {
-                            newRails.Add(CurrentRow % 2 == 0
+                            newRails.Add(CurrentRow % 5 != 0
                                 ? _railPrefabsDictionary[RailDirection.Forward]
                                 : _railPrefabsDictionary[RailDirection.LeftCircle]);
 
@@ -230,7 +230,7 @@ namespace Assets.Scripts
                         }
                         if (outputRails.Count > 1)
                         {
-                            newRails.Add(CurrentRow % 2 == 0
+                            newRails.Add(CurrentRow % 3 != 0
                                 ? _railPrefabsDictionary[RailDirection.Forward]
                                 : _railPrefabsDictionary[RailDirection.LeftCircle]);
                             if (outputRails.Any(rail => rail.RailDirection == RailDirection.Left))
@@ -279,7 +279,7 @@ namespace Assets.Scripts
                     case 3:
                         if (outputRails.Count == 1)
                         {
-                            newRails.Add(CurrentRow % 2 != 0
+                            newRails.Add(CurrentRow % 4 != 0
                                 ? _railPrefabsDictionary[RailDirection.Forward]
                                 : _railPrefabsDictionary[RailDirection.RightCircle]);
 
@@ -287,7 +287,7 @@ namespace Assets.Scripts
                         }
                         if (outputRails.Count > 1)
                         {
-                            newRails.Add(CurrentRow % 2 != 0
+                            newRails.Add(CurrentRow % 6 != 0
                                 ? _railPrefabsDictionary[RailDirection.Forward]
                                 : _railPrefabsDictionary[RailDirection.RightCircle]);
 
@@ -350,7 +350,7 @@ namespace Assets.Scripts
                 {
                     var rail = outputRails.FirstOrDefault();
                     if (rail == null) continue;
-                    
+
                     if (CurrentRow % 2 == 0 && rail.OutputId % 2 == 0)
                     {
                         foreach (var pos in rail.PointPositions)
@@ -366,6 +366,30 @@ namespace Assets.Scripts
                         {
                             var point = Instantiate(_point, rail.transform);
                             point.transform.localPosition = pos.localPosition;
+                        }
+                    }
+                }
+            }
+
+            outputs = NewRow.Outputs.OrderBy(o => o.Key).ToList();
+            for (int i = 0; i < outputs.Count; i++)
+            {
+                var keyValuePair = outputs[i];
+                var outputId = keyValuePair.Key;
+                var output = keyValuePair.Value;
+                var outputRails = output.OutputRails;
+
+                if (!output.HasObject)
+                {
+                    foreach (var r in outputRails)
+                    {
+                        if (r.RailDirection == RailDirection.LeftCircle || r.RailDirection == RailDirection.RightCircle)
+                        {
+                            foreach (var pos in r.PointPositions)
+                            {
+                                var point = Instantiate(_point, r.transform);
+                                point.transform.localPosition = pos.localPosition;
+                            }
                         }
                     }
                 }

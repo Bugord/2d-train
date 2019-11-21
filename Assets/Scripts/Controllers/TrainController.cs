@@ -138,7 +138,7 @@ public class TrainController : MonoBehaviour
             return;
 
         var lastTrain = Trains.Last();
-        var newTrainPos = lastTrain.transform.position - Vector3.up * 3;
+        var newTrainPos = lastTrain.LastRail.transform.position;
         var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
         Destroy(newTrain.GetComponent<CapsuleCollider2D>());
         var newTrainController = newTrain.GetComponent<TrainController>();
@@ -243,11 +243,15 @@ public class TrainController : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains)
             {
-                newSpeed = Speed * 1.3f;
+                newSpeed = Speed * 1.2f;
+            }
+            if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains + 1)
+            {
+                newSpeed = Speed * 1.7f;
             }
             if (Vector3.Distance(transform.position, nextTrain.transform.position) < distanceBetweenTrains)
             {
-                newSpeed = Speed * 0.7f;
+                newSpeed = Speed * 0.8f;
             }
             if (Math.Abs(Vector3.Distance(transform.position, nextTrain.transform.position) - distanceBetweenTrains) <= 0)
             {
