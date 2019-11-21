@@ -350,18 +350,23 @@ namespace Assets.Scripts
                 {
                     var rail = outputRails.FirstOrDefault();
                     if (rail == null) continue;
-                    rail.HasStop = true;
-
+                    
                     if (CurrentRow % 2 == 0 && rail.OutputId % 2 == 0)
                     {
-                        var point = Instantiate(_point, rail.transform);
-                        point.transform.localPosition = rail.EndPoint.localPosition;
+                        foreach (var pos in rail.PointPositions)
+                        {
+                            var point = Instantiate(_point, rail.transform);
+                            point.transform.localPosition = pos.localPosition;
+                        }
                     }
 
                     if (CurrentRow % 2 != 0 && rail.OutputId % 2 != 0)
                     {
-                        var point = Instantiate(_point, rail.transform);
-                        point.transform.localPosition = rail.EndPoint.localPosition;
+                        foreach (var pos in rail.PointPositions)
+                        {
+                            var point = Instantiate(_point, rail.transform);
+                            point.transform.localPosition = pos.localPosition;
+                        }
                     }
                 }
             }

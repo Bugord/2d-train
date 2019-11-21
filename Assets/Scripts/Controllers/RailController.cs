@@ -30,11 +30,10 @@ public class RailController : MonoBehaviour
 
     public Transform EndPoint;
 
-    public Transform PointPosition;
+    public List<Transform> PointPositions;
 
     public bool IsActive;
-    public bool HasStop;
-
+    
     private void OnEnable()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();

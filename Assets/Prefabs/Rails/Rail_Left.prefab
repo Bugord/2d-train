@@ -144,7 +144,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3735599633433363998}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.83, y: 2.36, z: 0}
+  m_LocalPosition: {x: 0, y: 0.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 964344136478547852}
@@ -361,7 +361,8 @@ MonoBehaviour:
   NextRails: []
   NextActiveRail: {fileID: 0}
   EndPoint: {fileID: 6027789729448706387}
-  PointPosition: {fileID: 3122578347948964989}
+  PointPositions:
+  - {fileID: 3122578347948964989}
   IsActive: 0
   HasStop: 0
 --- !u!331 &4811222693663742484
