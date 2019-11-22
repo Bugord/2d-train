@@ -354,7 +354,7 @@ PrefabInstance:
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: RotationSpeed
-      value: 0.35
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
@@ -374,7 +374,7 @@ PrefabInstance:
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: SpeedStep
-      value: 0.001
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
@@ -781,6 +781,11 @@ PrefabInstance:
       propertyPath: _lastScore
       value: 
       objectReference: {fileID: 1274378035}
+    - target: {fileID: 5641847226421619068, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: _mainMenuController
+      value: 
+      objectReference: {fileID: 52160265}
     - target: {fileID: 5641847226421619065, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -901,11 +906,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5641847226421619068, guid: 9bd7266369d945f4f871f8e05f1257bf,
-        type: 3}
-      propertyPath: _mainMenuController
-      value: 
-      objectReference: {fileID: 52160265}
     - target: {fileID: 5641847226421619064, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}
       propertyPath: m_Camera

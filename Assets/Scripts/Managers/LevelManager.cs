@@ -40,16 +40,11 @@ public class LevelManager : MonoBehaviour
 
     private void UpdateMaxSpeed()
     {
-        MaxSpeed = Mathf.Atan(Level / 12f + 0.63f) * 5.3f + 3;
+        MaxSpeed = Mathf.Atan(Level / 12f + 0.63f) * 5.3f + 3 + GetPlayerSkillFactor();
     }
 
-    // Start is called before the first frame update
-    private void Start()
+    private float GetPlayerSkillFactor()
     {
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
+        return GameData.LastLevel * Mathf.Exp(-Level * 0.15f) * 0.1f;
     }
 }

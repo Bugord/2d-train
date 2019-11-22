@@ -19,7 +19,9 @@ public class EndGameMenuController : PanelBase
     {
         SetActivePanel(false);
         UIManager.Instance.ExitToMainMenu();
+        GameData.SetLastLevel(LevelManager.Instance.Level);
     }
+
     public void SetEndGameData()
     {
         _coins.text = GameData.InGameCoins.ToString();

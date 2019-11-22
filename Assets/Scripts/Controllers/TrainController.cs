@@ -15,7 +15,6 @@ public class TrainController : MonoBehaviour
     public float DefaultSpeed;
     public float SpeedStep;
 
-    public float RotationSpeed;
     public Vector3 TargetPoint;
     public int TargetPointIndex;
     public RailController TargetRail;
@@ -94,11 +93,6 @@ public class TrainController : MonoBehaviour
             else
             {
                 UIManager.IsInGame = false;
-                UIManager.Instance.ShowEndGameMenu(true);
-            }
-
-            if (Trains.Count == 0)
-            {
                 UIManager.Instance.ShowEndGameMenu(true);
             }
         }
@@ -214,11 +208,13 @@ public class TrainController : MonoBehaviour
 
         var vectorToTarget = VectorToTarget();
 
-        SetRotation(vectorToTarget);
         SetVelocity(vectorToTarget);
+        SetRotation(vectorToTarget);
 
         if (Vector2.SqrMagnitude(vectorToTarget) < DistToChangeTarget)
+        {
             ChangeTargetPoint();
+        }
     }
 
     private Vector2 VectorToTarget()
@@ -228,9 +224,7 @@ public class TrainController : MonoBehaviour
 
     private void SetRotation(Vector2 vectorToTarget)
     {
-        var angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90;
-        var q = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Lerp(transform.rotation, q, RotationSpeed);
+        transform.up = vectorToTarget;
     }
 
     private void SetVelocity(Vector2 vectorToTarget)
@@ -238,7 +232,7 @@ public class TrainController : MonoBehaviour
         if (Speed < LevelManager.Instance.MaxSpeed && !IsDead)
         {
             Speed = Speed + (LevelManager.Instance.MaxSpeed - DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, step));
-            step += SpeedStep;
+            step += SpeedStep * Time.deltaTime;
         }
 
         var newSpeed = Speed;
@@ -247,15 +241,15 @@ public class TrainController : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains)
             {
-                newSpeed = Speed * 1.2f;
+                newSpeed = Speed * 1.15f;
             }
             if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains + 1)
             {
-                newSpeed = Speed * 1.7f;
+                newSpeed = Speed * 1.8f;
             }
             if (Vector3.Distance(transform.position, nextTrain.transform.position) < distanceBetweenTrains)
             {
-                newSpeed = Speed * 0.8f;
+                newSpeed = Speed * 0.85f;
             }
             if (Math.Abs(Vector3.Distance(transform.position, nextTrain.transform.position) - distanceBetweenTrains) <= 0)
             {
