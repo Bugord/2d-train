@@ -7,10 +7,14 @@ public class CameraControllerScript : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
 
     private Vector3 offset;         //Private variable to store the offset distance between the player and camera
+    [SerializeField] private Transform _storeButton;
 
     // Use this for initialization
     void Start()
     {
+        var yOffset = target.position.y - Camera.main.ScreenToWorldPoint(_storeButton.position).y;
+        transform.position += Vector3.up * yOffset;
+
         //Calculate and store the offset value by getting the distance between the player's position and camera's position.
         offset = transform.position - target.position;
     }

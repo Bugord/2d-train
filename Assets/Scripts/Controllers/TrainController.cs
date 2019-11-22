@@ -241,15 +241,15 @@ public class TrainController : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains)
             {
-                newSpeed = Speed * 1.15f;
+                newSpeed = Speed * 1.1f;
             }
-            if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains + 1)
+            if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains + 0.1f)
             {
                 newSpeed = Speed * 1.8f;
             }
             if (Vector3.Distance(transform.position, nextTrain.transform.position) < distanceBetweenTrains)
             {
-                newSpeed = Speed * 0.85f;
+                newSpeed = Speed * 0.9f;
             }
             if (Math.Abs(Vector3.Distance(transform.position, nextTrain.transform.position) - distanceBetweenTrains) <= 0)
             {

@@ -19,6 +19,7 @@ public class LevelManager : MonoBehaviour
         StopsCount = 0;
         MaxSpeed = 6;
         MapGenerator.LevelUp += OnLevelUp;
+        UpdateMaxSpeed();
     }
 
     private void OnLevelUp()
@@ -41,11 +42,15 @@ public class LevelManager : MonoBehaviour
     private void UpdateMaxSpeed()
     {
         MaxSpeed = Mathf.Atan(Level / 12f + 0.63f) * 5.3f + 3 + GetPlayerSkillFactor();
-        Debug.LogError(GetPlayerSkillFactor());
     }
 
     private float GetPlayerSkillFactor()
     {
-        return (GameData.LastLevel + GameData.BestScore*0.2f) * 0.5f * Mathf.Exp(-Level * 0.15f) * 0.1f;
+        return th(Level) * (GameData.LastLevel + GameData.BestScore) * Mathf.Exp(-Level * 0.05f) * 0.01f;
+    }
+
+    private float th(float x)
+    {
+        return (Mathf.Exp(x) - Mathf.Exp(-x)) / (Mathf.Exp(x) + Mathf.Exp(-x));
     }
 }
