@@ -12,7 +12,10 @@ internal enum GameDataFields
 public static class GameData
 {
     public static int LastScore;
-    private static int BestScore;
+
+    public static int BestScore => PlayerPrefs.HasKey(GameDataFields.BestScore.ToString())
+        ? PlayerPrefs.GetInt(GameDataFields.BestScore.ToString())
+        : 0;
     public static int InGameCoins;
 
     public static int LastLevel
@@ -34,8 +37,7 @@ public static class GameData
     {
         if (LastScore > BestScore)
         {
-            BestScore = LastScore;
-            PlayerPrefs.SetInt(GameDataFields.BestScore.ToString(), BestScore);
+            PlayerPrefs.SetInt(GameDataFields.BestScore.ToString(), LastScore);
         }
 
         LastScore = 0;
