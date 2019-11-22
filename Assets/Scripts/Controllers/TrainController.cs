@@ -230,7 +230,7 @@ public class TrainController : MonoBehaviour
     {
         var angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90;
         var q = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, q, RotationSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, q, RotationSpeed);
     }
 
     private void SetVelocity(Vector2 vectorToTarget)
