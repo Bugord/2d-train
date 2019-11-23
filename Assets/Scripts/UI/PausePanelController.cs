@@ -23,6 +23,7 @@ public class PausePanelController : PanelBase
 
     public override void GoBack()
     {
+        UIManager.currentPanel = UIManager.Instance._inGameUiController;
         base.GoBack();
         UIManager.IsInGame = true;
     }

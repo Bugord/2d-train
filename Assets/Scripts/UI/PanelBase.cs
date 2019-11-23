@@ -15,7 +15,16 @@ public class PanelBase : MonoBehaviour
 
     public virtual void GoBack()
     {
-        SetActivePanel(false);
-        UIManager.previousPanel.SetActivePanel(true);
+        Debug.LogError(UIManager.currentPanel + " fwfwfwfw");
+        if (!UIManager.IsInGame)
+        {
+            SetActivePanel(false);
+            UIManager.previousPanel.SetActivePanel(true);
+            //UIManager.currentPanel = UIManager.previousPanel;
+        }
+        else
+        {
+            UIManager.Instance.SetPause();
+        }
     }
 }

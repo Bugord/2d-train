@@ -10,9 +10,16 @@ namespace Assets.Scripts
         private bool swiping = false;
         private bool eventSent = false;
         private Vector2 lastPosition;
-        
+
+        public static event Action BackButton;
+
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                BackButton?.Invoke();
+            }
+
             if (Input.touchCount == 0)
                 return;
 

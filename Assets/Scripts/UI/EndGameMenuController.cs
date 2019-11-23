@@ -15,7 +15,7 @@ public class EndGameMenuController : PanelBase
         _exitToMenu.onClick.AddListener(ExitToMainMenu);
     }
 
-    private void ExitToMainMenu()
+    public void ExitToMainMenu()
     {
         SetActivePanel(false);
         UIManager.Instance.ExitToMainMenu();

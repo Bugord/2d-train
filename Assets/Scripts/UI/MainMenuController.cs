@@ -9,6 +9,9 @@ public class MainMenuController : PanelBase
     public Button StartButton;
     public Button SettingButton;
     public Button ShopButton;
+    public Button RateButton;
+    public Button CoinsStoreButton;
+    public Button AddCoinsButton;
 
     public Text BestScore;
     public Text Coins;
