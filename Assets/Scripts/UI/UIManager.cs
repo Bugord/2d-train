@@ -26,19 +26,7 @@ public class UIManager : MonoBehaviour
 
     public static PanelBase previousPanel;
     public static PanelBase currentPanel;
-
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-
-        var objects = GameObject.FindGameObjectsWithTag("Canvas");
-
-        if (objects.Length > 1)
-        {
-            Destroy(gameObject);
-        }
-    }
-
+    
     public void Start()
     {
         Instance = this;
@@ -54,7 +42,15 @@ public class UIManager : MonoBehaviour
         _mainMenuController.AddCoinsButton.onClick.AddListener(OpenCoinsStore);
 
         InputManager.BackButton += InputManagerOnBackButton;
+        AdsManager.BonusCoins += AdsManagerOnBonusCoins;
         UpdateUI();
+        GameData.ResetBonusAndRevive();
+    }
+
+    private void AdsManagerOnBonusCoins()
+    {
+        GameData.AddBonusToInGameCoins();
+        _endGameMenuController.SetEndGameData();
     }
 
     private void InputManagerOnBackButton()
@@ -115,9 +111,11 @@ public class UIManager : MonoBehaviour
 
     public void ShowEndGameMenu(bool canRevive = false)
     {
-        _endGameMenuController.ReviveButton.SetActive(canRevive);
+        _endGameMenuController.ReviveButton.SetActive(canRevive && GameData.Revived == 0);
+        _endGameMenuController.BonusButton.SetActive(GameData.BonusReceived == 0);
         _endGameMenuController.SetEndGameData();
         _endGameMenuController.SetActivePanel(true);
+        _inGameUiController.SetActivePanel(false);
         currentPanel = _endGameMenuController;
     }
 
@@ -149,6 +147,7 @@ public class UIManager : MonoBehaviour
         _inGameUiController.SetActivePanel(true);
         IsInGame = true;
         GameData.InGameCoins = 0;
+        _inGameUiController.ResetFields();
     }
 
     private void OpenSettings()
@@ -186,6 +185,8 @@ public class UIManager : MonoBehaviour
         IsInGame = false;
         GameData.UpdateBestScore();
         GameData.AddCoins();
+        UpdateUI();
+        GameData.ResetBonusAndRevive();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

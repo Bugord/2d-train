@@ -20,7 +20,7 @@ namespace Assets.Scripts
                 BackButton?.Invoke();
             }
 
-            if (Input.touchCount == 0)
+            if (Input.touchCount == 0 && !UIManager.IsInGame)
                 return;
 
             var touch = Input.GetTouch(0);

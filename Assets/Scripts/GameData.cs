@@ -6,7 +6,9 @@ using UnityEngine;
 internal enum GameDataFields
 {
     BestScore,
-    Coins
+    Coins, 
+    Revived,
+    BonusReceived
 }
 
 public static class GameData
@@ -31,6 +33,30 @@ public static class GameData
 
             return (int)results.Average();
         }
+    }
+
+    public static int Revived => PlayerPrefs.HasKey(GameDataFields.Revived.ToString())
+        ? PlayerPrefs.GetInt(GameDataFields.Revived.ToString())
+        : 0;
+
+    public static void SetRevived(int x)
+    {
+        PlayerPrefs.SetInt(GameDataFields.Revived.ToString(), x);
+    }
+    
+    public static int BonusReceived => PlayerPrefs.HasKey(GameDataFields.BonusReceived.ToString())
+        ? PlayerPrefs.GetInt(GameDataFields.BonusReceived.ToString())
+        : 0;
+
+    public static void SetBonusReceived(int x)
+    {
+        PlayerPrefs.SetInt(GameDataFields.BonusReceived.ToString(), x);
+    }
+
+    public static void ResetBonusAndRevive()
+    {
+        SetRevived(0);
+        SetBonusReceived(0);
     }
 
     public static void UpdateBestScore()
@@ -66,10 +92,23 @@ public static class GameData
         UIManager.Instance.SetCoins(InGameCoins);
     }
 
+    public static void AddBonusToInGameCoins()
+    {
+        InGameCoins += InGameCoins;
+        UIManager.Instance.SetCoins(InGameCoins);
+    }
+
     public static void AddCoins()
     {
         var currentCoins = PlayerPrefs.GetInt(GameDataFields.Coins.ToString());
         PlayerPrefs.SetInt(GameDataFields.Coins.ToString(), currentCoins + InGameCoins);
+        PlayerPrefs.Save();
+    }
+
+    public static void AddCoins(int coins)
+    {
+        var currentCoins = PlayerPrefs.GetInt(GameDataFields.Coins.ToString());
+        PlayerPrefs.SetInt(GameDataFields.Coins.ToString(), currentCoins + coins);
         PlayerPrefs.Save();
     }
 

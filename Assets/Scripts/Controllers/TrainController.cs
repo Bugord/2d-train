@@ -160,11 +160,12 @@ public class TrainController : MonoBehaviour
     private void ReviveTrain()
     {
         Speed = DefaultSpeed;
-        Points = 0;
-        UpdateTrainPoints();
+        Points = 1;
+        GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(Destroy);
+        GameData.SetRevived(1);
         UIManager.Instance.HideEndGameMenu();
         UIManager.Instance.SetPause();
-        GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(Destroy);
+        UpdateTrainPoints();
     }
 
     private void InputManagerOnSwipe(SwipeDirection direction)

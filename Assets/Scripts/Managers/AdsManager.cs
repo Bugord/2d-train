@@ -10,20 +10,24 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
     private const string GAME_ID = "3364905";
     private const string GAME_OVER_PLACEMENT_ID = "GameOver";
     private const string REVIVE_VIDEO_PLACEMENT_ID = "ReviveVideo";
+    private const string BONUS_VIDEO_PLACEMENT_ID = "BonusVideo";
 
     [SerializeField] private Button _testADS;
     [SerializeField] private Button _reviveButton;
+    [SerializeField] private Button _bonusButton;
 
     [SerializeField]private bool _testMode = true;
     // Start is called before the first frame update
 
     public static event Action TrainRevive;
+    public static event Action BonusCoins;
 
     void Start()
     {
         _testADS.interactable = Advertisement.IsReady(GAME_OVER_PLACEMENT_ID);
         _reviveButton.interactable = Advertisement.IsReady(REVIVE_VIDEO_PLACEMENT_ID);
-        
+        _bonusButton.interactable = Advertisement.IsReady(BONUS_VIDEO_PLACEMENT_ID);
+
         if (_testADS)
         {
             _testADS.onClick.AddListener(ShowGameOverAdvertisement);
@@ -32,6 +36,11 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
         if (_reviveButton)
         {
             _reviveButton.onClick.AddListener(ShowReviveVideoAdvertisement);
+        }
+
+        if (_bonusButton)
+        {
+            _bonusButton.onClick.AddListener(ShowBonusVideoAdvertisement);
         }
 
         Advertisement.AddListener(this);
@@ -48,6 +57,11 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
         Advertisement.Show(REVIVE_VIDEO_PLACEMENT_ID);
     }
 
+    public void ShowBonusVideoAdvertisement()
+    {
+        Advertisement.Show(BONUS_VIDEO_PLACEMENT_ID);
+    }
+
     public void OnUnityAdsReady(string placementId)
     {
         if (placementId == GAME_OVER_PLACEMENT_ID)
@@ -58,6 +72,11 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
         if (placementId == REVIVE_VIDEO_PLACEMENT_ID)
         {
             _reviveButton.interactable = true;
+        }
+
+        if (placementId == BONUS_VIDEO_PLACEMENT_ID)
+        {
+            _bonusButton.interactable = true;
         }
     }
 
@@ -80,6 +99,12 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
             if (placementId == REVIVE_VIDEO_PLACEMENT_ID)
             {
                 TrainRevive?.Invoke();
+            }
+
+            if (placementId == BONUS_VIDEO_PLACEMENT_ID)
+            {
+                BonusCoins?.Invoke();
+                _bonusButton.gameObject.SetActive(false);
             }
         }
         else if (showResult == ShowResult.Skipped)

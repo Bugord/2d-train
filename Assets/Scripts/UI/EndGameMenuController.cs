@@ -8,6 +8,7 @@ public class EndGameMenuController : PanelBase
     [SerializeField] private Text _coins;
     [SerializeField] private Text _distance;
     public GameObject ReviveButton;
+    public GameObject BonusButton;
     [SerializeField] private Button _exitToMenu;
 
     private void Start()
