@@ -19,13 +19,13 @@ public class EndGameMenuController : PanelBase
     public void ExitToMainMenu()
     {
         SetActivePanel(false);
-        UIManager.Instance.ExitToMainMenu();
         GameData.SetLastLevel(LevelManager.Instance.Level);
+        UIManager.Instance.ExitToMainMenu();
     }
 
     public void SetEndGameData()
     {
-        _coins.text = GameData.InGameCoins.ToString();
-        _distance.text = GameData.LastScore.ToString();
+        _coins.text = GameData.Coins.ToString();
+        _distance.text = GameData.Score.ToString();
     }
 }

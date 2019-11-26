@@ -24,7 +24,7 @@ public class TrainController : MonoBehaviour
     public GameObject[] TrainPointSprites;
 
     public int Points = 1;
-    public bool IsHeadTrain;
+    public bool IsHeadTrain = false;
     public List<TrainController> Trains;
 
     public GameObject TrainPrefab;
@@ -51,7 +51,9 @@ public class TrainController : MonoBehaviour
 
         if (col.tag == "Point")
         {
-            GameData.SetInGameCoins();
+            GameData.Coins++;
+            UIManager.Instance._inGameUiController.Score.text = GameData.Coins.ToString();
+            PlayGamesScript.UnlockAchievement(GPGSIds.achievement_first_coin);
 
             if (Trains.Count <= 5)
             {
@@ -102,6 +104,8 @@ public class TrainController : MonoBehaviour
     {
         for (var i = 0; i < Trains.Count; i++)
         {
+            if (Trains[i] == null) continue;
+            
             if (Points - 2 * i < 0)
             {
                 Trains[i].TrainPointSprites[0].SetActive(false);
@@ -149,6 +153,7 @@ public class TrainController : MonoBehaviour
 
     private void Awake()
     {
+        Trains.Clear();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         InputManager.Swipe += InputManagerOnSwipe;
@@ -161,8 +166,8 @@ public class TrainController : MonoBehaviour
     {
         Speed = DefaultSpeed;
         Points = 1;
+        UpdateTrainPoints();
         GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(Destroy);
-        GameData.SetRevived(1);
         UIManager.Instance.HideEndGameMenu();
         UIManager.Instance.SetPause();
         UpdateTrainPoints();
@@ -187,8 +192,7 @@ public class TrainController : MonoBehaviour
     private void Update()
     {
         if (!IsHeadTrain) return;
-
-        GameData.SetLastScore(TargetRail.Row);
+        
 #if UNITY_EDITOR
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
 
@@ -215,6 +219,11 @@ public class TrainController : MonoBehaviour
         if (Vector2.SqrMagnitude(vectorToTarget) < DistToChangeTarget)
         {
             ChangeTargetPoint();
+        }
+
+        if (IsHeadTrain)
+        {
+            UIManager.Instance._inGameUiController.Distance.text = GameData.Score.ToString();
         }
     }
 
@@ -299,5 +308,9 @@ public class TrainController : MonoBehaviour
             }
         }
         TargetPoint = TargetPointList[lastPoint ? TargetPointList.Count - 1 : TargetPointIndex].localPosition;
+
+        if (!IsHeadTrain) return;
+        
+        GameData.Score = TargetRail.Row;
     }
 }

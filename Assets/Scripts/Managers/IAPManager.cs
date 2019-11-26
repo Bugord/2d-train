@@ -149,32 +149,22 @@ using UnityEngine.Purchasing;
             } else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_1000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("1000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                GameData.AddCoins(1000);
-                UIManager.Instance.UpdateUI();
             }
             else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_3000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("3000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                GameData.AddCoins(3000);
-                UIManager.Instance.UpdateUI();
             }
             else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_5000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("5000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                GameData.AddCoins(5000);
-                UIManager.Instance.UpdateUI();
             }
             else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_7000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("7000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                GameData.AddCoins(7000);
-                UIManager.Instance.UpdateUI();
             }
             else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_10000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("10000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                GameData.AddCoins(10000);
-                UIManager.Instance.UpdateUI();
             }
             else
             {

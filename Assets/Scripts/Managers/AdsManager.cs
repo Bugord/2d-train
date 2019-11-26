@@ -98,11 +98,13 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
             Debug.Log("Take your prize");
             if (placementId == REVIVE_VIDEO_PLACEMENT_ID)
             {
+                GameData.Revived = true;
                 TrainRevive?.Invoke();
             }
 
             if (placementId == BONUS_VIDEO_PLACEMENT_ID)
             {
+                GameData.BonusReceived = true;
                 BonusCoins?.Invoke();
                 _bonusButton.gameObject.SetActive(false);
             }

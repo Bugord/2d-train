@@ -46,8 +46,7 @@ public class LevelManager : MonoBehaviour
 
     private float GetPlayerSkillFactor()
     {
-        Debug.LogError(GameData.LastLevel + " " + GameData.BestScore);
-        return Mathf.Pow(th(Level * 0.1f), 2) * (GameData.LastLevel + GameData.BestScore/(Level+1) + Level) * Mathf.Exp(-Level * 0.05f) * 0.02f;
+        return Mathf.Pow(th(Level * 0.1f), 2) * (GameData.AverageLevel + CloudVariables.Highscore/(Level+1) + Level) * Mathf.Exp(-Level * 0.05f) * 0.02f;
     }
 
     private float th(float x)

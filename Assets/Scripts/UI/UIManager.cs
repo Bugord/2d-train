@@ -44,12 +44,11 @@ public class UIManager : MonoBehaviour
         InputManager.BackButton += InputManagerOnBackButton;
         AdsManager.BonusCoins += AdsManagerOnBonusCoins;
         UpdateUI();
-        GameData.ResetBonusAndRevive();
     }
 
     private void AdsManagerOnBonusCoins()
     {
-        GameData.AddBonusToInGameCoins();
+        GameData.Coins += GameData.Coins;
         _endGameMenuController.SetEndGameData();
     }
 
@@ -86,8 +85,9 @@ public class UIManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        _mainMenuController.BestScore.text = PlayerPrefs.GetInt(GameDataFields.BestScore.ToString()).ToString();
-        _mainMenuController.Coins.text = PlayerPrefs.GetInt(GameDataFields.Coins.ToString()).ToString();
+        Debug.LogError(CloudVariables.Highscore);
+        _mainMenuController.BestScore.text = CloudVariables.Highscore.ToString();
+        _mainMenuController.Coins.text = CloudVariables.Coins.ToString();
         GameObject.FindGameObjectsWithTag("Mask").ToList().ForEach(mask => mask.GetComponent<Image>().color = Camera.main.backgroundColor);
     }
 
@@ -111,8 +111,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowEndGameMenu(bool canRevive = false)
     {
-        _endGameMenuController.ReviveButton.SetActive(canRevive && GameData.Revived == 0);
-        _endGameMenuController.BonusButton.SetActive(GameData.BonusReceived == 0);
+        _endGameMenuController.ReviveButton.SetActive(canRevive && !GameData.Revived);
+        _endGameMenuController.BonusButton.SetActive(!GameData.BonusReceived);
         _endGameMenuController.SetEndGameData();
         _endGameMenuController.SetActivePanel(true);
         _inGameUiController.SetActivePanel(false);
@@ -140,13 +140,11 @@ public class UIManager : MonoBehaviour
 
     private void StartGame()
     {
-        Debug.Log("Game Started");
         previousPanel = _pausePanelController;
         currentPanel = _inGameUiController;
         _mainMenuController.SetActivePanel(false);
         _inGameUiController.SetActivePanel(true);
         IsInGame = true;
-        GameData.InGameCoins = 0;
         _inGameUiController.ResetFields();
     }
 
@@ -183,20 +181,14 @@ public class UIManager : MonoBehaviour
         _pausePanelController.SetActivePanel(false);
         _mainMenuController.SetActivePanel(true);
         IsInGame = false;
-        GameData.UpdateBestScore();
-        GameData.AddCoins();
+        if (GameData.Score > CloudVariables.Highscore)
+        {
+            CloudVariables.Highscore = GameData.Score;
+        }
+
+        CloudVariables.Coins += GameData.Coins;
+        PlayGamesScript.Instance.SaveData();
         UpdateUI();
-        GameData.ResetBonusAndRevive();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void SetScore(int score)
-    {
-        _inGameUiController.Distance.text = score.ToString();
-    }
-
-    public void SetCoins(int coins)
-    {
-        _inGameUiController.Score.text = coins.ToString();
     }
 }

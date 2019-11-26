@@ -13,6 +13,9 @@ public class MainMenuController : PanelBase
     public Button CoinsStoreButton;
     public Button AddCoinsButton;
 
+    [SerializeField] private Button _achievementsButton;
+    [SerializeField] private Button _leaderboardButton;
+
     public Text BestScore;
     public Text Coins;
     
@@ -20,6 +23,18 @@ public class MainMenuController : PanelBase
     void Start()
     {
         StartButton.onClick.AddListener(StartGame);
+        _achievementsButton.onClick.AddListener(ShowAchievementsUI);
+        _leaderboardButton.onClick.AddListener(ShowLeaderboardUI);
+    }
+
+    private void ShowAchievementsUI()
+    {
+        PlayGamesScript.ShowAchievementsUI();
+    }
+
+    private void ShowLeaderboardUI()
+    {
+        PlayGamesScript.ShowLeaderboardUI();
     }
 
     private void StartGame()
