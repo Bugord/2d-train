@@ -85,8 +85,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        _mainMenuController.BestScore.text = CloudVariables.Highscore.ToString();
-        _mainMenuController.Coins.text = CloudVariables.Coins.ToString();
+        _mainMenuController.BestScore.text = CloudVariables.ImportantValues[0].ToString();
+        _mainMenuController.Coins.text = CloudVariables.ImportantValues[1].ToString();
         GameObject.FindGameObjectsWithTag("Mask").ToList().ForEach(mask => mask.GetComponent<Image>().color = Camera.main.backgroundColor);
     }
 
@@ -180,14 +180,16 @@ public class UIManager : MonoBehaviour
         _pausePanelController.SetActivePanel(false);
         _mainMenuController.SetActivePanel(true);
         IsInGame = false;
-        if (GameData.Score > CloudVariables.Highscore)
+        if (GameData.Score > CloudVariables.ImportantValues[0])
         {
-            CloudVariables.Highscore = GameData.Score;
-            PlayGamesScript.AddScoreToLeaderboard(GPGSIds.leaderboard_high_score, CloudVariables.Highscore);
+            CloudVariables.ImportantValues[0] = GameData.Score;
+            PlayGamesScript.AddScoreToLeaderboard(GPGSIds.leaderboard_high_score, CloudVariables.ImportantValues[0]);
         }
 
-        CloudVariables.Coins += GameData.Coins;
+        CloudVariables.ImportantValues[1] += GameData.Coins;
         
+        PlayGamesScript.Instance.SaveData();
+
         UpdateUI();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

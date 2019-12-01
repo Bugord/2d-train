@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CloudVariables : MonoBehaviour
 {
-    public static int Highscore { get; set; }
-    public static int Coins { get; set; }
+    //0 is Highscore
+    //1 is coins
+    public static int[] ImportantValues = new int[2];
+
 }
