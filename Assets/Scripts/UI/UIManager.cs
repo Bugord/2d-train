@@ -85,7 +85,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        Debug.LogError(CloudVariables.Highscore);
         _mainMenuController.BestScore.text = CloudVariables.Highscore.ToString();
         _mainMenuController.Coins.text = CloudVariables.Coins.ToString();
         GameObject.FindGameObjectsWithTag("Mask").ToList().ForEach(mask => mask.GetComponent<Image>().color = Camera.main.backgroundColor);
@@ -184,10 +183,11 @@ public class UIManager : MonoBehaviour
         if (GameData.Score > CloudVariables.Highscore)
         {
             CloudVariables.Highscore = GameData.Score;
+            PlayGamesScript.AddScoreToLeaderboard(GPGSIds.leaderboard_high_score, CloudVariables.Highscore);
         }
 
         CloudVariables.Coins += GameData.Coins;
-        PlayGamesScript.Instance.SaveData();
+        
         UpdateUI();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
