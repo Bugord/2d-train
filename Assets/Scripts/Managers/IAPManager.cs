@@ -32,7 +32,7 @@ using UnityEngine.Purchasing;
                 InitializePurchasing();
             }
         }
-
+    
         public void InitializePurchasing()
         {
             if (IsInitialized())
@@ -48,7 +48,7 @@ using UnityEngine.Purchasing;
             builder.AddProduct(PRODUCT_5000_COINS, ProductType.Consumable);
             builder.AddProduct(PRODUCT_7000_COINS, ProductType.Consumable);
             builder.AddProduct(PRODUCT_10000_COINS, ProductType.Consumable);
-
+        
         UnityPurchasing.Initialize(this, builder);
         }
 
@@ -137,39 +137,48 @@ using UnityEngine.Purchasing;
             // Purchasing set-up has not succeeded. Check error for reason. Consider sharing this reason with the user.
             Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
         }
-
-
+    
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
         {
             // A consumable product has been purchased by this user.
             if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_REMOVE_ADS, StringComparison.Ordinal))
             {
                 Debug.LogError("Ads removed." + args.purchasedProduct.metadata.localizedDescription);
+                CloudVariables.ImportantValues[2] = 1;
                 RemoveAdsController.DestroyButton();
-            } else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_1000_COINS, StringComparison.Ordinal))
+            } 
+            else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_1000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("1000 Coins." + args.purchasedProduct.metadata.localizedDescription);
+                CloudVariables.ImportantValues[1] += 1000;
             }
             else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_3000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("3000 Coins." + args.purchasedProduct.metadata.localizedDescription);
+                CloudVariables.ImportantValues[1] += 3000;
             }
             else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_5000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("5000 Coins." + args.purchasedProduct.metadata.localizedDescription);
+                CloudVariables.ImportantValues[1] += 5000;
             }
             else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_7000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("7000 Coins." + args.purchasedProduct.metadata.localizedDescription);
+                CloudVariables.ImportantValues[1] += 7000;
             }
             else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_10000_COINS, StringComparison.Ordinal))
             {
                 Debug.LogError("10000 Coins." + args.purchasedProduct.metadata.localizedDescription);
+                CloudVariables.ImportantValues[1] += 10000;
             }
             else
             {
                 Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
             }
+
+            PlayGamesScript.Instance.SaveData();
+            UIManager.Instance.UpdateUI();
 
             // Return a flag indicating whether this product has completely been received, or if the application needs 
             // to be reminded of this purchase at next app launch. Use PurchaseProcessingResult.Pending when still 

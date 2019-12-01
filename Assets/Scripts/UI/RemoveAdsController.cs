@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class RemoveAdsController : MonoBehaviour
@@ -10,7 +8,7 @@ public class RemoveAdsController : MonoBehaviour
     private void Awake()
     {
         _removeAdsButton = GetComponent<Button>();
-        _removeAdsButton.onClick.AddListener(RemoveAds);
+        _removeAdsButton.onClick.AddListener(RemoveAds);        
     }
 
     private void RemoveAds()

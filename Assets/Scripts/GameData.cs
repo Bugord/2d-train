@@ -71,6 +71,7 @@ public static class GameData
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
+        
         UIManager.Instance.UpdateUI();
     }
 }

@@ -19,7 +19,7 @@ namespace Assets.Scripts
             {
                 BackButton?.Invoke();
             }
-
+#if !UNITY_EDITOR
             if (Input.touchCount == 0 && !UIManager.IsInGame)
                 return;
 
@@ -64,6 +64,7 @@ namespace Assets.Scripts
                 swiping = false;
                 eventSent = false;
             }
+#endif
         }
     }
 }

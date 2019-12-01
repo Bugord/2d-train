@@ -87,6 +87,10 @@ public class UIManager : MonoBehaviour
     {
         _mainMenuController.BestScore.text = CloudVariables.ImportantValues[0].ToString();
         _mainMenuController.Coins.text = CloudVariables.ImportantValues[1].ToString();
+        if (CloudVariables.ImportantValues[2] == 1)
+        {
+            RemoveAdsController.DestroyButton();
+        }
         GameObject.FindGameObjectsWithTag("Mask").ToList().ForEach(mask => mask.GetComponent<Image>().color = Camera.main.backgroundColor);
     }
 
@@ -121,20 +125,6 @@ public class UIManager : MonoBehaviour
     public void HideEndGameMenu()
     {
         _endGameMenuController.SetActivePanel(false);
-    }
-
-    private void RemoveAds()
-    {
-        if (PlayerPrefs.HasKey("AdsFree"))
-        {
-            print("Ads already removed");
-        }
-        else
-        {
-                
-            PlayerPrefs.SetInt("AdsFree", 1);
-            PlayerPrefs.Save();
-        }
     }
 
     private void StartGame()

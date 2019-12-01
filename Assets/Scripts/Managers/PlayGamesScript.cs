@@ -8,7 +8,7 @@ public class PlayGamesScript : MonoBehaviour
 {
     public static PlayGamesScript Instance { get; private set; }
 
-    const string SAVE_NAME = "HighScoreAndCoins";
+    const string SAVE_NAME = "HighScoreAndCoins1";
     bool isSaving;
     bool isCloudDataLoaded = false;
 
@@ -133,7 +133,7 @@ public class PlayGamesScript : MonoBehaviour
     {
         StringToGameData(PlayerPrefs.GetString(SAVE_NAME));
     }
-
+    
     //used for saving data to the cloud or locally
     public void SaveData()
     {
@@ -198,7 +198,7 @@ public class PlayGamesScript : MonoBehaviour
             resolver.ChooseMetadata(original);
         }
     }
-
+    
     private void OnSavedGameOpened(SavedGameRequestStatus status, ISavedGameMetadata game)
     {
         //if we are connected to the internet
