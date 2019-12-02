@@ -14,6 +14,7 @@ public class TrainController : MonoBehaviour
     public float Speed;
     public float DefaultSpeed;
     public float SpeedStep;
+    public float BoostedSpeed;
 
     public Vector3 TargetPoint;
     public int TargetPointIndex;
@@ -42,15 +43,17 @@ public class TrainController : MonoBehaviour
 
     public float step = 0;
     public bool IsDead;
+    public bool IsBoosted;
+    public bool IsConnected;
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!IsHeadTrain)
             return;
-        Destroy(col.gameObject);
 
         if (col.tag == "Point")
         {
+            Destroy(col.gameObject);
             GameData.Coins++;
             UIManager.Instance._inGameUiController.Score.text = GameData.Coins.ToString();
             PlayGamesScript.UnlockAchievement(GPGSIds.achievement_first_coin);
@@ -66,9 +69,13 @@ public class TrainController : MonoBehaviour
 
                 UpdateTrainPoints();
             }
-        }
-        else if (col.tag == "Stop")
+        }else if(col.tag == "Boost")
         {
+            Destroy(col.gameObject);
+            StartCoroutine(ActivateBoost(GetComponent<CapsuleCollider2D>()));
+        }else if (col.tag == "Stop" && !IsBoosted)
+        {
+            Destroy(col.gameObject);
             if (Points > 2 * (Trains.Count - 1))
             {
                 Points -= Points - 2 * (Trains.Count - 1);
@@ -148,6 +155,7 @@ public class TrainController : MonoBehaviour
         newTrainController.ChangeTargetPoint(true);
         newTrainController.IsHeadTrain = false;
         newTrainController.nextTrain = lastTrain;
+        newTrainController.IsBoosted = lastTrain.IsBoosted;
         Trains.First(controller => controller.IsHeadTrain).Trains.Add(newTrainController);
     }
 
@@ -171,6 +179,25 @@ public class TrainController : MonoBehaviour
         UIManager.Instance.HideEndGameMenu();
         UIManager.Instance.SetPause();
         UpdateTrainPoints();
+    }
+
+    private IEnumerator ActivateBoost(CapsuleCollider2D col)
+    {
+        Trains.ForEach(train => train.IsBoosted = true);
+        col.direction = CapsuleDirection2D.Horizontal;
+        col.size = new Vector2(col.size.x*50, col.size.y);
+
+        float t = 0;
+
+        while (t <= 5)
+        {
+            t += UIManager.IsInGame ? Time.deltaTime : 0;
+            yield return null;
+        }
+        
+        Trains.ForEach(train => train.IsBoosted = false);
+        col.direction = CapsuleDirection2D.Vertical;
+        col.size = new Vector2(col.size.x / 50, col.size.y);
     }
 
     private void InputManagerOnSwipe(SwipeDirection direction)
@@ -247,7 +274,7 @@ public class TrainController : MonoBehaviour
 
         var newSpeed = Speed;
 
-        if (!IsHeadTrain)
+        if (!IsHeadTrain && !IsConnected)
         {
             if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains)
             {
@@ -261,10 +288,15 @@ public class TrainController : MonoBehaviour
             {
                 newSpeed = Speed * 0.9f;
             }
-            if (Math.Abs(Vector3.Distance(transform.position, nextTrain.transform.position) - distanceBetweenTrains) <= 0)
+            if (Math.Abs(Vector3.Distance(transform.position, nextTrain.transform.position) - distanceBetweenTrains) <= 0.05f)
             {
                 newSpeed = Speed;
             }
+        }
+
+        if (IsBoosted)
+        {
+            newSpeed = BoostedSpeed;
         }
 
         _rigidbody2D.velocity = newSpeed * Vector3.Normalize(vectorToTarget);

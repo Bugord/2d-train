@@ -234,6 +234,7 @@ MonoBehaviour:
   Map: {fileID: 1868523421}
   _point: {fileID: 4251604158457889442, guid: 6fc30b595a88836468d1841cb461395f, type: 3}
   _stop: {fileID: 7101574944169868405, guid: 9a914f0c0835f704a9ad27a945ebc310, type: 3}
+  _boost: {fileID: 4750773864729570648, guid: 55cab6c8c8fcfa74cb1ab554f1fdd81b, type: 3}
   CurrentRow: 1
   TrainController: {fileID: 39203789}
   RowsBefore: 5
@@ -424,6 +425,11 @@ PrefabInstance:
       propertyPath: Points
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
+        type: 3}
+      propertyPath: BoostedSpeed
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4622870409914732, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5
@@ -484,6 +490,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2205464656970735962, guid: 55797d3e8087b6248a403cc2bbdecf00,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55797d3e8087b6248a403cc2bbdecf00, type: 3}

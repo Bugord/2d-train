@@ -25,7 +25,7 @@ public class PlayGamesScript : MonoBehaviour
 
         LoadLocal(); //we want to load local data first because loading from cloud can take quite a while, if user progresses while using local data, it will all
         //sync in our comparating loop in StringToGameData(string, string)
-
+        
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().EnableSavedGames().Build();
         PlayGamesPlatform.InitializeInstance(config);
         PlayGamesPlatform.Activate();

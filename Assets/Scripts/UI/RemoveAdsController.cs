@@ -18,6 +18,9 @@ public class RemoveAdsController : MonoBehaviour
 
     public static void DestroyButton()
     {
-        Destroy(_removeAdsButton.gameObject);
+        if (_removeAdsButton != null)
+        {
+            Destroy(_removeAdsButton.gameObject);
+        }
     }
 }

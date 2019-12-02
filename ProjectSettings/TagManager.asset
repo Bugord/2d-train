@@ -8,6 +8,8 @@ TagManager:
   - Stop
   - Mask
   - DontDestroy
+  - Canvas
+  - Boost
   layers:
   - Default
   - TransparentFX

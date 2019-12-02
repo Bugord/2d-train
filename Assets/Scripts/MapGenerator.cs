@@ -45,6 +45,9 @@ namespace Assets.Scripts
 
         [SerializeField] private GameObject _point;
         [SerializeField] private GameObject _stop;
+        [SerializeField] private GameObject _boost;
+
+        private bool canBoost = false;
 
         public Row OldRow;
         public Row NewRow;
@@ -357,6 +360,11 @@ namespace Assets.Scripts
                 outputs.Reverse();
             }
 
+            if (CurrentRow % 40 == 0)
+            {
+                canBoost = true;
+            }
+
             for (int i = 0; i < outputs.Count; i++)
             {
                 var keyValuePair = outputs[i];
@@ -374,7 +382,7 @@ namespace Assets.Scripts
                             .TrueForAll(r => Mathf.Abs(r.OutputId - rail.OutputId) <= 1));
 
                     var stopRail = outputRails.FirstOrDefault();
-                    if (stopRail != null && check)
+                    if (stopRail != null && check && !TrainController.IsBoosted)
                     {
                         output.HasObject = true;
                         float stopOffset = 0;
@@ -408,22 +416,30 @@ namespace Assets.Scripts
                 {
                     var rail = outputRails.FirstOrDefault();
                     if (rail == null) continue;
-
-                    if (CurrentRow % 2 == 0 && rail.OutputId % 2 == 0)
+                    if (canBoost)
                     {
-                        foreach (var pos in rail.PointPositions)
-                        {
-                            var point = Instantiate(_point, rail.transform);
-                            point.transform.localPosition = pos.localPosition;
-                        }
+                        canBoost = false;
+                        var point = Instantiate(_boost, rail.transform);
+                        point.transform.localPosition = rail.PointPositions.First().localPosition;
                     }
-
-                    if (CurrentRow % 2 != 0 && rail.OutputId % 2 != 0)
+                    else
                     {
-                        foreach (var pos in rail.PointPositions)
+                        if (CurrentRow % 2 == 0 && rail.OutputId % 2 == 0)
                         {
-                            var point = Instantiate(_point, rail.transform);
-                            point.transform.localPosition = pos.localPosition;
+                            foreach (var pos in rail.PointPositions)
+                            {
+                                var point = Instantiate(_point, rail.transform);
+                                point.transform.localPosition = pos.localPosition;
+                            }
+                        }
+
+                        if (CurrentRow % 2 != 0 && rail.OutputId % 2 != 0)
+                        {
+                            foreach (var pos in rail.PointPositions)
+                            {
+                                var point = Instantiate(_point, rail.transform);
+                                point.transform.localPosition = pos.localPosition;
+                            }
                         }
                     }
                 }
