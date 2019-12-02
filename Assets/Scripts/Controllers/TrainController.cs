@@ -71,6 +71,7 @@ public class TrainController : MonoBehaviour
             }
         }else if(col.tag == "Boost")
         {
+            PlayGamesScript.UnlockAchievement(GPGSIds.achievement_speed_of_light);
             Destroy(col.gameObject);
             StartCoroutine(ActivateBoost(GetComponent<CapsuleCollider2D>()));
         }else if (col.tag == "Stop" && !IsBoosted)
