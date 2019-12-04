@@ -11,11 +11,6 @@ using Debug = System.Diagnostics.Debug;
 
 public class TrainController : MonoBehaviour
 {
-    public float Speed;
-    public float DefaultSpeed;
-    public float SpeedStep;
-    public float BoostedSpeed;
-
     public Vector3 TargetPoint;
     public int TargetPointIndex;
     public RailController TargetRail;
@@ -36,15 +31,19 @@ public class TrainController : MonoBehaviour
     public SpriteRenderer _spriteRenderer;
     private const float DistToChangeTarget = 0.05f;
 
-    public TrainController nextTrain;
+    public TrainController NextTrain;
+    public static TrainController HeadTrain;
     public float distanceBetweenTrains;
 
     public RailController LastRail;
 
-    public float step = 0;
     public bool IsDead;
     public bool IsBoosted;
     public bool IsConnected;
+
+    public static float Speed;
+
+    [SerializeField] private GameObject _trailObject;
 
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -81,22 +80,14 @@ public class TrainController : MonoBehaviour
             {
                 Points -= Points - 2 * (Trains.Count - 1);
             }
-
-            if (Speed > DefaultSpeed)
-            {
-                Trains.ForEach(train =>
-                {
-                    train.Speed = DefaultSpeed;
-                    train.step = 0;
-                });
-            }
+            
+            LevelManager.Instance.ResetSpeed();
 
             var trainToRemove = Trains.Last();
 
             if (!trainToRemove.IsHeadTrain)
             {
                 Trains.Remove(trainToRemove);
-                trainToRemove.Speed = Speed * 0.1f;
                 trainToRemove.IsDead = true;
                 Destroy(trainToRemove.gameObject, 1.5f);
             }
@@ -155,7 +146,7 @@ public class TrainController : MonoBehaviour
         newTrainController.TargetRail = lastTrain.LastRail;
         newTrainController.ChangeTargetPoint(true);
         newTrainController.IsHeadTrain = false;
-        newTrainController.nextTrain = lastTrain;
+        newTrainController.NextTrain = lastTrain;
         newTrainController.IsBoosted = lastTrain.IsBoosted;
         Trains.First(controller => controller.IsHeadTrain).Trains.Add(newTrainController);
     }
@@ -167,13 +158,17 @@ public class TrainController : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         InputManager.Swipe += InputManagerOnSwipe;
         if (!IsHeadTrain) return;
+        if (HeadTrain == null)
+        {
+            HeadTrain = this;
+        }
         Trains.Add(this);
         AdsManager.TrainRevive += ReviveTrain;
     }
 
     private void ReviveTrain()
     {
-        Speed = DefaultSpeed;
+        LevelManager.Instance.ResetSpeed();
         Points = 1;
         UpdateTrainPoints();
         GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(Destroy);
@@ -184,9 +179,10 @@ public class TrainController : MonoBehaviour
 
     private IEnumerator ActivateBoost(CapsuleCollider2D col)
     {
-        Trains.ForEach(train => train.IsBoosted = true);
+        IsBoosted = true;
         col.direction = CapsuleDirection2D.Horizontal;
         col.size = new Vector2(col.size.x*50, col.size.y);
+        _trailObject.SetActive(true);
 
         float t = 0;
 
@@ -195,10 +191,11 @@ public class TrainController : MonoBehaviour
             t += UIManager.IsInGame ? Time.deltaTime : 0;
             yield return null;
         }
-        
-        Trains.ForEach(train => train.IsBoosted = false);
+
+        IsBoosted = false;
         col.direction = CapsuleDirection2D.Vertical;
         col.size = new Vector2(col.size.x / 50, col.size.y);
+        _trailObject.SetActive(false);
     }
 
     private void InputManagerOnSwipe(SwipeDirection direction)
@@ -267,37 +264,43 @@ public class TrainController : MonoBehaviour
 
     private void SetVelocity(Vector2 vectorToTarget)
     {
-        if (Speed < LevelManager.Instance.MaxSpeed && !IsDead)
+        var newSpeed = !IsDead ? Speed : 0;
+        if (!IsHeadTrain && !IsDead)
         {
-            Speed = Speed + (LevelManager.Instance.MaxSpeed - DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, step));
-            step += SpeedStep * Time.deltaTime;
+            if (!IsConnected)
+            {
+                if (Vector3.Distance(transform.position, NextTrain.transform.position) > distanceBetweenTrains + 0.1f)
+                {
+                    newSpeed = Speed * 1.8f;
+                }
+                else
+                {
+                    IsConnected = true;
+                    newSpeed = Speed;
+                }
+            }
+            else
+            {
+                var distanceFactor = Vector3.Distance(transform.position, NextTrain.transform.position) - distanceBetweenTrains;
+                if (distanceFactor <= 0.1f && distanceFactor >= -0.1f)
+                {
+                    newSpeed = Speed;
+                }
+
+                if (distanceFactor < -distanceBetweenTrains*0.1f)
+                {
+                    newSpeed = Speed * 0.9f;
+                }
+                if (distanceFactor > distanceBetweenTrains * 0.1f && _rigidbody2D.velocity.magnitude < NextTrain._rigidbody2D.velocity.magnitude)
+                {
+                    newSpeed = distanceFactor > distanceBetweenTrains ? Speed * 1.1f : Speed * 1.8f;
+                }
+            }
         }
 
-        var newSpeed = Speed;
-
-        if (!IsHeadTrain && !IsConnected)
+        if (HeadTrain.IsBoosted)
         {
-            if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains)
-            {
-                newSpeed = Speed * 1.1f;
-            }
-            if (Vector3.Distance(transform.position, nextTrain.transform.position) > distanceBetweenTrains + 0.1f)
-            {
-                newSpeed = Speed * 1.8f;
-            }
-            if (Vector3.Distance(transform.position, nextTrain.transform.position) < distanceBetweenTrains)
-            {
-                newSpeed = Speed * 0.9f;
-            }
-            if (Math.Abs(Vector3.Distance(transform.position, nextTrain.transform.position) - distanceBetweenTrains) <= 0.05f)
-            {
-                newSpeed = Speed;
-            }
-        }
-
-        if (IsBoosted)
-        {
-            newSpeed = BoostedSpeed;
+            newSpeed = LevelManager.Instance.BoostedSpeed;
         }
 
         _rigidbody2D.velocity = newSpeed * Vector3.Normalize(vectorToTarget);

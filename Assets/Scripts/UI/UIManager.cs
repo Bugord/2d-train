@@ -166,6 +166,7 @@ public class UIManager : MonoBehaviour
 
     public void ExitToMainMenu()
     {
+        LevelManager.Instance.UpdateManager();
         currentPanel = _mainMenuController;
         _pausePanelController.SetActivePanel(false);
         _mainMenuController.SetActivePanel(true);

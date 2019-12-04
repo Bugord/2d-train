@@ -10,16 +10,44 @@ public class LevelManager : MonoBehaviour
 
     public int Level;
     public int StopsCount;
-    public float MaxSpeed;
+    public float Speed;
+    public float BoostedSpeed;
+    [SerializeField] private float MaxSpeed;
+    [SerializeField] private float DefaultSpeed;
+    public float Step;
+    [SerializeField] private float SpeedStep;
 
     private void Awake()
     {
         Instance = this;
+        MapGenerator.LevelUp += OnLevelUp;
+        UpdateManager();
+    }
+
+    public void FixedUpdate()
+    {
+        if (Speed < MaxSpeed && UIManager.IsInGame)
+        {
+            Speed += (MaxSpeed - DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, Step));
+            Step += SpeedStep;
+        }
+
+        TrainController.Speed = Speed;
+    }
+
+    public void UpdateManager()
+    {
+        ResetSpeed();
         Level = 0;
         StopsCount = 0;
         MaxSpeed = 6;
-        MapGenerator.LevelUp += OnLevelUp;
         UpdateMaxSpeed();
+    }
+
+    public void ResetSpeed()
+    {
+        Speed = DefaultSpeed;
+        Step = 0;
     }
 
     private void OnLevelUp()

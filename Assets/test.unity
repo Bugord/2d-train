@@ -408,7 +408,7 @@ PrefabInstance:
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: SpeedStep
-      value: 0.01
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
@@ -816,7 +816,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Level: 0
   StopsCount: 0
+  Speed: 2
+  BoostedSpeed: 15
   MaxSpeed: 0
+  DefaultSpeed: 2
+  Step: 0
+  SpeedStep: 0.001
 --- !u!114 &1189255209
 MonoBehaviour:
   m_ObjectHideFlags: 0
