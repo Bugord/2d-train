@@ -40,6 +40,8 @@ public class TrainController : MonoBehaviour
     public bool IsDead;
     public bool IsBoosted;
     public bool IsConnected;
+    
+    public Vector3 LastTrainPos;
 
     public static float Speed;
 
@@ -52,7 +54,15 @@ public class TrainController : MonoBehaviour
 
         if (col.tag == "Point")
         {
-            Destroy(col.gameObject);
+            if (IsBoosted)
+            {
+               Destroy(col.gameObject, 0.75f); 
+            }
+            else
+            {
+                Destroy(col.gameObject);
+            }
+            
             GameData.Coins++;
             UIManager.Instance._inGameUiController.Score.text = GameData.Coins.ToString();
             PlayGamesScript.UnlockAchievement(GPGSIds.achievement_first_coin);
@@ -139,20 +149,21 @@ public class TrainController : MonoBehaviour
             return;
 
         var lastTrain = Trains.Last();
-        var newTrainPos = lastTrain.LastRail.transform.position;
+        var newTrainPos = lastTrain.transform.position + Vector3.down * 3;
         var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
         Destroy(newTrain.GetComponent<CapsuleCollider2D>());
         var newTrainController = newTrain.GetComponent<TrainController>();
         newTrainController.TargetRail = lastTrain.LastRail;
-        newTrainController.ChangeTargetPoint(true);
         newTrainController.IsHeadTrain = false;
         newTrainController.NextTrain = lastTrain;
         newTrainController.IsBoosted = lastTrain.IsBoosted;
         Trains.First(controller => controller.IsHeadTrain).Trains.Add(newTrainController);
+        Destroy(newTrainController._trailObject);
     }
 
     private void Awake()
     {
+        LastTrainPos = transform.position;
         Trains.Clear();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -180,8 +191,6 @@ public class TrainController : MonoBehaviour
     private IEnumerator ActivateBoost(CapsuleCollider2D col)
     {
         IsBoosted = true;
-        col.direction = CapsuleDirection2D.Horizontal;
-        col.size = new Vector2(col.size.x*50, col.size.y);
         _trailObject.SetActive(true);
 
         float t = 0;
@@ -193,8 +202,6 @@ public class TrainController : MonoBehaviour
         }
 
         IsBoosted = false;
-        col.direction = CapsuleDirection2D.Vertical;
-        col.size = new Vector2(col.size.x / 50, col.size.y);
         _trailObject.SetActive(false);
     }
 
@@ -210,6 +217,10 @@ public class TrainController : MonoBehaviour
 
     private void Start()
     {
+        if (!IsHeadTrain)
+        {
+            return;
+        }
         TargetPointList = TargetRail.WayPoints;
         TargetPoint = TargetPointList[0].localPosition;
     }
@@ -228,20 +239,18 @@ public class TrainController : MonoBehaviour
 #endif
     }
 
+    public float TimeToNextTrain;
     private void FixedUpdate()
     {
-        if (!UIManager.IsInGame)
-        {
-            StopTheTrain();
-            return;
-        }
+        if (!UIManager.IsInGame) return;
 
         var vectorToTarget = VectorToTarget();
 
-        SetVelocity(vectorToTarget);
         SetRotation(vectorToTarget);
+        MoveTrain(vectorToTarget);
+        StartCoroutine(SetLastTrainPos( 37 / (IsBoosted ? LevelManager.Instance.BoostedSpeed : Speed)* Time.fixedDeltaTime, transform.position));
 
-        if (Vector2.SqrMagnitude(vectorToTarget) < DistToChangeTarget)
+        if (Vector2.SqrMagnitude(vectorToTarget) < DistToChangeTarget && IsHeadTrain)
         {
             ChangeTargetPoint();
         }
@@ -252,9 +261,16 @@ public class TrainController : MonoBehaviour
         }
     }
 
+    private IEnumerator SetLastTrainPos(float time, Vector3 pos)
+    {
+        yield return new WaitForSeconds(time);
+
+        LastTrainPos = pos;
+    }
+
     private Vector2 VectorToTarget()
     {
-        return TargetPoint + TargetRail.transform.position - transform.position;
+        return (IsHeadTrain ? TargetPoint + TargetRail.transform.position : NextTrain.LastTrainPos)- transform.position;
     }
 
     private void SetRotation(Vector2 vectorToTarget)
@@ -262,56 +278,52 @@ public class TrainController : MonoBehaviour
         transform.up = vectorToTarget;
     }
 
-    private void SetVelocity(Vector2 vectorToTarget)
+    private void MoveTrain(Vector2 vectorToTarget)
     {
-        var newSpeed = !IsDead ? Speed : 0;
-        if (!IsHeadTrain && !IsDead)
-        {
-            if (!IsConnected)
-            {
-                if (Vector3.Distance(transform.position, NextTrain.transform.position) > distanceBetweenTrains + 0.1f)
-                {
-                    newSpeed = Speed * 1.8f;
-                }
-                else
-                {
-                    IsConnected = true;
-                    newSpeed = Speed;
-                }
-            }
-            else
-            {
-                var distanceFactor = Vector3.Distance(transform.position, NextTrain.transform.position) - distanceBetweenTrains;
-                if (distanceFactor <= 0.1f && distanceFactor >= -0.1f)
-                {
-                    newSpeed = Speed;
-                }
+        if (IsDead) return;
 
-                if (distanceFactor < -distanceBetweenTrains*0.1f)
-                {
-                    newSpeed = Speed * 0.9f;
-                }
-                if (distanceFactor > distanceBetweenTrains * 0.1f && _rigidbody2D.velocity.magnitude < NextTrain._rigidbody2D.velocity.magnitude)
-                {
-                    newSpeed = distanceFactor > distanceBetweenTrains ? Speed * 1.1f : Speed * 1.8f;
-                }
-            }
-        }
-
+        var newSpeed = Speed;
+        
         if (HeadTrain.IsBoosted)
         {
             newSpeed = LevelManager.Instance.BoostedSpeed;
         }
 
-        _rigidbody2D.velocity = newSpeed * Vector3.Normalize(vectorToTarget);
+        if (IsHeadTrain)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + vectorToTarget,
+                newSpeed * Time.deltaTime);
+            return;
+        }
+        var distance = Vector3.Distance(transform.position, NextTrain.transform.position);
+        if (!IsConnected)
+        {
+            if (distance > distanceBetweenTrains + 0.1f)
+            {
+                newSpeed = Speed * 1.5f;
+            }
+            else
+            {
+                IsConnected = true;
+                newSpeed = Speed;
+            }
+
+            transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + vectorToTarget,
+                newSpeed * Time.deltaTime);
+        }
+        else
+        {
+            if (distance < distanceBetweenTrains)
+            {
+                newSpeed = 0;
+            }
+            transform.position = Vector2.MoveTowards(transform.position, NextTrain.LastTrainPos,
+                newSpeed * Time.deltaTime); ;
+        }
+
     }
 
-    private void StopTheTrain()
-    {
-        _rigidbody2D.velocity = Vector2.zero;
-    }
-
-    private void ChangeTargetPoint(bool lastPoint = false)
+    private void ChangeTargetPoint()
     {
         TargetPointIndex++;
         if (TargetPointIndex >= TargetPointList.Count)
@@ -343,7 +355,7 @@ public class TrainController : MonoBehaviour
                 }
             }
         }
-        TargetPoint = TargetPointList[lastPoint ? TargetPointList.Count - 1 : TargetPointIndex].localPosition;
+        TargetPoint = TargetPointList[TargetPointIndex].localPosition;
 
         if (!IsHeadTrain) return;
         

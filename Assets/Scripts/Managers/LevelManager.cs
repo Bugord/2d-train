@@ -12,8 +12,8 @@ public class LevelManager : MonoBehaviour
     public int StopsCount;
     public float Speed;
     public float BoostedSpeed;
-    [SerializeField] private float MaxSpeed;
-    [SerializeField] private float DefaultSpeed;
+    public float MaxSpeed;
+    public float DefaultSpeed;
     public float Step;
     [SerializeField] private float SpeedStep;
 
