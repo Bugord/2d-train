@@ -141,7 +141,7 @@ namespace Assets.Scripts
                         rail.NextRails.Add(newRailController);
                     });
                     newRailController.InputId = outputId;
-                    newRailController.transform.position = outputPosition - Vector3.up * 0.01f;
+                    newRailController.transform.position = outputPosition + Vector3.up * 0.01f;
 
                     if (indexes.Count > 1)
                     {

@@ -238,7 +238,7 @@ MonoBehaviour:
   CurrentRow: 1
   TrainController: {fileID: 39203789}
   RowsBefore: 5
-  RowsAfter: 4
+  RowsAfter: 5
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0
@@ -393,7 +393,7 @@ PrefabInstance:
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
       propertyPath: distanceBetweenTrains
-      value: 1.2
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
         type: 3}
