@@ -87,6 +87,7 @@ public class UIManager : MonoBehaviour
     {
         _mainMenuController.BestScore.text = CloudVariables.ImportantValues[0].ToString();
         _mainMenuController.Coins.text = CloudVariables.ImportantValues[1].ToString();
+        _shopController.UpdateSkins();
         if (CloudVariables.ImportantValues[2] == 1)
         {
             RemoveAdsController.DestroyButton();

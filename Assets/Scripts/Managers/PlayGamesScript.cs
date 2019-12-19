@@ -8,7 +8,7 @@ public class PlayGamesScript : MonoBehaviour
 {
     public static PlayGamesScript Instance { get; private set; }
 
-    const string SAVE_NAME = "HighScoreAndCoins1";
+    const string SAVE_NAME = "HighScoreAndCoinsandSkins";
     bool isSaving;
     bool isCloudDataLoaded = false;
 

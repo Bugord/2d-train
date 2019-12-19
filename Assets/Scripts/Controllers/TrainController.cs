@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Assets.Scripts;
 using Assets.Scripts.Extentions;
 using UnityEngine;
@@ -26,9 +27,7 @@ public class TrainController : MonoBehaviour
     public GameObject TrainPrefab;
 
     public List<Transform> TargetPointList;
-
-    private Rigidbody2D _rigidbody2D;
-    public SpriteRenderer _spriteRenderer;
+    
     private const float DistToChangeTarget = 0.05f;
 
     public TrainController NextTrain;
@@ -46,7 +45,7 @@ public class TrainController : MonoBehaviour
     public static float Speed;
 
     [SerializeField] private GameObject _trailObject;
-
+    
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!IsHeadTrain)
@@ -157,7 +156,7 @@ public class TrainController : MonoBehaviour
         newTrainController.ChangeTargetPoint(true);
         newTrainController.IsHeadTrain = false;
         newTrainController.NextTrain = lastTrain;
-        Trains.First(controller => controller.IsHeadTrain).Trains.Add(newTrainController);
+        HeadTrain.Trains.Add(newTrainController);
         Destroy(newTrainController._trailObject);
     }
 
@@ -165,16 +164,6 @@ public class TrainController : MonoBehaviour
     {
         LastTrainPos = transform.position;
         Trains.Clear();
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        InputManager.Swipe += InputManagerOnSwipe;
-        if (!IsHeadTrain) return;
-        if (HeadTrain == null)
-        {
-            HeadTrain = this;
-        }
-        Trains.Add(this);
-        AdsManager.TrainRevive += ReviveTrain;
     }
 
     private void ReviveTrain()
@@ -223,21 +212,30 @@ public class TrainController : MonoBehaviour
         }
         TargetPointList = TargetRail.WayPoints;
         TargetPoint = TargetPointList[0].localPosition;
+        InputManager.Swipe += InputManagerOnSwipe;
+        if (HeadTrain == null)
+        {
+            HeadTrain = this;
+        }
+        HeadTrain.Trains.Add(this);
+        AdsManager.TrainRevive += ReviveTrain;
+        SkinManager.Instance.UpdateSkin(GetComponent<SpriteRenderer>());
     }
 
+#if UNITY_EDITOR
     private void Update()
     {
+
         if (!IsHeadTrain) return;
-        
-#if UNITY_EDITOR
+
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
 
-        if ((Input.GetKeyDown(KeyCode.Mouse0) || touch) && IsHeadTrain)
+        if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
         {
             TargetRail.SwitchRail();
         }
-#endif
     }
+#endif
 
     private void FixedUpdate()
     {
@@ -350,11 +348,14 @@ public class TrainController : MonoBehaviour
                 LastRail = TargetRail;
                 TargetRail = TargetRail.NextActiveRail;
                 TargetPointList = TargetRail.WayPoints;
-                var last = TargetRail;
-                while (last != null)
+                if (IsHeadTrain)
                 {
-                    last.UpdateRailSprite();
-                    last = last.NextActiveRail;
+                    var last = TargetRail;
+                    while (last != null)
+                    {
+                        last.UpdateRailSprite();
+                        last = last.NextActiveRail;
+                    }
                 }
             }
         }
