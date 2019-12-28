@@ -33,6 +33,17 @@ public static class GameData
         set => PlayerPrefs.SetInt("BonusReceived", value ? 1 : 0);
     }
 
+    public static string CurrentSkinId
+    {
+        get
+        {
+            if (!PlayerPrefs.HasKey("CurrentSkin"))
+                PlayerPrefs.SetString("CurrentSkin", "Train_0");
+
+            return PlayerPrefs.GetString("CurrentSkin");
+        }
+        set => PlayerPrefs.SetString("CurrentSkin", value);
+    }
 
     public static int AverageLevel
     {

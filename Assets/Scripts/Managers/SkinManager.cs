@@ -5,9 +5,7 @@ using UnityEngine;
 public class SkinManager : MonoBehaviour
 {
     public static SkinManager Instance;
-
-    public Sprite CurrentSkin;
-
+    
     private SpriteRenderer _trainRenderer;
 
     public int RandomSkinCost;
@@ -16,16 +14,21 @@ public class SkinManager : MonoBehaviour
     {
         Instance = this;
     }
-
+    
     public void SetSkin(Sprite skin)
     {
-        CurrentSkin = skin;
+        GameData.CurrentSkinId = skin.name;
         _trainRenderer.sprite = skin;
     }
 
-    public void UpdateSkin(SpriteRenderer renderer)
+    public void UpdateSkin(SpriteRenderer trainRenderer)
     {
-        _trainRenderer = renderer;
-        _trainRenderer.sprite = CurrentSkin;
+        _trainRenderer = trainRenderer;
+        _trainRenderer.sprite = LoadSkinFromResource(GameData.CurrentSkinId);
+    }
+
+    private Sprite LoadSkinFromResource(string skinId)
+    {
+        return Resources.Load<Sprite>($"Skins/{skinId}");
     }
 }
