@@ -29,4 +29,15 @@ namespace Assets.Scripts
        StopWithPoints,
        Clear
    }
+
+   public enum AudioClipType
+   {
+        Swipe,
+        StopHit,
+        Coin,
+        NewTrain,
+        BoostStart,
+        BoostEnd,
+
+   }
 }

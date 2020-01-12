@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Assets.Scripts;
 using Assets.Scripts.Extentions;
+using Assets.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = System.Diagnostics.Debug;
@@ -53,6 +54,7 @@ public class TrainController : MonoBehaviour
 
         if (col.tag == "Point")
         {
+            SoundManager.Instance.Play(AudioClipType.Coin);
             if (IsBoosted)
             {
                Destroy(col.gameObject, 0.5f); 
@@ -71,6 +73,7 @@ public class TrainController : MonoBehaviour
                 Points++;
                 if (Points > 2 * Trains.Count && Trains.Count < 5)
                 {
+                    SoundManager.Instance.Play(AudioClipType.NewTrain);
                     GenerateNewTrain();
                     Points = 1;
                 }
@@ -84,6 +87,7 @@ public class TrainController : MonoBehaviour
             StartCoroutine(ActivateBoost(GetComponent<CapsuleCollider2D>()));
         }else if (col.tag == "Stop" && !IsBoosted)
         {
+            SoundManager.Instance.Play(AudioClipType.StopHit);
             Destroy(col.gameObject);
             if (Points > 2 * (Trains.Count - 1))
             {
@@ -179,6 +183,7 @@ public class TrainController : MonoBehaviour
 
     private IEnumerator ActivateBoost(CapsuleCollider2D col)
     {
+        SoundManager.Instance.Play(AudioClipType.BoostStart);
         IsBoosted = true;
         _trailObject.SetActive(true);
 
@@ -190,6 +195,7 @@ public class TrainController : MonoBehaviour
             yield return null;
         }
 
+        SoundManager.Instance.Play(AudioClipType.BoostEnd);
         IsBoosted = false;
         _trailObject.SetActive(false);
     }
@@ -200,6 +206,7 @@ public class TrainController : MonoBehaviour
         if (IsHeadTrain)
         {
             TargetRail.SwitchRail(direction);
+            SoundManager.Instance.Play(AudioClipType.Swipe);
         }
 #endif
     }
@@ -233,6 +240,7 @@ public class TrainController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
         {
             TargetRail.SwitchRail();
+            SoundManager.Instance.Play(AudioClipType.Swipe);
         }
     }
 #endif
