@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201125694095732}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.631991, y: -4.010768, z: 0}
+  m_LocalPosition: {x: 13.93, y: -3.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2261541881967198722}
@@ -131,14 +131,18 @@ MonoBehaviour:
   Trains: []
   TrainPrefab: {fileID: 1201125694095732}
   TargetPointList: []
-  _spriteRenderer: {fileID: 0}
   NextTrain: {fileID: 0}
   distanceBetweenTrains: 0
   LastRail: {fileID: 0}
   IsDead: 0
   IsBoosted: 0
   IsConnected: 0
+  LastTrainPos: {x: 0, y: 0, z: 0}
   _trailObject: {fileID: 6489716545892290022}
+  sectorAngle: 90
+  step: 1
+  joint: {fileID: 0}
+  rigidBody2D: {fileID: 0}
 --- !u!70 &2205464656970735962
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

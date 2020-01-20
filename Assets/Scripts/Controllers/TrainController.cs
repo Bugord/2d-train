@@ -29,7 +29,7 @@ public class TrainController : MonoBehaviour
 
     public List<Transform> TargetPointList;
     
-    private const float DistToChangeTarget = 0.05f;
+    private const float DistToChangeTarget = 0.1f;
 
     public TrainController NextTrain;
     public static TrainController HeadTrain;
@@ -39,14 +39,21 @@ public class TrainController : MonoBehaviour
 
     public bool IsDead;
     public bool IsBoosted;
-    public bool IsConnected;
     
     public Vector3 LastTrainPos;
+    private List<Vector3> _points;
 
     public static float Speed;
 
     [SerializeField] private GameObject _trailObject;
-    
+
+    public float sectorAngle = 90;
+    public float step = 1;
+
+    public Rigidbody2D rigidBody2D;
+
+    private int _railLayer;
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!IsHeadTrain)
@@ -112,6 +119,14 @@ public class TrainController : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D coll)
+    {
+        if (coll.gameObject.layer == _railLayer)
+        {
+            SetLastTrainPos(coll);
+        }
+    }
+
     private void UpdateTrainPoints()
     {
         for (var i = 0; i < Trains.Count; i++)
@@ -152,9 +167,8 @@ public class TrainController : MonoBehaviour
             return;
 
         var lastTrain = Trains.Last();
-        var newTrainPos = HeadTrain.LastRail.transform.position + Vector3.down;
+        var newTrainPos = lastTrain.LastTrainPos;
         var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
-        Destroy(newTrain.GetComponent<CapsuleCollider2D>());
         var newTrainController = newTrain.GetComponent<TrainController>();
         newTrainController.TargetRail = HeadTrain.TargetRail;
         newTrainController.ChangeTargetPoint(true);
@@ -166,8 +180,11 @@ public class TrainController : MonoBehaviour
 
     private void Awake()
     {
+        _railLayer = LayerMask.NameToLayer("Rail");
         LastTrainPos = transform.position;
         Trains.Clear();
+        _points = new List<Vector3>();
+        rigidBody2D = GetComponent<Rigidbody2D>();
     }
 
     private void ReviveTrain()
@@ -232,7 +249,6 @@ public class TrainController : MonoBehaviour
 #if UNITY_EDITOR
     private void Update()
     {
-
         if (!IsHeadTrain) return;
 
         var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
@@ -248,13 +264,18 @@ public class TrainController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!UIManager.IsInGame) return;
-
+        
         var vectorToTarget = VectorToTarget();
-
-        SetRotation(vectorToTarget);
+        if (IsHeadTrain)
+        {
+            SetRotation(vectorToTarget);
+        }
+        else
+        {
+            SetRotation(NextTrain.transform.position - transform.position);
+        }
+        
         MoveTrain(vectorToTarget);
-        var currentSpeed = IsBoosted ? LevelManager.Instance.BoostedSpeed : Speed;
-        StartCoroutine(SetLastTrainPos(   currentSpeed < 6 ? 50/currentSpeed*Time.deltaTime :((50 + LevelManager.Instance.Level/currentSpeed)/ currentSpeed) * Time.fixedDeltaTime, transform.position));
 
         if (Vector2.SqrMagnitude(vectorToTarget) < DistToChangeTarget)
         {
@@ -267,11 +288,32 @@ public class TrainController : MonoBehaviour
         }
     }
 
-    private IEnumerator SetLastTrainPos(float time, Vector3 pos)
+    private void SetLastTrainPos(Collider2D coll)
     {
-        yield return new WaitForSeconds(time);
+        _points.Clear();
+        var backDirectionAngle = transform.eulerAngles.z + 270;
 
-        LastTrainPos = pos;
+        for (var angle = backDirectionAngle - sectorAngle * 0.5f; angle < backDirectionAngle + sectorAngle * 0.5f; angle += step)
+        {
+            var newPos = transform.position + new Vector3(distanceBetweenTrains * Mathf.Cos(angle * Mathf.Deg2Rad), distanceBetweenTrains * Mathf.Sin(angle * Mathf.Deg2Rad), 0);
+            
+            if (coll.OverlapPoint(newPos))
+            {
+                _points.Add(newPos);
+            }
+        }
+
+        if (_points.Count > 1)
+        {
+            LastTrainPos = _points[(int)(_points.Count * 0.5f)];
+        }
+
+        if (_points.Count == 1)
+        {
+            LastTrainPos = _points.First();
+        }
+
+        UnityEngine.Debug.DrawRay(LastTrainPos, Vector3.right, Color.green);
     }
 
     private Vector2 VectorToTarget()
@@ -280,7 +322,7 @@ public class TrainController : MonoBehaviour
         {
             return Vector2.zero;
         }
-        return (IsHeadTrain || (!IsHeadTrain && !IsConnected) ? TargetPoint + TargetRail.transform.position : NextTrain.LastTrainPos)- transform.position;
+        return (IsHeadTrain ? TargetPoint + TargetRail.transform.position : NextTrain.LastTrainPos)- transform.position;
     }
 
     private void SetRotation(Vector2 vectorToTarget)
@@ -305,31 +347,10 @@ public class TrainController : MonoBehaviour
                 newSpeed * Time.deltaTime);
             return;
         }
-        var distance = Vector3.Distance(transform.position, NextTrain.transform.position);
-        if (!IsConnected)
-        {
-            if (distance > distanceBetweenTrains + 0.1f)
-            {
-                newSpeed = Speed * 1.5f;
-            }
-            else
-            {
-                IsConnected = true;
-                newSpeed = Speed;
-            }
-            transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + vectorToTarget,
-                newSpeed * Time.deltaTime);
-        }
-        else
-        {
-            if (distance < distanceBetweenTrains)
-            {
-                newSpeed = 0;
-            }
-            transform.position = Vector2.MoveTowards(transform.position, NextTrain.LastTrainPos,
-                newSpeed * Time.deltaTime); ;
-        }
 
+        newSpeed *= 1.5f;
+        transform.position = Vector2.MoveTowards(transform.position, NextTrain.LastTrainPos,
+            newSpeed * Time.deltaTime);
     }
 
     private void ChangeTargetPoint(bool isLast = false)
