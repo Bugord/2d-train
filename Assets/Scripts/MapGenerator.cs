@@ -52,7 +52,7 @@ namespace Assets.Scripts
         public Row OldRow;
         public Row NewRow;
         public int CurrentRow;
-        public TrainController TrainController;
+        public HeadTrainController TrainController;
 
         public static Dictionary<int, Row> _rowsList;
 

@@ -65,7 +65,7 @@ public class ShopController : PanelBase
         {
             if (array[i] == '1')
             {
-                _skinsList[i].UnlockSkin();
+                _skinsList?[i].UnlockSkin();
             }
         }
     }

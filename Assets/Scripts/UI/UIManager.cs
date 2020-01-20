@@ -26,10 +26,14 @@ public class UIManager : MonoBehaviour
 
     public static PanelBase previousPanel;
     public static PanelBase currentPanel;
-    
-    public void Start()
+
+    public void Awake()
     {
         Instance = this;
+    }
+
+    public void Start()
+    {
         previousPanel = _mainMenuController;
         currentPanel = _mainMenuController;
 
