@@ -216,6 +216,74 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3803382055921705360
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7674901072323193717}
+  - component: {fileID: 1867792117329235560}
+  - component: {fileID: 5060443659281398395}
+  m_Layer: 8
+  m_Name: PointEffector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7674901072323193717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3803382055921705360}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 745352147833053844}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1867792117329235560
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3803382055921705360}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 1
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 5
+--- !u!250 &5060443659281398395
+PointEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3803382055921705360}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 512
+  m_ForceMagnitude: -50
+  m_ForceVariation: 0
+  m_DistanceScale: 0.5
+  m_ForceSource: 1
+  m_ForceTarget: 0
+  m_ForceMode: 0
+  m_Drag: 10
+  m_AngularDrag: 0
 --- !u!1 &3968992545633443954
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,6 +319,7 @@ Transform:
   - {fileID: 5752036303179038285}
   - {fileID: 4540076370831958031}
   - {fileID: 7124662204365507815}
+  - {fileID: 7674901072323193717}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -359,7 +428,7 @@ MonoBehaviour:
   Trains: []
   LookAtTarget: {fileID: 7124662204365507815}
   NextTrain: {fileID: 0}
-  distanceBetweenTrains: 1.2
+  distanceBetweenTrains: 1.1
   IsDead: 0
   IsBoosted: 0
   LastTrainPos: {x: 0, y: 0, z: 0}
@@ -372,6 +441,7 @@ MonoBehaviour:
     type: 3}
   Turning: 0
   _trailObject: {fileID: 282108554463729498}
+  _pointEffector: {fileID: 3803382055921705360}
 --- !u!1 &4495367605019438797
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +546,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5510811474528022226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 745352147833053844}

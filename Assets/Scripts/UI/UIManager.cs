@@ -27,9 +27,12 @@ public class UIManager : MonoBehaviour
     public static PanelBase previousPanel;
     public static PanelBase currentPanel;
 
-    public void Awake()
+    public void Update()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
     }
 
     public void Start()

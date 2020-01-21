@@ -18,12 +18,15 @@ namespace Assets.Scripts.Managers
         [SerializeField] private AudioSource _boostEnd;
 
         // Start is called before the first frame update
-        void Awake()
+        void Update()
         {
-            Instance = this;
+            if (Instance == null)
+            {
+                Instance = this;
+            }
         }
 
-        public void Play(AudioClipType clipType)
+        public void Play(AudioClipType clipType, float pitchLevel = 1)
         {
             switch (clipType)
             {
@@ -34,6 +37,7 @@ namespace Assets.Scripts.Managers
                     _stopHit.Play();
                     break;
                 case AudioClipType.Coin:
+                    _coin.pitch = pitchLevel;
                     _coin.Play();
                     break;
                 case AudioClipType.NewTrain:

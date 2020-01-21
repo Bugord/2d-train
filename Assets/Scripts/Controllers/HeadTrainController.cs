@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Assets.Scripts;
 using Assets.Scripts.Extentions;
 using Assets.Scripts.Managers;
@@ -23,6 +24,8 @@ public class HeadTrainController : TrainController
     [SerializeField] private GameObject _trailObject;
 
     private SpriteRenderer _spriteRenderer;
+
+    [SerializeField] private GameObject _pointEffector;
 
     private void Start()
     {
@@ -89,7 +92,6 @@ public class HeadTrainController : TrainController
     {
         if (col.tag == "Point")
         {
-            SoundManager.Instance.Play(AudioClipType.Coin);
             if (IsBoosted)
             {
                 Destroy(col.gameObject, 0.5f);
@@ -99,32 +101,33 @@ public class HeadTrainController : TrainController
                 Destroy(col.gameObject);
             }
 
-            GameData.Coins++;
-            UIManager.Instance._inGameUiController.Score.text = GameData.Coins.ToString();
-            PlayGamesScript.UnlockAchievement(GPGSIds.achievement_first_coin);
-
             if (Trains.Count <= 5)
             {
                 Points++;
                 if (Points > 2 * Trains.Count && Trains.Count < 5)
                 {
-                    SoundManager.Instance.Play(AudioClipType.NewTrain);
                     GenerateNewTrain();
                     Points = 1;
                 }
 
                 UpdateTrainPoints();
             }
+
+            GameData.Coins++;
+            UIManager.Instance._inGameUiController.Score.text = GameData.Coins.ToString();
+            PlayGamesScript.UnlockAchievement(GPGSIds.achievement_first_coin);
+
+            if (Trains != null)
+                SoundManager.Instance.Play(AudioClipType.Coin, 0.5f + Speed*0.05f);
         }
         else if (col.tag == "Boost")
         {
-            PlayGamesScript.UnlockAchievement(GPGSIds.achievement_speed_of_light);
             Destroy(col.gameObject);
-            StartCoroutine(ActivateBoost(GetComponent<CapsuleCollider2D>()));
+            StartCoroutine(ActivateBoost());
+            PlayGamesScript.UnlockAchievement(GPGSIds.achievement_speed_of_light);
         }
         else if (col.tag == "Stop" && !IsBoosted)
         {
-            SoundManager.Instance.Play(AudioClipType.StopHit);
             Destroy(col.gameObject);
             if (Points > 2 * (Trains.Count - 1))
             {
@@ -146,6 +149,7 @@ public class HeadTrainController : TrainController
                 UIManager.IsInGame = false;
                 UIManager.Instance.ShowEndGameMenu(true);
             }
+            SoundManager.Instance.Play(AudioClipType.StopHit);
         }
     }
 
@@ -195,11 +199,12 @@ public class HeadTrainController : TrainController
         UpdateTrainPoints();
     }
 
-    private IEnumerator ActivateBoost(CapsuleCollider2D col)
+    private IEnumerator ActivateBoost()
     {
         SoundManager.Instance.Play(AudioClipType.BoostStart);
         IsBoosted = true;
         _trailObject.SetActive(true);
+        _pointEffector.SetActive(true);
 
         float t = 0;
 
@@ -212,6 +217,7 @@ public class HeadTrainController : TrainController
         SoundManager.Instance.Play(AudioClipType.BoostEnd);
         IsBoosted = false;
         _trailObject.SetActive(false);
+        _pointEffector.SetActive(false);
     }
 
     private void GenerateNewTrain()
@@ -223,6 +229,7 @@ public class HeadTrainController : TrainController
         newTrainController.NextTrain = lastTrain;
         HeadTrain.Trains.Add(newTrainController);
         newTrain.GetComponent<SpriteRenderer>().sprite = _spriteRenderer.sprite;
+        SoundManager.Instance.Play(AudioClipType.NewTrain);
     }
 
     private void ChangeTargetPoint(bool isLast = false)

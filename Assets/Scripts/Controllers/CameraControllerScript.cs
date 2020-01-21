@@ -18,9 +18,8 @@ public class CameraControllerScript : MonoBehaviour
         //Calculate and store the offset value by getting the distance between the player's position and camera's position.
         offset = transform.position - target.position;
     }
-
-    // LateUpdate is called after Update each frame
-    void LateUpdate()
+    
+    void Update()
     {
         transform.position = Vector3.SmoothDamp(transform.position, target.position + offset, ref velocity, smoothTime);
     }
