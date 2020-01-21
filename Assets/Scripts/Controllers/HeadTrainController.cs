@@ -87,7 +87,6 @@ public class HeadTrainController : TrainController
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.LogError(col);
         if (col.tag == "Point")
         {
             SoundManager.Instance.Play(AudioClipType.Coin);
@@ -264,6 +263,11 @@ public class HeadTrainController : TrainController
         TargetPoint = railPoint != null ? railPoint.localPosition : NextTrain.LastTrainPos;
 
         GameData.Score = TargetRail.Row;
+    }
+
+    public override void SetRotation(Vector2 vectorToTarget)
+    {
+        transform.up = vectorToTarget;
     }
 
     public override void MoveTrain(Vector2 vectorToTarget)

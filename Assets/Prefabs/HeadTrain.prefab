@@ -250,6 +250,7 @@ Transform:
   - {fileID: 7826902285971871861}
   - {fileID: 5752036303179038285}
   - {fileID: 4540076370831958031}
+  - {fileID: 7124662204365507815}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -310,7 +311,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3968992545633443954}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -356,13 +357,14 @@ MonoBehaviour:
   - {fileID: 4495367605019438797}
   Points: 1
   Trains: []
+  LookAtTarget: {fileID: 7124662204365507815}
   NextTrain: {fileID: 0}
-  distanceBetweenTrains: 0.6
+  distanceBetweenTrains: 1.2
   IsDead: 0
   IsBoosted: 0
   LastTrainPos: {x: 0, y: 0, z: 0}
   sectorAngle: 90
-  step: 1
+  step: 0.5
   TargetPoint: {x: 0, y: 0, z: 0}
   TargetPointIndex: 0
   TargetRail: {fileID: 0}
@@ -450,3 +452,33 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &5510811474528022226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7124662204365507815}
+  m_Layer: 8
+  m_Name: LookAtTarger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7124662204365507815
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5510811474528022226}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 745352147833053844}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

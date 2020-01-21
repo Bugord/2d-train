@@ -18,7 +18,7 @@ public class TrainController : MonoBehaviour
     public int Points = 1;
     
     public List<TrainController> Trains;
-
+    public Transform LookAtTarget;
     
     public TrainController NextTrain;
     public static TrainController HeadTrain;
@@ -39,10 +39,12 @@ public class TrainController : MonoBehaviour
     
     private void OnTriggerStay2D(Collider2D coll)
     {
-        UnityEngine.Debug.LogError(name);
         if (coll.gameObject.layer == _railLayer)
         {
-            SetLastTrainPos(coll);
+            if (coll.gameObject.GetComponent<RailController>().IsActive)
+            {
+                SetLastTrainPos(coll);
+            }
         }
     }
 
@@ -59,7 +61,7 @@ public class TrainController : MonoBehaviour
 
         var vectorToTarget = NextTrain.LastTrainPos;
 
-        SetRotation(vectorToTarget);
+        SetRotation(NextTrain.LookAtTarget.position - transform.position);
         MoveTrain(vectorToTarget);
     }
 
@@ -89,7 +91,7 @@ public class TrainController : MonoBehaviour
         }
     }
     
-    public void SetRotation(Vector2 vectorToTarget)
+    public virtual void SetRotation(Vector2 vectorToTarget)
     {
         transform.up = vectorToTarget;
     }
