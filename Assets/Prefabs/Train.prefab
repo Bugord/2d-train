@@ -126,12 +126,10 @@ MonoBehaviour:
   Trains: []
   LookAtTarget: {fileID: 6158119791099444316}
   NextTrain: {fileID: 0}
-  distanceBetweenTrains: 1.1
+  distanceBetweenTrains: 1.15
   IsDead: 0
   IsBoosted: 0
   LastTrainPos: {x: 0, y: 0, z: 0}
-  sectorAngle: 90
-  step: 0.5
 --- !u!70 &2205464656970735962
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -58,6 +58,8 @@ public class HeadTrainController : TrainController
     {
         if (!UIManager.IsInGame) return;
 
+        SetLastTrainPos();
+
         var vectorToTarget = VectorToTarget();
 
         SetRotation(vectorToTarget);

@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 4897734478439029862}
   - component: {fileID: 5380603162231468307}
   - component: {fileID: 45074064105203521}
-  - component: {fileID: 436374130696264267}
   m_Layer: 10
   m_Name: Rail_Strait_Big
   m_TagString: Untagged
@@ -195,37 +194,6 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 1
---- !u!60 &436374130696264267
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4201040003240201475}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.019848771}
-    oldSize: {x: 0.21, y: 5.29}
-    newSize: {x: 0.21, y: 5.29}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.105, y: 5.185}
-      - {x: -0.105, y: -0.105}
-      - {x: 0.095, y: -0.105}
-      - {x: 0.105, y: -0.095}
-      - {x: 0.105, y: 5.1749997}
-      - {x: 0.095, y: 5.185}
 --- !u!1 &8607993555216574295
 GameObject:
   m_ObjectHideFlags: 0
