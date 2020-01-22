@@ -1,71 +1,63 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Assets.Scripts;
-using Assets.Scripts.Extentions;
-using Assets.Scripts.Managers;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Debug = System.Diagnostics.Debug;
 
-public class TrainController : MonoBehaviour
+namespace Assets.Scripts.Controllers
 {
-    public GameObject[] TrainPointSprites;
-
-    public int Points = 1;
-    
-    public List<TrainController> Trains;
-    public Transform LookAtTarget;
-    
-    public TrainController NextTrain;
-    public static TrainController HeadTrain;
-    public float distanceBetweenTrains;
-    
-    public bool IsDead;
-    public bool IsBoosted;
-    
-    public Vector3 LastTrainPos;
-    private List<Vector3> _lastPoints;
-
-    public static float Speed;
-
-    private void Awake()
+    public class TrainController : MonoBehaviour
     {
-        LastTrainPos = transform.position;
-        _lastPoints = new List<Vector3>();
-    }
+        public GameObject[] TrainPointSprites;
+
+        public int Points = 1;
     
-    private void FixedUpdate()
-    {
-        if (!UIManager.IsInGame) return;
+        public List<TrainController> Trains;
+        public Transform LookAtTarget;
+    
+        public TrainController NextTrain;
+        public static TrainController HeadTrain;
+        public float distanceBetweenTrains;
+    
+        public bool IsDead;
+        public bool IsBoosted;
+    
+        public Vector3 LastTrainPos;
+        private List<Vector3> _lastPoints;
         
-        SetLastTrainPos();
-
-        SetRotation(NextTrain.LookAtTarget.position - transform.position);
-        MoveTrain(NextTrain.LastTrainPos);
-    }
-
-    public void SetLastTrainPos()
-    {
-        _lastPoints.Add(transform.position);
-        _lastPoints.RemoveAll(p => Vector3.Distance(transform.position, p) > distanceBetweenTrains);
-        LastTrainPos = _lastPoints.First();
-    }
+        private void Awake()
+        {
+            LastTrainPos = transform.position;
+            _lastPoints = new List<Vector3>();
+        }
     
-    public virtual void SetRotation(Vector2 vectorToTarget)
-    {
-        transform.up = vectorToTarget;
-    }
-
-    public virtual void MoveTrain(Vector2 vectorToTarget)
-    {
-        if (IsDead) return;
+        private void FixedUpdate()
+        {
+            if (!UIManager.IsInGame) return;
         
-        transform.position = NextTrain.LastTrainPos;
+            SetLastTrainPos();
+
+            SetRotation(NextTrain.LookAtTarget.position - transform.position);
+            MoveTrain(NextTrain.LastTrainPos);
+        }
+
+        public void SetLastTrainPos()
+        {
+            _lastPoints.Add(transform.position);
+            _lastPoints.RemoveAll(p => Vector3.Distance(transform.position, p) > distanceBetweenTrains);
+            LastTrainPos = _lastPoints.First();
+        }
+    
+        public virtual void SetRotation(Vector2 vectorToTarget)
+        {
+            transform.up = vectorToTarget;
+        }
+
+        public virtual void MoveTrain(Vector2 vectorToTarget)
+        {
+            if (IsDead) return;
+        
+            transform.position = NextTrain.LastTrainPos;
+        }
+    
+    
     }
-    
-    
 }

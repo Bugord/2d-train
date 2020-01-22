@@ -442,7 +442,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1590117177}
-  smoothTime: 0.1
   _storeButton: {fileID: 2058212650}
 --- !u!1001 &1154755000
 PrefabInstance:
@@ -626,6 +625,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: DontDestroyOnLoad
       objectReference: {fileID: 0}
+    - target: {fileID: 3180570630866914750, guid: 52064d8b56f8def47b794d7102b4bb57,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 334.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3180570630866914750, guid: 52064d8b56f8def47b794d7102b4bb57,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5292096
+      objectReference: {fileID: 0}
     - target: {fileID: 7091047400743886104, guid: 52064d8b56f8def47b794d7102b4bb57,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -686,5 +695,15 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 885805236}
+    - target: {fileID: 3180570630866914748, guid: 52064d8b56f8def47b794d7102b4bb57,
+        type: 3}
+      propertyPath: m_UseSpriteMesh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3180570630866914748, guid: 52064d8b56f8def47b794d7102b4bb57,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52064d8b56f8def47b794d7102b4bb57, type: 3}

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
+using Assets.Scripts.Controllers;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -31,8 +32,6 @@ public class LevelManager : MonoBehaviour
             Speed += (MaxSpeed - DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, Step));
             Step += SpeedStep;
         }
-
-        TrainController.Speed = Speed;
     }
 
     public void UpdateManager()

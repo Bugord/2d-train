@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Assets.Scripts;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.Enums;
 using Assets.Scripts.Extentions;
 using Assets.Scripts.Managers;
 using UnityEngine;
@@ -120,7 +122,7 @@ public class HeadTrainController : TrainController
             PlayGamesScript.UnlockAchievement(GPGSIds.achievement_first_coin);
 
             if (Trains != null)
-                SoundManager.Instance.Play(AudioClipType.Coin, 0.5f + Speed*0.05f);
+                SoundManager.Instance.Play(AudioClipType.Coin, 0.5f + LevelManager.Instance.Speed*0.05f);
         }
         else if (col.tag == "Boost")
         {
@@ -283,7 +285,7 @@ public class HeadTrainController : TrainController
     {
         if (IsDead) return;
 
-        var newSpeed = Speed;
+        var newSpeed = LevelManager.Instance.Speed;
 
         if (IsBoosted)
         {
