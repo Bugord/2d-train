@@ -13,7 +13,7 @@ public class RemoveAdsController : MonoBehaviour
 
     private void RemoveAds()
     {
-        IAPManager.Instance.BuyRemoveAds();
+        ServiceLocator.GetService<IAPService>().BuyRemoveAds();
     }
 
     public static void DestroyButton()

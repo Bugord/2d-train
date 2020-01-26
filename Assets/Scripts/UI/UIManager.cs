@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Assets.Scripts;
+using Assets.Scripts.Managers;
+using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,12 +29,10 @@ public class UIManager : MonoBehaviour
     public static PanelBase previousPanel;
     public static PanelBase currentPanel;
 
-    public void Update()
+    public void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+        Instance = this;
+        ServiceLocator.GetService<PlayGamesService>().SignInAction += UpdateUI;
     }
 
     public void Start()
@@ -182,12 +182,12 @@ public class UIManager : MonoBehaviour
         if (GameData.Score > CloudVariables.ImportantValues[0])
         {
             CloudVariables.ImportantValues[0] = GameData.Score;
-            PlayGamesScript.AddScoreToLeaderboard(GPGSIds.leaderboard_high_score, CloudVariables.ImportantValues[0]);
+            ServiceLocator.GetService<LeaderBoardsService>().AddScoreToLeaderBoard(GPGSIds.leaderboard_high_score, GameData.Score);
         }
 
         CloudVariables.ImportantValues[1] += GameData.Coins;
         
-        PlayGamesScript.Instance.SaveData();
+        ServiceLocator.GetService<PlayGamesService>().SaveData();
 
         UpdateUI();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

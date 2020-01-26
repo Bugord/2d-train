@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class CoinsStoreController : PanelBase
@@ -18,34 +19,14 @@ public class CoinsStoreController : PanelBase
     {
         BackButton.onClick.AddListener(GoBack);
 
-        _coins1000.onClick.AddListener(Buy1000Coins);
-        _coins3000.onClick.AddListener(Buy3000Coins);
-        _coins5000.onClick.AddListener(Buy5000Coins);
-        _coins7000.onClick.AddListener(Buy7000Coins);
-        _coins10000.onClick.AddListener(Buy10000Coins);
+        _coins1000.onClick.AddListener(BuyCoins(1000));
+        _coins3000.onClick.AddListener(BuyCoins(3000));
+        _coins5000.onClick.AddListener(BuyCoins(5000));
+        _coins7000.onClick.AddListener(BuyCoins(7000));
+        _coins10000.onClick.AddListener(BuyCoins(10000));
     }
-    private void Buy1000Coins()
+    private UnityAction BuyCoins(int coins)
     {
-        IAPManager.Instance.BuyCoins(1000);
-    }
-
-    private void Buy3000Coins()
-    {
-        IAPManager.Instance.BuyCoins(3000);
-    }
-
-    private void Buy5000Coins()
-    {
-        IAPManager.Instance.BuyCoins(5000);
-    }
-
-    private void Buy7000Coins()
-    {
-        IAPManager.Instance.BuyCoins(7000);
-    }
-
-    private void Buy10000Coins()
-    {
-        IAPManager.Instance.BuyCoins(10000);
+        return () => { ServiceLocator.GetService<IAPService>().BuyCoins(coins); };
     }
 }

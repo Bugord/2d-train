@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Scripts.Managers;
+using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
     // Deriving the Purchaser class from IStoreListener enables it to receive messages from Unity Purchasing.
-    public class IAPManager : MonoBehaviour, IStoreListener
+    public class IAPService : IStoreListener
     {
-        public static IAPManager Instance { set; get; }
-
         private static IStoreController m_StoreController;          // The Unity Purchasing system.
         private static IExtensionProvider m_StoreExtensionProvider; // The store-specific Purchasing subsystems.
     
@@ -17,13 +17,8 @@ using UnityEngine.Purchasing;
         public static string PRODUCT_5000_COINS = "swipy_rails_coins_5000";
         public static string PRODUCT_7000_COINS = "swipy_rails_coins_7000";
         public static string PRODUCT_10000_COINS = "swipy_rails_coins_10000";
-
-    private void Awake()
-        {
-            Instance = this;
-        }
-
-        void Start()
+    
+        public IAPService()
         {
             // If we haven't set up the Unity Purchasing reference
             if (m_StoreController == null)
@@ -49,7 +44,7 @@ using UnityEngine.Purchasing;
             builder.AddProduct(PRODUCT_7000_COINS, ProductType.Consumable);
             builder.AddProduct(PRODUCT_10000_COINS, ProductType.Consumable);
         
-        UnityPurchasing.Initialize(this, builder);
+            UnityPurchasing.Initialize(this, builder);
         }
 
 
@@ -177,7 +172,7 @@ using UnityEngine.Purchasing;
                 Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
             }
 
-            PlayGamesScript.Instance.SaveData();
+            ServiceLocator.GetService<PlayGamesService>().SaveData();
             UIManager.Instance.UpdateUI();
 
             // Return a flag indicating whether this product has completely been received, or if the application needs 

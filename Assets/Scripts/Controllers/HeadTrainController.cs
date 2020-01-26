@@ -7,6 +7,7 @@ using Assets.Scripts.Controllers;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Extentions;
 using Assets.Scripts.Managers;
+using Assets.Scripts.Services;
 using UnityEngine;
 
 public class HeadTrainController : TrainController
@@ -119,7 +120,7 @@ public class HeadTrainController : TrainController
 
             GameData.Coins++;
             UIManager.Instance._inGameUiController.Score.text = GameData.Coins.ToString();
-            PlayGamesScript.UnlockAchievement(GPGSIds.achievement_first_coin);
+            ServiceLocator.GetService<AchievementsService>().UnlockAchievement(GPGSIds.achievement_first_coin);
 
             if (Trains != null)
                 SoundManager.Instance.Play(AudioClipType.Coin, 0.5f + LevelManager.Instance.Speed*0.05f);
@@ -128,7 +129,7 @@ public class HeadTrainController : TrainController
         {
             Destroy(col.gameObject);
             StartCoroutine(ActivateBoost());
-            PlayGamesScript.UnlockAchievement(GPGSIds.achievement_speed_of_light);
+            ServiceLocator.GetService<AchievementsService>().UnlockAchievement(GPGSIds.achievement_speed_of_light);
         }
         else if (col.tag == "Stop" && !IsBoosted)
         {

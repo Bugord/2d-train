@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Managers;
+using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
@@ -52,7 +54,7 @@ public class ShopController : PanelBase
 
             CloudVariables.ImportantValues[3] = Convert.ToInt32(binString, 2);
             
-            PlayGamesScript.Instance.SaveData();
+            ServiceLocator.GetService<PlayGamesService>().SaveData();
             UIManager.Instance.UpdateUI();
         }
     }

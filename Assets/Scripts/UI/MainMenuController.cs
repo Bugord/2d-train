@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,12 +30,12 @@ public class MainMenuController : PanelBase
 
     private void ShowAchievementsUI()
     {
-        PlayGamesScript.ShowAchievementsUI();
+        ServiceLocator.GetService<AchievementsService>().ShowAchievementsUI();
     }
 
     private void ShowLeaderboardUI()
     {
-        PlayGamesScript.ShowLeaderboardUI();
+        ServiceLocator.GetService<LeaderBoardsService>().ShowLeaderBoardUI();
     }
 
     private void StartGame()
