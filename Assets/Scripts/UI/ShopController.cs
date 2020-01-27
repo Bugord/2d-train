@@ -17,10 +17,12 @@ public class ShopController : PanelBase
     [SerializeField] private List<RectTransform> _pages;
 
     private List<SkinButton> _skinsList;
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private PlayGamesService _playGamesService;
+
+    private void Awake()
     {
+        _playGamesService = ServiceLocator.GetService<PlayGamesService>();
         _skinsList = new List<SkinButton>();
         BackButton.onClick.AddListener(GoBack);
         _getRandomSkin.onClick.AddListener(GetRandomSkin);
@@ -54,7 +56,7 @@ public class ShopController : PanelBase
 
             CloudVariables.ImportantValues[3] = Convert.ToInt32(binString, 2);
             
-            ServiceLocator.GetService<PlayGamesService>().SaveData();
+            _playGamesService.SaveData();
             UIManager.Instance.UpdateUI();
         }
     }

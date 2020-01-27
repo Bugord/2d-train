@@ -7,25 +7,14 @@ using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
-    public class SoundManager : MonoBehaviour
+    public class SoundManager : Singleton<SoundManager>
     {
-        public static SoundManager Instance;
-    
         [SerializeField] private AudioSource _swipe;
         [SerializeField] private AudioSource _stopHit;
         [SerializeField] private AudioSource _coin;
         [SerializeField] private AudioSource _newTrain;
         [SerializeField] private AudioSource _boostStart;
         [SerializeField] private AudioSource _boostEnd;
-
-        // Start is called before the first frame update
-        void Update()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-        }
 
         public void Play(AudioClipType clipType, float pitchLevel = 1)
         {

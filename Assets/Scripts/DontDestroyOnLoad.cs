@@ -6,7 +6,7 @@ public class DontDestroyOnLoad : MonoBehaviour
 {
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(transform.root.gameObject);
 
         var objects = GameObject.FindGameObjectsWithTag("DontDestroy");
 

@@ -17,9 +17,12 @@ using UnityEngine.Purchasing;
         public static string PRODUCT_5000_COINS = "swipy_rails_coins_5000";
         public static string PRODUCT_7000_COINS = "swipy_rails_coins_7000";
         public static string PRODUCT_10000_COINS = "swipy_rails_coins_10000";
-    
+
+        private PlayGamesService _playGamesService;
+
         public IAPService()
         {
+            _playGamesService = ServiceLocator.GetService<PlayGamesService>();
             // If we haven't set up the Unity Purchasing reference
             if (m_StoreController == null)
             {
@@ -172,7 +175,7 @@ using UnityEngine.Purchasing;
                 Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
             }
 
-            ServiceLocator.GetService<PlayGamesService>().SaveData();
+            _playGamesService.SaveData();
             UIManager.Instance.UpdateUI();
 
             // Return a flag indicating whether this product has completely been received, or if the application needs 

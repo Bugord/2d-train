@@ -11,10 +11,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Object = System.Object;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
-    public static UIManager Instance;
-
     public MainMenuController _mainMenuController;
     [SerializeField] private SettingsMenuController _settingsMenuController;
     [SerializeField] private ShopController _shopController;
@@ -29,10 +27,16 @@ public class UIManager : MonoBehaviour
     public static PanelBase previousPanel;
     public static PanelBase currentPanel;
 
+    private PlayGamesService _playGamesService;
+    private LeaderBoardsService _leaderBoardsService;
+
+    public Action GameRestart;
+    
     public void Awake()
     {
-        Instance = this;
-        ServiceLocator.GetService<PlayGamesService>().SignInAction += UpdateUI;
+        _playGamesService = ServiceLocator.GetService<PlayGamesService>();
+        _leaderBoardsService = ServiceLocator.GetService<LeaderBoardsService>();
+        _playGamesService.SignInAction += UpdateUI;
     }
 
     public void Start()
@@ -52,7 +56,7 @@ public class UIManager : MonoBehaviour
         AdsManager.BonusCoins += AdsManagerOnBonusCoins;
         UpdateUI();
     }
-
+    
     private void AdsManagerOnBonusCoins()
     {
         GameData.Coins += GameData.Coins;
@@ -182,14 +186,14 @@ public class UIManager : MonoBehaviour
         if (GameData.Score > CloudVariables.ImportantValues[0])
         {
             CloudVariables.ImportantValues[0] = GameData.Score;
-            ServiceLocator.GetService<LeaderBoardsService>().AddScoreToLeaderBoard(GPGSIds.leaderboard_high_score, GameData.Score);
+            _leaderBoardsService.AddScoreToLeaderBoard(GPGSIds.leaderboard_high_score, GameData.Score);
         }
 
         CloudVariables.ImportantValues[1] += GameData.Coins;
         
-        ServiceLocator.GetService<PlayGamesService>().SaveData();
+        _playGamesService.SaveData();
 
         UpdateUI();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameRestart?.Invoke();
     }
 }

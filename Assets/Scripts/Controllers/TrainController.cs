@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Services;
 using UnityEngine;
 
 namespace Assets.Scripts.Controllers
@@ -22,11 +23,14 @@ namespace Assets.Scripts.Controllers
     
         public Vector3 LastTrainPos;
         private List<Vector3> _lastPoints;
+
+        protected AchievementsService achievementsService;
         
         private void Awake()
         {
             LastTrainPos = transform.position;
             _lastPoints = new List<Vector3>();
+            achievementsService = ServiceLocator.GetService<AchievementsService>();
         }
     
         private void FixedUpdate()

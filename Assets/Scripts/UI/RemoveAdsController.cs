@@ -5,15 +5,18 @@ public class RemoveAdsController : MonoBehaviour
 {
     private static Button _removeAdsButton;
 
+    private IAPService _iapService;
+
     private void Awake()
     {
+        _iapService = ServiceLocator.GetService<IAPService>();
         _removeAdsButton = GetComponent<Button>();
         _removeAdsButton.onClick.AddListener(RemoveAds);        
     }
 
     private void RemoveAds()
     {
-        ServiceLocator.GetService<IAPService>().BuyRemoveAds();
+        _iapService.BuyRemoveAds();
     }
 
     public static void DestroyButton()

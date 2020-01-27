@@ -29,7 +29,7 @@ public class HeadTrainController : TrainController
     private SpriteRenderer _spriteRenderer;
 
     [SerializeField] private GameObject _pointEffector;
-
+    
     private void Start()
     {
         HeadTrain = this;
@@ -39,6 +39,7 @@ public class HeadTrainController : TrainController
         InputManager.Swipe += InputManagerOnSwipe;
         HeadTrain.Trains.Add(this);
         AdsManager.TrainRevive += ReviveTrain;
+        UIManager.Instance.GameRestart += ResetTrain;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         SkinManager.Instance.UpdateSkin(_spriteRenderer);
         UpdateTrainPoints();
@@ -120,7 +121,7 @@ public class HeadTrainController : TrainController
 
             GameData.Coins++;
             UIManager.Instance._inGameUiController.Score.text = GameData.Coins.ToString();
-            ServiceLocator.GetService<AchievementsService>().UnlockAchievement(GPGSIds.achievement_first_coin);
+            achievementsService.UnlockAchievement(GPGSIds.achievement_first_coin);
 
             if (Trains != null)
                 SoundManager.Instance.Play(AudioClipType.Coin, 0.5f + LevelManager.Instance.Speed*0.05f);
@@ -129,7 +130,7 @@ public class HeadTrainController : TrainController
         {
             Destroy(col.gameObject);
             StartCoroutine(ActivateBoost());
-            ServiceLocator.GetService<AchievementsService>().UnlockAchievement(GPGSIds.achievement_speed_of_light);
+            achievementsService.UnlockAchievement(GPGSIds.achievement_speed_of_light);
         }
         else if (col.tag == "Stop" && !IsBoosted)
         {
@@ -195,13 +196,18 @@ public class HeadTrainController : TrainController
 
     private void ReviveTrain()
     {
+        ResetTrain();
+        UIManager.Instance.SetPause();
+        UpdateTrainPoints();
+    }
+
+    private void ResetTrain()
+    {
         LevelManager.Instance.ResetSpeed();
         Points = 1;
         UpdateTrainPoints();
         GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(Destroy);
         UIManager.Instance.HideEndGameMenu();
-        UIManager.Instance.SetPause();
-        UpdateTrainPoints();
     }
 
     private IEnumerator ActivateBoost()

@@ -19,10 +19,15 @@ public class MainMenuController : PanelBase
 
     public Text BestScore;
     public Text Coins;
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private AchievementsService _achievementsService;
+    private LeaderBoardsService _leaderBoardsService;
+
+    private void Awake()
     {
+        _achievementsService = ServiceLocator.GetService<AchievementsService>();
+        _leaderBoardsService = ServiceLocator.GetService<LeaderBoardsService>();
+
         StartButton.onClick.AddListener(StartGame);
         _achievementsButton.onClick.AddListener(ShowAchievementsUI);
         _leaderboardButton.onClick.AddListener(ShowLeaderboardUI);
@@ -30,12 +35,12 @@ public class MainMenuController : PanelBase
 
     private void ShowAchievementsUI()
     {
-        ServiceLocator.GetService<AchievementsService>().ShowAchievementsUI();
+        _achievementsService.ShowAchievementsUI();
     }
 
     private void ShowLeaderboardUI()
     {
-        ServiceLocator.GetService<LeaderBoardsService>().ShowLeaderBoardUI();
+        _leaderBoardsService.ShowLeaderBoardUI();
     }
 
     private void StartGame()

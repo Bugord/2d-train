@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Managers;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 using Random = UnityEngine.Random;
@@ -35,7 +36,7 @@ namespace Assets.Scripts
         public bool HasObject;
     }
 
-    public class MapGenerator : MonoBehaviour
+    public class MapGenerator : Singleton<MapGenerator>
     {
         public RailController InitialRailController;
 
@@ -81,7 +82,7 @@ namespace Assets.Scripts
             _rowsList = new Dictionary<int, Row>();
             _rowsList.Add(0, OldRow);
         }
-
+        
         private void LateUpdate()
         {
             if (TrainController.Trains.Count % 4 == 0)

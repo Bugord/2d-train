@@ -14,6 +14,13 @@ public class CoinsStoreController : PanelBase
     [SerializeField] private Button _coins7000;
     [SerializeField] private Button _coins10000;
 
+    private IAPService _iapService;
+
+    private void Awake()
+    {
+        _iapService = ServiceLocator.GetService<IAPService>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +34,6 @@ public class CoinsStoreController : PanelBase
     }
     private UnityAction BuyCoins(int coins)
     {
-        return () => { ServiceLocator.GetService<IAPService>().BuyCoins(coins); };
+        return () => { _iapService.BuyCoins(coins); };
     }
 }
