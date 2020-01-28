@@ -11,16 +11,18 @@ public class EndGameMenuController : PanelBase
     public GameObject ReviveButton;
     public GameObject BonusButton;
     [SerializeField] private Button _exitToMenu;
+    private LevelService _levelService;
 
-    private void Start()
+    private void Awake()
     {
+        _levelService = ServiceLocator.GetService<LevelService>();
         _exitToMenu.onClick.AddListener(ExitToMainMenu);
     }
 
     public void ExitToMainMenu()
     {
         SetActivePanel(false);
-        GameData.SetLastLevel(LevelManager.Instance.Level);
+        GameData.SetLastLevel(_levelService.Level);
         UIManager.Instance.ExitToMainMenu();
     }
 

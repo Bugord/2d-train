@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1354795798715818928}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 540, y: 959.9995, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -89,3 +89,4 @@ MonoBehaviour:
     count: 10
     ferula: {fileID: 0}
   _audioCollection: {fileID: 11400000, guid: f5d946644f760dd4f87ae1acc69399da, type: 2}
+  _levelSettings: {fileID: 11400000, guid: 6836c90aa70189c4cbea128eceb7edce, type: 2}

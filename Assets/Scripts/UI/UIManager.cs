@@ -29,6 +29,7 @@ public class UIManager : Singleton<UIManager>
 
     private PlayGamesService _playGamesService;
     private LeaderBoardsService _leaderBoardsService;
+    private LevelService _levelService;
 
     public Action GameRestart;
     
@@ -36,6 +37,7 @@ public class UIManager : Singleton<UIManager>
     {
         _playGamesService = ServiceLocator.GetService<PlayGamesService>();
         _leaderBoardsService = ServiceLocator.GetService<LeaderBoardsService>();
+        _levelService = ServiceLocator.GetService<LevelService>();
         _playGamesService.SignInAction += UpdateUI;
     }
 
@@ -178,7 +180,7 @@ public class UIManager : Singleton<UIManager>
 
     public void ExitToMainMenu()
     {
-        LevelManager.Instance.UpdateManager();
+        _levelService.UpdateManager();
         currentPanel = _mainMenuController;
         _pausePanelController.SetActivePanel(false);
         _mainMenuController.SetActivePanel(true);

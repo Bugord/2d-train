@@ -1,31 +1,34 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.ScriptableObjects;
+using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
-    public class LevelManager : Singleton<LevelManager>
+    public class LevelService
     {
-        public int Level;
-        public int StopsCount;
-        public float Speed;
-        public float BoostedSpeed;
-        public float MaxSpeed;
-        public float DefaultSpeed;
-        public float Step;
-        [SerializeField] private float SpeedStep;
+        public int Level { get; private set; }
+        public int StopsCount { get; private set; }
+        public float BoostedSpeed => _levelSettings.BoostedSpeed;
+        [SerializeField] private float _speed;
+        private float _maxSpeed;
+        private float _step;
+        private LevelSettings _levelSettings;
 
-        private void Awake()
+        public LevelService(LevelSettings levelSettings)
         {
+            _levelSettings = levelSettings;
             MapGenerator.LevelUp += OnLevelUp;
             UpdateManager();
         }
 
-        public void FixedUpdate()
+        public float GetSpeed()
         {
-            if (Speed < MaxSpeed && UIManager.IsInGame)
+            if (_speed < _maxSpeed && UIManager.IsInGame)
             {
-                Speed += (MaxSpeed - DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, Step));
-                Step += SpeedStep;
+                _speed += (_maxSpeed - _levelSettings.DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, _step));
+                _step += _levelSettings.SpeedStep;
             }
+
+            return _speed;
         }
 
         public void UpdateManager()
@@ -33,14 +36,14 @@ namespace Assets.Scripts.Managers
             ResetSpeed();
             Level = 0;
             StopsCount = 0;
-            MaxSpeed = 6;
+            _maxSpeed = 6;
             UpdateMaxSpeed();
         }
 
         public void ResetSpeed()
         {
-            Speed = DefaultSpeed;
-            Step = 0;
+            _speed = _levelSettings.DefaultSpeed;
+            _step = 0;
         }
 
         private void OnLevelUp()
@@ -62,7 +65,7 @@ namespace Assets.Scripts.Managers
 
         private void UpdateMaxSpeed()
         {
-            MaxSpeed = Mathf.Atan(Level / 12f + 0.63f) * 5.3f + 3 + GetPlayerSkillFactor();
+            _maxSpeed = Mathf.Atan(Level / 12f + 0.63f) * 5.3f + 3 + GetPlayerSkillFactor();
         }
 
         private float GetPlayerSkillFactor()

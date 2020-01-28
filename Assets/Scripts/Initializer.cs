@@ -10,6 +10,7 @@ namespace Assets.Scripts
     {
         [SerializeField] private PoolService.PoolPart[] _pools;
         [SerializeField] private AudioCollection _audioCollection;
+        [SerializeField] private LevelSettings _levelSettings;
 
         void OnValidate()
         {
@@ -27,6 +28,7 @@ namespace Assets.Scripts
             ServiceLocator.Register(new IAPService());
             ServiceLocator.Register(new PoolService(_pools));
             ServiceLocator.Register(new AudioService(_audioCollection));
+            ServiceLocator.Register(new LevelService(_levelSettings));
         }
     }
 }

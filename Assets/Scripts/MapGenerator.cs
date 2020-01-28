@@ -65,10 +65,12 @@ namespace Assets.Scripts
         public static event Action LevelUp;
 
         private PoolService _poolService;
+        private LevelService _levelService;
 
         private void Awake()
         {
             _poolService = ServiceLocator.GetService<PoolService>();
+            _levelService = ServiceLocator.GetService<LevelService>();
             _railPrefabsDictionary = new Dictionary<RailDirection, RailController>();
             foreach (var prefab in RailPrefabs)
             {
@@ -404,7 +406,7 @@ namespace Assets.Scripts
                             {
                                 CircleRailsConfig[circleConfig] = true;
                                 print(circleConfig);
-                                for (int j = 0; j < Random.Range(1, LevelManager.Instance.StopsCount); j++)
+                                for (int j = 0; j < Random.Range(1, _levelService.StopsCount); j++)
                                 {
                                     _poolService.GetObject<PoolObject>(_stop.name, stopRail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
                                     stopOffset += 0.25f;
@@ -413,7 +415,7 @@ namespace Assets.Scripts
                         }
                         else
                         {
-                            for (int j = 0; j < Random.Range(1, LevelManager.Instance.StopsCount); j++)
+                            for (int j = 0; j < Random.Range(1, _levelService.StopsCount); j++)
                             {
                                 _poolService.GetObject<PoolObject>(_stop.name, stopRail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
                                 stopOffset += 0.25f;

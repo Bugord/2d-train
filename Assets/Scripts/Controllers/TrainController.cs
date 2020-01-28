@@ -27,6 +27,7 @@ namespace Assets.Scripts.Controllers
 
         protected AchievementsService _achievementsService;
         protected AudioService _audioService;
+        protected LevelService _levelService;
         
         private void Awake()
         {
@@ -34,6 +35,7 @@ namespace Assets.Scripts.Controllers
             _lastPoints = new List<Vector3>();
             _achievementsService = ServiceLocator.GetService<AchievementsService>();
             _audioService = ServiceLocator.GetService<AudioService>();
+            _levelService = ServiceLocator.GetService<LevelService>();
         }
     
         private void FixedUpdate()
