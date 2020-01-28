@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Managers;
+using Assets.Scripts.Services;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class RemoveAdsController : MonoBehaviour

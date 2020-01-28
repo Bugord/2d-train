@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using Assets.Scripts.Controllers;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Managers;
+using Assets.Scripts.ObjectsPool;
+using Assets.Scripts.Services;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
+using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
@@ -42,9 +45,7 @@ namespace Assets.Scripts
 
         public List<RailController> RailPrefabs;
         private Dictionary<RailDirection, RailController> _railPrefabsDictionary;
-
-        public Transform Map;
-
+        
         [SerializeField] private GameObject _point;
         [SerializeField] private GameObject _stop;
         [SerializeField] private GameObject _boost;
@@ -63,8 +64,11 @@ namespace Assets.Scripts
 
         public static event Action LevelUp;
 
+        private PoolService _poolService;
+
         private void Awake()
         {
+            _poolService = ServiceLocator.GetService<PoolService>();
             _railPrefabsDictionary = new Dictionary<RailDirection, RailController>();
             foreach (var prefab in RailPrefabs)
             {
@@ -102,7 +106,10 @@ namespace Assets.Scripts
                 {
                     foreach (var oldRail in _rowsList[TrainController.TargetRail.Row - RowsBefore].Rails)
                     {
-                        if (oldRail != null) Destroy(oldRail.gameObject);
+                        if (oldRail != null)
+                        {
+                            oldRail.ReturnToPool();
+                        }
                     }
                 }
             }
@@ -112,7 +119,7 @@ namespace Assets.Scripts
                 InitialRailController.SwitchRail(false);
             }
         }
-
+        
         public void GenerateRails()
         {
             NewRow = new Row();
@@ -134,17 +141,20 @@ namespace Assets.Scripts
 
                 List<int> indexes = GetPrefabsIndexes(newRailsCount, prefabs.Count);
 
-                foreach (var newRailController in indexes.Select(index => Instantiate(prefabs[index], Map)))
+                foreach (var newRailController in indexes.Select(index => 
+                    _poolService.GetObject<RailController>(prefabs[index].name, outputPosition + Vector3.up * 0.01f, Quaternion.identity)))
                 {
+                    newRailController.NextRails.Clear();
+                    newRailController.NextActiveRail = null;
                     newRailController.Row = CurrentRow;
+
                     output.Value.OutputRails.ForEach(rail =>
                     {
                         rail.NextActiveRail = newRailController;
                         rail.NextRails.Add(newRailController);
                     });
                     newRailController.InputId = outputId;
-                    newRailController.transform.position = outputPosition + Vector3.up * 0.01f;
-
+                    
                     if (indexes.Count > 1)
                     {
                         newRailController._spriteMask.sprite = newRailController._splitMask;
@@ -156,9 +166,9 @@ namespace Assets.Scripts
                             newRailController.OutputId = outputId - 1;
                             break;
 
-                        case RailDirection.Forward:
-                        case RailDirection.RightCircle:
-                        case RailDirection.LeftCircle:
+                        case RailDirection.Strait:
+                        case RailDirection.CircleRight:
+                        case RailDirection.CircleLeft:
                             newRailController.OutputId = outputId;
                             break;
 
@@ -240,16 +250,16 @@ namespace Assets.Scripts
                         if (outputRails.Count == 1)
                         {
                             newRails.Add(CurrentRow % 5 != 0
-                                ? _railPrefabsDictionary[RailDirection.Forward]
-                                : _railPrefabsDictionary[RailDirection.LeftCircle]);
+                                ? _railPrefabsDictionary[RailDirection.Strait]
+                                : _railPrefabsDictionary[RailDirection.CircleLeft]);
 
                             newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
                         }
                         if (outputRails.Count > 1)
                         {
                             newRails.Add(CurrentRow % 3 != 0
-                                ? _railPrefabsDictionary[RailDirection.Forward]
-                                : _railPrefabsDictionary[RailDirection.LeftCircle]);
+                                ? _railPrefabsDictionary[RailDirection.Strait]
+                                : _railPrefabsDictionary[RailDirection.CircleLeft]);
                             if (outputRails.Any(rail => rail.RailDirection == RailDirection.Left))
                             {
                                 newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
@@ -261,7 +271,7 @@ namespace Assets.Scripts
                     case 2:
                         if (outputRails.Count == 1)
                         {
-                            newRails.Add(_railPrefabsDictionary[RailDirection.Forward]);
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
                             if (prefabs.ContainsKey(outputId - 1))
                             {
                                 newRails.Add(
@@ -277,7 +287,7 @@ namespace Assets.Scripts
                         }
                         if (outputRails.Count > 1)
                         {
-                            newRails.Add(_railPrefabsDictionary[RailDirection.Forward]);
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
                             if (outputRails.Any(rail => rail.RailDirection == RailDirection.Left))
                             {
                                 newRails.Add(CurrentRow % 2 == 0
@@ -297,16 +307,16 @@ namespace Assets.Scripts
                         if (outputRails.Count == 1)
                         {
                             newRails.Add(CurrentRow % 4 != 0
-                                ? _railPrefabsDictionary[RailDirection.Forward]
-                                : _railPrefabsDictionary[RailDirection.RightCircle]);
+                                ? _railPrefabsDictionary[RailDirection.Strait]
+                                : _railPrefabsDictionary[RailDirection.CircleRight]);
 
                             newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
                         }
                         if (outputRails.Count > 1)
                         {
                             newRails.Add(CurrentRow % 6 != 0
-                                ? _railPrefabsDictionary[RailDirection.Forward]
-                                : _railPrefabsDictionary[RailDirection.RightCircle]);
+                                ? _railPrefabsDictionary[RailDirection.Strait]
+                                : _railPrefabsDictionary[RailDirection.CircleRight]);
 
                             if (outputRails.Any(rail => rail.RailDirection == RailDirection.Right))
                             {
@@ -347,8 +357,7 @@ namespace Assets.Scripts
                 if (rail != null)
                     foreach (var pos in rail.PointPositions)
                     {
-                        var point = Instantiate(_point, rail.transform);
-                        point.transform.localPosition = pos.localPosition;
+                        _poolService.GetObject<PoolObject>(_point.name, pos.position, Quaternion.identity);
                     }
             }
 
@@ -389,7 +398,7 @@ namespace Assets.Scripts
                         output.HasObject = true;
                         float stopOffset = 0;
 
-                        if (stopRail.RailDirection == RailDirection.LeftCircle || stopRail.RailDirection == RailDirection.RightCircle)
+                        if (stopRail.RailDirection == RailDirection.CircleLeft || stopRail.RailDirection == RailDirection.CircleRight)
                         {
                             if (circleConfig == CircleRailConfig.Stop || circleConfig == CircleRailConfig.StopWithPoints)
                             {
@@ -397,8 +406,7 @@ namespace Assets.Scripts
                                 print(circleConfig);
                                 for (int j = 0; j < Random.Range(1, LevelManager.Instance.StopsCount); j++)
                                 {
-                                    var stop = Instantiate(_stop, stopRail.transform);
-                                    stop.transform.localPosition = stopRail.EndPoint.localPosition + Vector3.down * stopOffset;
+                                    _poolService.GetObject<PoolObject>(_stop.name, stopRail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
                                     stopOffset += 0.25f;
                                 }
                             }
@@ -407,8 +415,7 @@ namespace Assets.Scripts
                         {
                             for (int j = 0; j < Random.Range(1, LevelManager.Instance.StopsCount); j++)
                             {
-                                var stop = Instantiate(_stop, stopRail.transform);
-                                stop.transform.localPosition = stopRail.EndPoint.localPosition + Vector3.down * stopOffset;
+                                _poolService.GetObject<PoolObject>(_stop.name, stopRail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
                                 stopOffset += 0.25f;
                             }
                         }
@@ -421,8 +428,7 @@ namespace Assets.Scripts
                     if (canBoost)
                     {
                         canBoost = false;
-                        var point = Instantiate(_boost, rail.transform);
-                        point.transform.localPosition = rail.PointPositions.First().localPosition;
+                        _poolService.GetObject<PoolObject>(_boost.name, rail.PointPositions.First().position, Quaternion.identity);
                     }
                     else
                     {
@@ -430,8 +436,7 @@ namespace Assets.Scripts
                         {
                             foreach (var pos in rail.PointPositions)
                             {
-                                var point = Instantiate(_point, rail.transform);
-                                point.transform.localPosition = pos.localPosition;
+                                _poolService.GetObject<PoolObject>(_point.name, pos.position, Quaternion.identity);
                             }
                         }
 
@@ -439,8 +444,7 @@ namespace Assets.Scripts
                         {
                             foreach (var pos in rail.PointPositions)
                             {
-                                var point = Instantiate(_point, rail.transform);
-                                point.transform.localPosition = pos.localPosition;
+                                _poolService.GetObject<PoolObject>(_point.name, pos.position, Quaternion.identity);
                             }
                         }
                     }
@@ -457,14 +461,13 @@ namespace Assets.Scripts
                 {
                     foreach (var r in outputRails)
                     {
-                        if (r.RailDirection == RailDirection.LeftCircle || r.RailDirection == RailDirection.RightCircle)
+                        if (r.RailDirection == RailDirection.CircleLeft || r.RailDirection == RailDirection.CircleRight)
                         {
                             print(circleConfig);
                             CircleRailsConfig[circleConfig] = true;
                             foreach (var pos in r.PointPositions)
                             {
-                                var point = Instantiate(_point, r.transform);
-                                point.transform.localPosition = pos.localPosition;
+                                _poolService.GetObject<PoolObject>(_point.name, pos.position, Quaternion.identity);
                             }
                         }
                     }
@@ -474,7 +477,7 @@ namespace Assets.Scripts
                 {
                     foreach (var r in outputRails)
                     {
-                        if (r.RailDirection == RailDirection.LeftCircle || r.RailDirection == RailDirection.RightCircle)
+                        if (r.RailDirection == RailDirection.CircleLeft || r.RailDirection == RailDirection.CircleRight)
                         {
                             print(circleConfig);
                             CircleRailsConfig[circleConfig] = true;

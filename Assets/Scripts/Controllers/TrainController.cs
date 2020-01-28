@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Managers;
 using Assets.Scripts.Services;
 using UnityEngine;
 
@@ -24,13 +25,15 @@ namespace Assets.Scripts.Controllers
         public Vector3 LastTrainPos;
         private List<Vector3> _lastPoints;
 
-        protected AchievementsService achievementsService;
+        protected AchievementsService _achievementsService;
+        protected AudioService _audioService;
         
         private void Awake()
         {
             LastTrainPos = transform.position;
             _lastPoints = new List<Vector3>();
-            achievementsService = ServiceLocator.GetService<AchievementsService>();
+            _achievementsService = ServiceLocator.GetService<AchievementsService>();
+            _audioService = ServiceLocator.GetService<AudioService>();
         }
     
         private void FixedUpdate()

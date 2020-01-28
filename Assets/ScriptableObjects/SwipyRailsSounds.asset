@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a119aa8d7439d42bd373c2f14929f9, type: 3}
+  m_Name: SwipyRailsSounds
+  m_EditorClassIdentifier: 
+  _typedAudioClipsList:
+  - clip: {fileID: 8300000, guid: 1a4163b4b0411d44dbed804f788c86fd, type: 3}
+    clipType: 0
+  - clip: {fileID: 8300000, guid: c6371b676bfbf2d4f907ac42ad9afcac, type: 3}
+    clipType: 1
+  - clip: {fileID: 8300000, guid: cb7273d7f858d1247bdf9513c848556d, type: 3}
+    clipType: 2
+  - clip: {fileID: 8300000, guid: 45e3f4324eb03c44c844a82f0608ccc8, type: 3}
+    clipType: 3
+  - clip: {fileID: 8300000, guid: 705724208883e0a4192561175660a5d3, type: 3}
+    clipType: 4
+  - clip: {fileID: 8300000, guid: 70b8df7f48239a8448b283fab5bf640c, type: 3}
+    clipType: 5

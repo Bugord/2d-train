@@ -3,9 +3,9 @@
     public enum RailDirection
     {
         Left,
-        Forward,
+        Strait,
         Right,
-        LeftCircle,
-        RightCircle
+        CircleLeft,
+        CircleRight
     }
 }

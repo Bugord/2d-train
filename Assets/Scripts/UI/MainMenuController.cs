@@ -27,30 +27,8 @@ public class MainMenuController : PanelBase
     {
         _achievementsService = ServiceLocator.GetService<AchievementsService>();
         _leaderBoardsService = ServiceLocator.GetService<LeaderBoardsService>();
-
-        StartButton.onClick.AddListener(StartGame);
-        _achievementsButton.onClick.AddListener(ShowAchievementsUI);
-        _leaderboardButton.onClick.AddListener(ShowLeaderboardUI);
-    }
-
-    private void ShowAchievementsUI()
-    {
-        _achievementsService.ShowAchievementsUI();
-    }
-
-    private void ShowLeaderboardUI()
-    {
-        _leaderBoardsService.ShowLeaderBoardUI();
-    }
-
-    private void StartGame()
-    {
-        Debug.LogError("Start");
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
         
+        _achievementsButton.onClick.AddListener(_achievementsService.ShowAchievementsUI);
+        _leaderboardButton.onClick.AddListener(_leaderBoardsService.ShowLeaderBoardUI);
     }
 }

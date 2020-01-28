@@ -7,6 +7,7 @@ using Assets.Scripts.Controllers;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Extentions;
 using Assets.Scripts.Managers;
+using Assets.Scripts.ObjectsPool;
 using Assets.Scripts.Services;
 using UnityEngine;
 
@@ -53,7 +54,7 @@ public class HeadTrainController : TrainController
         if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
         {
             TargetRail.SwitchRail();
-            SoundManager.Instance.Play(AudioClipType.Swipe);
+            _audioService.Play(AudioClipType.Swipe);
         }
     }
 #endif
@@ -80,7 +81,7 @@ public class HeadTrainController : TrainController
     {
 #if !UNITY_EDITOR
         TargetRail.SwitchRail(direction);
-        SoundManager.Instance.Play(AudioClipType.Swipe);
+        _audioService.Play(AudioClipType.Swipe);
 #endif
     }
 
@@ -93,18 +94,19 @@ public class HeadTrainController : TrainController
         }
         return TargetPoint + TargetRail.transform.position - transform.position;
     }
-
+    
     private void OnTriggerEnter2D(Collider2D col)
     {
+        PoolObject poolObject = col.GetComponent<PoolObject>();
         if (col.tag == "Point")
         {
             if (IsBoosted)
             {
-                Destroy(col.gameObject, 0.5f);
+                poolObject.ReturnToPool(0.5f);
             }
             else
             {
-                Destroy(col.gameObject);
+                poolObject.ReturnToPool();
             }
 
             if (Trains.Count <= 5)
@@ -121,20 +123,20 @@ public class HeadTrainController : TrainController
 
             GameData.Coins++;
             UIManager.Instance._inGameUiController.Score.text = GameData.Coins.ToString();
-            achievementsService.UnlockAchievement(GPGSIds.achievement_first_coin);
+            _achievementsService.UnlockAchievement(GPGSIds.achievement_first_coin);
 
             if (Trains != null)
-                SoundManager.Instance.Play(AudioClipType.Coin, 0.5f + LevelManager.Instance.Speed*0.05f);
+                _audioService.Play(AudioClipType.Coin, 0.5f + LevelManager.Instance.Speed*0.05f);
         }
         else if (col.tag == "Boost")
         {
-            Destroy(col.gameObject);
+            poolObject.ReturnToPool();
             StartCoroutine(ActivateBoost());
-            achievementsService.UnlockAchievement(GPGSIds.achievement_speed_of_light);
+            _achievementsService.UnlockAchievement(GPGSIds.achievement_speed_of_light);
         }
         else if (col.tag == "Stop" && !IsBoosted)
         {
-            Destroy(col.gameObject);
+            poolObject.ReturnToPool();
             if (Points > 2 * (Trains.Count - 1))
             {
                 Points -= Points - 2 * (Trains.Count - 1);
@@ -155,7 +157,7 @@ public class HeadTrainController : TrainController
                 UIManager.IsInGame = false;
                 UIManager.Instance.ShowEndGameMenu(true);
             }
-            SoundManager.Instance.Play(AudioClipType.StopHit);
+            _audioService.Play(AudioClipType.StopHit);
         }
     }
 
@@ -206,13 +208,13 @@ public class HeadTrainController : TrainController
         LevelManager.Instance.ResetSpeed();
         Points = 1;
         UpdateTrainPoints();
-        GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(Destroy);
+        GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(stop => stop.GetComponent<PoolObject>().ReturnToPool());
         UIManager.Instance.HideEndGameMenu();
     }
 
     private IEnumerator ActivateBoost()
     {
-        SoundManager.Instance.Play(AudioClipType.BoostStart);
+        _audioService.Play(AudioClipType.BoostStart);
         IsBoosted = true;
         _trailObject.SetActive(true);
         _pointEffector.SetActive(true);
@@ -225,7 +227,7 @@ public class HeadTrainController : TrainController
             yield return null;
         }
 
-        SoundManager.Instance.Play(AudioClipType.BoostEnd);
+        _audioService.Play(AudioClipType.BoostEnd);
         IsBoosted = false;
         _trailObject.SetActive(false);
         _pointEffector.SetActive(false);
@@ -240,7 +242,7 @@ public class HeadTrainController : TrainController
         newTrainController.NextTrain = lastTrain;
         HeadTrain.Trains.Add(newTrainController);
         newTrain.GetComponent<SpriteRenderer>().sprite = _spriteRenderer.sprite;
-        SoundManager.Instance.Play(AudioClipType.NewTrain);
+        _audioService.Play(AudioClipType.NewTrain);
     }
 
     private void ChangeTargetPoint(bool isLast = false)

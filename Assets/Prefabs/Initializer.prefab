@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1354795798715818928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1354795798715818930}
+  - component: {fileID: 1354795798715818929}
+  m_Layer: 0
+  m_Name: Initializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1354795798715818930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354795798715818928}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 540, y: 959.9995, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1354795798715818929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354795798715818928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df6653a6b00267a4c83fbfa1679fe621, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pools:
+  - name: Rail_Strait
+    prefab: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
+      type: 3}
+    count: 60
+    ferula: {fileID: 0}
+  - name: Rail_Right
+    prefab: {fileID: 419978983906837451, guid: 3c699937acad56745b7429a238d410ae, type: 3}
+    count: 60
+    ferula: {fileID: 0}
+  - name: Rail_Left
+    prefab: {fileID: 8333171960353069816, guid: 9fde28da3197fa84695632c0d19769f7,
+      type: 3}
+    count: 60
+    ferula: {fileID: 0}
+  - name: Rail_Circle_Right
+    prefab: {fileID: 8195411418207639312, guid: 010eeb805e7014e4ea8927234271c14b,
+      type: 3}
+    count: 60
+    ferula: {fileID: 0}
+  - name: Rail_Circle_Left
+    prefab: {fileID: 3181987689422082901, guid: be8c92ff28f09ef4dbf9862037a960b4,
+      type: 3}
+    count: 60
+    ferula: {fileID: 0}
+  - name: Boost
+    prefab: {fileID: 6439016576696207550, guid: 55cab6c8c8fcfa74cb1ab554f1fdd81b,
+      type: 3}
+    count: 1
+    ferula: {fileID: 0}
+  - name: Point
+    prefab: {fileID: 1069351723757236205, guid: 6fc30b595a88836468d1841cb461395f,
+      type: 3}
+    count: 10
+    ferula: {fileID: 0}
+  - name: Stop_Line
+    prefab: {fileID: 6987639566108446087, guid: 9a914f0c0835f704a9ad27a945ebc310,
+      type: 3}
+    count: 40
+    ferula: {fileID: 0}
+  - name: AudioSource
+    prefab: {fileID: 5306874346269031215, guid: 2068be005260adf49b0f08ff484412c4,
+      type: 3}
+    count: 10
+    ferula: {fileID: 0}
+  _audioCollection: {fileID: 11400000, guid: f5d946644f760dd4f87ae1acc69399da, type: 2}
