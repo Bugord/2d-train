@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Extentions;
-using Assets.Scripts.Managers;
 using Assets.Scripts.ObjectsPool;
+using Assets.Scripts.UI;
 using UnityEngine;
 
 namespace Assets.Scripts.Controllers
@@ -40,7 +40,7 @@ namespace Assets.Scripts.Controllers
             _adsService.TrainRevive += ReviveTrain;
             UIManager.Instance.GameRestart += ResetTrain;
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            SkinManager.Instance.UpdateSkin(_spriteRenderer);
+            _skinService.UpdateSkin(_spriteRenderer);
             UpdateTrainPoints();
         }
 
@@ -72,7 +72,7 @@ namespace Assets.Scripts.Controllers
             {
                 ChangeTargetPoint();
             }
-            UIManager.Instance._inGameUiController.Distance.text = GameData.Score.ToString();
+            UIManager.Instance._inGameUiController.Distance.text = _gameDataService.Score.ToString();
         }
 
         private void InputManagerOnSwipe(SwipeDirection direction)
@@ -119,8 +119,8 @@ namespace Assets.Scripts.Controllers
                     UpdateTrainPoints();
                 }
 
-                GameData.Coins++;
-                UIManager.Instance._inGameUiController.Score.text = GameData.Coins.ToString();
+                _gameDataService.Coins++;
+                UIManager.Instance._inGameUiController.Score.text = _gameDataService.Coins.ToString();
                 _achievementsService.UnlockAchievement(GPGSIds.achievement_first_coin);
 
                 if (Trains != null)
@@ -196,7 +196,7 @@ namespace Assets.Scripts.Controllers
 
         private void ReviveTrain()
         {
-            GameData.Revived = true;
+            _gameDataService.Revived = true;
             ResetTrain();
             UIManager.Instance.SetPause();
             UpdateTrainPoints();
@@ -281,7 +281,7 @@ namespace Assets.Scripts.Controllers
 
             TargetPoint = railPoint != null ? railPoint.localPosition : NextTrain.LastTrainPos;
 
-            GameData.Score = TargetRail.Row;
+            _gameDataService.Score = TargetRail.Row;
         }
 
         public override void SetRotation(Vector2 vectorToTarget)

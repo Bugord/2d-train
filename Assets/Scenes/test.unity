@@ -345,27 +345,13 @@ GameObject:
   m_Component:
   - component: {fileID: 840240421}
   - component: {fileID: 840240420}
-  - component: {fileID: 840240417}
   m_Layer: 0
-  m_Name: Managers
+  m_Name: InputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &840240417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 840240416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6305e4ed1f5554e4f975423f50333cee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RandomSkinCost: 100
 --- !u!114 &840240420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,7 +465,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885805233}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -120.5}
+  m_LocalPosition: {x: 1.5, y: 7.6, z: -120.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -507,6 +493,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1868523421}
     m_Modifications:
+    - target: {fileID: 4201040003240201475, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Name
+      value: Rail_Strait_Big_Fat (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
       propertyPath: NextRail
@@ -516,11 +507,6 @@ PrefabInstance:
         type: 3}
       propertyPath: Row
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4201040003240201475, guid: cd66bc341b771684da7be92f7a35f6a5,
-        type: 3}
-      propertyPath: m_Name
-      value: Rail_Strait_Big_Fat (1)
       objectReference: {fileID: 0}
     - target: {fileID: 1664730702905287636, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}

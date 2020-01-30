@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Managers;
 using Assets.Scripts.Services;
+using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
@@ -19,10 +19,12 @@ public class ShopController : PanelBase
     private List<SkinButton> _skinsList;
 
     private PlayGamesService _playGamesService;
+    private SkinService _skinService;
 
     private void Awake()
     {
         _playGamesService = ServiceLocator.GetService<PlayGamesService>();
+        _skinService = ServiceLocator.GetService<SkinService>();
         _skinsList = new List<SkinButton>();
         BackButton.onClick.AddListener(GoBack);
         _getRandomSkin.onClick.AddListener(GetRandomSkin);
@@ -32,12 +34,12 @@ public class ShopController : PanelBase
     private void GetRandomSkin()
     {
         var lockedSkins = _skinsList.Where(skin => !skin.IsUnlocked).ToList();
-        if (lockedSkins.Count <= 0 || SkinManager.Instance.RandomSkinCost > CloudVariables.ImportantValues[1]) return;
+        if (lockedSkins.Count <= 0 || _skinService.RandomSkinCost > CloudVariables.ImportantValues[1]) return;
         {
             var newSkin = lockedSkins[Random.Range(0, lockedSkins.Count - 1)].UnlockSkin().SkinImage.sprite;
-            SkinManager.Instance.SetSkin(newSkin);
+            _skinService.SetSkin(newSkin);
 
-            CloudVariables.ImportantValues[1] -= SkinManager.Instance.RandomSkinCost;
+            CloudVariables.ImportantValues[1] -= _skinService.RandomSkinCost;
 
             var binString = "1";
             _skinsList.ForEach(skin =>

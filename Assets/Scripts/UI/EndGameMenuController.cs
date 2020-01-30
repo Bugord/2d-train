@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Managers;
+using Assets.Scripts;
 using Assets.Scripts.Services;
+using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,11 +15,13 @@ public class EndGameMenuController : PanelBase
     [SerializeField] private Button _exitToMenu;
     private LevelService _levelService;
     private AdsService _adsService;
+    private GameDataService _gameDataService;
 
     private void Awake()
     {
         _levelService = ServiceLocator.GetService<LevelService>();
         _adsService = ServiceLocator.GetService<AdsService>();
+        _gameDataService = ServiceLocator.GetService<GameDataService>();
 
         ReviveButton.onClick.AddListener(_adsService.ShowReviveVideoAdvertisement);
         BonusButton.onClick.AddListener(_adsService.ShowBonusVideoAdvertisement);
@@ -34,13 +37,13 @@ public class EndGameMenuController : PanelBase
     public void ExitToMainMenu()
     {
         SetActivePanel(false);
-        GameData.SetLastLevel(_levelService.Level);
+        _gameDataService.SetLastLevel(_levelService.Level);
         UIManager.Instance.ExitToMainMenu();
     }
 
     public void SetEndGameData()
     {
-        _coins.text = GameData.Coins.ToString();
-        _distance.text = GameData.Score.ToString();
+        _coins.text = _gameDataService.Coins.ToString();
+        _distance.text = _gameDataService.Score.ToString();
     }
 }

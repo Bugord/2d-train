@@ -1,31 +1,33 @@
-﻿using Assets.Scripts.Managers;
-using Assets.Scripts.Services;
+﻿using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RemoveAdsController : MonoBehaviour
+namespace Assets.Scripts.UI
 {
-    private static Button _removeAdsButton;
-
-    private IAPService _iapService;
-
-    private void Awake()
+    public class RemoveAdsController : MonoBehaviour
     {
-        _iapService = ServiceLocator.GetService<IAPService>();
-        _removeAdsButton = GetComponent<Button>();
-        _removeAdsButton.onClick.AddListener(RemoveAds);        
-    }
+        private static Button _removeAdsButton;
 
-    private void RemoveAds()
-    {
-        _iapService.BuyRemoveAds();
-    }
+        private IAPService _iapService;
 
-    public static void DestroyButton()
-    {
-        if (_removeAdsButton != null)
+        private void Awake()
         {
-            Destroy(_removeAdsButton.gameObject);
+            _iapService = ServiceLocator.GetService<IAPService>();
+            _removeAdsButton = GetComponent<Button>();
+            _removeAdsButton.onClick.AddListener(RemoveAds);        
+        }
+
+        private void RemoveAds()
+        {
+            _iapService.BuyRemoveAds();
+        }
+
+        public static void DestroyButton()
+        {
+            if (_removeAdsButton != null)
+            {
+                Destroy(_removeAdsButton.gameObject);
+            }
         }
     }
 }

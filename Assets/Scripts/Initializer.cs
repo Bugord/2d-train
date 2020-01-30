@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Managers;
 using Assets.Scripts.ScriptableObjects;
 using Assets.Scripts.Services;
 using UnityEngine;
@@ -24,13 +23,15 @@ namespace Assets.Scripts
         private void Awake()
         {
             ServiceLocator.Register(new PlayGamesService());
+            ServiceLocator.Register(new GameDataService());
             ServiceLocator.Register(new AchievementsService());
             ServiceLocator.Register(new LeaderBoardsService());
             ServiceLocator.Register(new IAPService());
+            ServiceLocator.Register(new LevelService(_levelSettings));
             ServiceLocator.Register(new PoolService(_pools));
             ServiceLocator.Register(new AudioService(_audioCollection));
-            ServiceLocator.Register(new LevelService(_levelSettings));
             ServiceLocator.Register(new AdsService(_adsConfig));
+            ServiceLocator.Register(new SkinService());
         }
     }
 }

@@ -1,25 +1,28 @@
 ﻿using Assets.Scripts.ScriptableObjects;
+using Assets.Scripts.UI;
 using UnityEngine;
 
-namespace Assets.Scripts.Managers
+namespace Assets.Scripts.Services
 {
     public class LevelService
     {
         public int Level { get; private set; }
         public int StopsCount { get; private set; }
         public float BoostedSpeed => _levelSettings.BoostedSpeed;
-        [SerializeField] private float _speed;
+        private float _speed;
         private float _maxSpeed;
         private float _step;
         private LevelSettings _levelSettings;
+        private GameDataService _gameDataService;
 
         public LevelService(LevelSettings levelSettings)
         {
+            _gameDataService = ServiceLocator.GetService<GameDataService>();
             _levelSettings = levelSettings;
             MapGenerator.LevelUp += OnLevelUp;
-            UpdateManager();
+            UpdateService();
         }
-
+        
         public float GetSpeed()
         {
             if (_speed < _maxSpeed && UIManager.IsInGame)
@@ -31,7 +34,7 @@ namespace Assets.Scripts.Managers
             return _speed;
         }
 
-        public void UpdateManager()
+        public void UpdateService()
         {
             ResetSpeed();
             Level = 0;
@@ -70,7 +73,7 @@ namespace Assets.Scripts.Managers
 
         private float GetPlayerSkillFactor()
         {
-            return Mathf.Pow(th(Level * 0.1f), 2) * (GameData.AverageLevel + CloudVariables.ImportantValues[0]/(Level+1) + Level) * Mathf.Exp(-Level * 0.05f) * 0.02f;
+            return Mathf.Pow(th(Level * 0.1f), 2) * (_gameDataService.AverageLevel + CloudVariables.ImportantValues[0]/(Level+1) + Level) * Mathf.Exp(-Level * 0.05f) * 0.02f;
         }
 
         private float th(float x)

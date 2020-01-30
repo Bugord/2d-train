@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Managers;
 using Assets.Scripts.Services;
+using Assets.Scripts.UI;
 using UnityEngine;
 
 namespace Assets.Scripts.Controllers
@@ -29,6 +29,8 @@ namespace Assets.Scripts.Controllers
         protected AudioService _audioService;
         protected LevelService _levelService;
         protected AdsService _adsService;
+        protected SkinService _skinService;
+        protected GameDataService _gameDataService;
         
         private void Awake()
         {
@@ -38,14 +40,16 @@ namespace Assets.Scripts.Controllers
             _audioService = ServiceLocator.GetService<AudioService>();
             _levelService = ServiceLocator.GetService<LevelService>();
             _adsService = ServiceLocator.GetService<AdsService>();
+            _skinService = ServiceLocator.GetService<SkinService>();
+            _gameDataService = ServiceLocator.GetService<GameDataService>();
         }
     
         private void FixedUpdate()
         {
             if (!UIManager.IsInGame) return;
-        
-            SetLastTrainPos();
 
+            SetLastTrainPos();
+            
             SetRotation(NextTrain.LookAtTarget.position - transform.position);
             MoveTrain(NextTrain.LastTrainPos);
         }
