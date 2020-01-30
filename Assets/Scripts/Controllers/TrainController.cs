@@ -28,6 +28,7 @@ namespace Assets.Scripts.Controllers
         protected AchievementsService _achievementsService;
         protected AudioService _audioService;
         protected LevelService _levelService;
+        protected AdsService _adsService;
         
         private void Awake()
         {
@@ -36,6 +37,7 @@ namespace Assets.Scripts.Controllers
             _achievementsService = ServiceLocator.GetService<AchievementsService>();
             _audioService = ServiceLocator.GetService<AudioService>();
             _levelService = ServiceLocator.GetService<LevelService>();
+            _adsService = ServiceLocator.GetService<AdsService>();
         }
     
         private void FixedUpdate()

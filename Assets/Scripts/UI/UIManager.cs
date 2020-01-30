@@ -30,6 +30,7 @@ public class UIManager : Singleton<UIManager>
     private PlayGamesService _playGamesService;
     private LeaderBoardsService _leaderBoardsService;
     private LevelService _levelService;
+    private AdsService _adsService;
 
     public Action GameRestart;
     
@@ -38,6 +39,7 @@ public class UIManager : Singleton<UIManager>
         _playGamesService = ServiceLocator.GetService<PlayGamesService>();
         _leaderBoardsService = ServiceLocator.GetService<LeaderBoardsService>();
         _levelService = ServiceLocator.GetService<LevelService>();
+        _adsService = ServiceLocator.GetService<AdsService>();
         _playGamesService.SignInAction += UpdateUI;
     }
 
@@ -55,13 +57,15 @@ public class UIManager : Singleton<UIManager>
         _mainMenuController.AddCoinsButton.onClick.AddListener(OpenCoinsStore);
 
         InputManager.BackButton += InputManagerOnBackButton;
-        AdsManager.BonusCoins += AdsManagerOnBonusCoins;
+        _adsService.BonusCoins += AdsManagerOnBonusCoins;
         UpdateUI();
     }
     
     private void AdsManagerOnBonusCoins()
     {
         GameData.Coins += GameData.Coins;
+        GameData.BonusReceived = true;
+        _endGameMenuController.BonusButton.gameObject.SetActive(false);
         _endGameMenuController.SetEndGameData();
     }
 
@@ -128,8 +132,8 @@ public class UIManager : Singleton<UIManager>
 
     public void ShowEndGameMenu(bool canRevive = false)
     {
-        _endGameMenuController.ReviveButton.SetActive(canRevive && !GameData.Revived);
-        _endGameMenuController.BonusButton.SetActive(!GameData.BonusReceived);
+        _endGameMenuController.ReviveButton.gameObject.SetActive(canRevive && !GameData.Revived);
+        _endGameMenuController.BonusButton.gameObject.SetActive(!GameData.BonusReceived);
         _endGameMenuController.SetEndGameData();
         _endGameMenuController.SetActivePanel(true);
         _inGameUiController.SetActivePanel(false);

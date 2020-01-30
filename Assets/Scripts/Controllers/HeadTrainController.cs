@@ -37,7 +37,7 @@ namespace Assets.Scripts.Controllers
             TargetPoint = TargetPointList[0].localPosition;
             InputManager.Swipe += InputManagerOnSwipe;
             HeadTrain.Trains.Add(this);
-            AdsManager.TrainRevive += ReviveTrain;
+            _adsService.TrainRevive += ReviveTrain;
             UIManager.Instance.GameRestart += ResetTrain;
             _spriteRenderer = GetComponent<SpriteRenderer>();
             SkinManager.Instance.UpdateSkin(_spriteRenderer);
@@ -196,6 +196,7 @@ namespace Assets.Scripts.Controllers
 
         private void ReviveTrain()
         {
+            GameData.Revived = true;
             ResetTrain();
             UIManager.Instance.SetPause();
             UpdateTrainPoints();

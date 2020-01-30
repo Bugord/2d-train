@@ -5,15 +5,18 @@ public class CameraControllerScript : MonoBehaviour
     public Transform target;
     
     private Vector3 offset;         
-    [SerializeField] private Transform _storeButton;
+    [SerializeField] private RectTransform _storeButton;
+    [SerializeField] private Transform _initialRail;
     
     // Use this for initialization
     void Start()
     {
-        var storeButtonPosition = Camera.main.ScreenToWorldPoint(_storeButton.position);
+        var storeButtonPosition = Camera.main.ScreenToWorldPoint(_storeButton.position) + Vector3.up * 0.07f;
         
-        //Calculate and store the offset value by getting the distance between the player's position and camera's position.
-        //offset = transform.position - new Vector3(storeButtonPosition.x, storeButtonPosition.y, 0) - Vector3.up*0.07f;
+        storeButtonPosition.z = 0;
+        target.position = storeButtonPosition;
+        _initialRail.position = storeButtonPosition;
+        
         offset = transform.position - target.position;
     }
     

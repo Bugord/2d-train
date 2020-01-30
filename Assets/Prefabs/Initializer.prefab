@@ -90,3 +90,4 @@ MonoBehaviour:
     ferula: {fileID: 0}
   _audioCollection: {fileID: 11400000, guid: f5d946644f760dd4f87ae1acc69399da, type: 2}
   _levelSettings: {fileID: 11400000, guid: 6836c90aa70189c4cbea128eceb7edce, type: 2}
+  _adsConfig: {fileID: 11400000, guid: 33b65cc66ed53704594167e00e9414a9, type: 2}
