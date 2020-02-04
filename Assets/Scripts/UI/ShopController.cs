@@ -20,13 +20,15 @@ public class ShopController : PanelBase
 
     private PlayGamesService _playGamesService;
     private SkinService _skinService;
+    private UIService _uiService;
 
     private void Awake()
     {
+        _uiService = ServiceLocator.GetService<UIService>();
         _playGamesService = ServiceLocator.GetService<PlayGamesService>();
         _skinService = ServiceLocator.GetService<SkinService>();
         _skinsList = new List<SkinButton>();
-        BackButton.onClick.AddListener(GoBack);
+        BackButton.onClick.AddListener(BackToMainMenu);
         _getRandomSkin.onClick.AddListener(GetRandomSkin);
         _pages.ForEach(page => _skinsList.AddRange(page.GetComponentsInChildren<SkinButton>()));
     }
@@ -58,8 +60,8 @@ public class ShopController : PanelBase
 
             CloudVariables.ImportantValues[3] = Convert.ToInt32(binString, 2);
             
-            _playGamesService.SaveData();
-            UIManager.Instance.UpdateUI();
+            _playGamesService.SaveData(); 
+            _uiService.UpdateMainMenu();
         }
     }
 
@@ -74,5 +76,11 @@ public class ShopController : PanelBase
                 _skinsList?[i].UnlockSkin();
             }
         }
+    }
+
+    private void BackToMainMenu()
+    {
+        SetActivePanel(false);
+        _uiService.ShowMainMenu();
     }
 }

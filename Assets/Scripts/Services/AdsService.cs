@@ -24,6 +24,7 @@ namespace Assets.Scripts.Services
 
             Advertisement.AddListener(this);
             Advertisement.Initialize(_adsConfig.GameId, _adsConfig.TestMode);
+            Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
         }
     
         public void ShowGameOverAdvertisement()
@@ -41,6 +42,19 @@ namespace Assets.Scripts.Services
             Advertisement.Show(_adsConfig.BonusVideoPlacementId);
         }
 
+        public void ShowBanner()
+        {
+            Advertisement.Banner.Show(_adsConfig.BannerPlacementId);
+        }
+
+        public void HideBanner(bool destroy = false)
+        {
+            if (Advertisement.Banner.isLoaded)
+            {
+                Advertisement.Banner.Hide(destroy);
+            }
+        }
+
         public void OnUnityAdsReady(string placementId)
         {
             if (placementId == _adsConfig.ReviveVideoPlacementId)
@@ -50,6 +64,10 @@ namespace Assets.Scripts.Services
             else if (placementId == _adsConfig.BonusVideoPlacementId)
             {
                 BonusAdvertisementUpdate?.Invoke(true);
+            }
+            else if (placementId == _adsConfig.BannerPlacementId)
+            {
+                Advertisement.Banner.Show(_adsConfig.BannerPlacementId);
             }
         }
 

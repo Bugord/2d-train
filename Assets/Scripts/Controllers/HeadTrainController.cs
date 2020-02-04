@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Extentions;
 using Assets.Scripts.ObjectsPool;
+using Assets.Scripts.Services;
 using Assets.Scripts.UI;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ namespace Assets.Scripts.Controllers
 
         [SerializeField] private GameObject TrainPrefab;
 
+        public List<TrainController> Trains;
+
         private List<Transform> TargetPointList;
 
         public bool Turning;
@@ -28,20 +31,45 @@ namespace Assets.Scripts.Controllers
         private SpriteRenderer _spriteRenderer;
 
         [SerializeField] private GameObject _pointEffector;
-    
-        private void Start()
+
+        private AchievementsService _achievementsService;
+        private AudioService _audioService;
+        private LevelService _levelService;
+        private AdsService _adsService;
+        private SkinService _skinService;
+        private GameDataService _gameDataService;
+        private UIService _uiService;
+
+        private void Awake()
         {
-            HeadTrain = this;
+            LastTrainPos = transform.position;
+            _achievementsService = ServiceLocator.GetService<AchievementsService>();
+            _audioService = ServiceLocator.GetService<AudioService>();
+            _levelService = ServiceLocator.GetService<LevelService>();
+            _adsService = ServiceLocator.GetService<AdsService>();
+            _skinService = ServiceLocator.GetService<SkinService>();
+            _gameDataService = ServiceLocator.GetService<GameDataService>();
+            _uiService = ServiceLocator.GetService<UIService>();
+
             Trains = new List<TrainController>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             TargetPointList = TargetRail.WayPoints;
             TargetPoint = TargetPointList[0].localPosition;
+            Trains.Add(this);
+
             InputManager.Swipe += InputManagerOnSwipe;
-            HeadTrain.Trains.Add(this);
             _adsService.TrainRevive += ReviveTrain;
-            UIManager.Instance.GameRestart += ResetTrain;
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _uiService.GameRestart += ResetTrain;
+
             _skinService.UpdateSkin(_spriteRenderer);
             UpdateTrainPoints();
+        }
+
+        private void OnDestroy()
+        {
+            InputManager.Swipe -= InputManagerOnSwipe;
+            _adsService.TrainRevive -= ReviveTrain;
+            _uiService.GameRestart -= ResetTrain;
         }
 
 #if UNITY_EDITOR
@@ -59,7 +87,7 @@ namespace Assets.Scripts.Controllers
 
         private void FixedUpdate()
         {
-            if (!UIManager.IsInGame) return;
+            if (!_uiService.IsInGame) return;
 
             SetLastTrainPos();
 
@@ -72,7 +100,7 @@ namespace Assets.Scripts.Controllers
             {
                 ChangeTargetPoint();
             }
-            UIManager.Instance._inGameUiController.Distance.text = _gameDataService.Score.ToString();
+            _uiService.UpdateInGameDistance(_gameDataService.Score);
         }
 
         private void InputManagerOnSwipe(SwipeDirection direction)
@@ -120,7 +148,7 @@ namespace Assets.Scripts.Controllers
                 }
 
                 _gameDataService.Coins++;
-                UIManager.Instance._inGameUiController.Score.text = _gameDataService.Coins.ToString();
+                _uiService.UpdateInGameCoins(_gameDataService.Coins);
                 _achievementsService.UnlockAchievement(GPGSIds.achievement_first_coin);
 
                 if (Trains != null)
@@ -152,8 +180,8 @@ namespace Assets.Scripts.Controllers
                 }
                 else
                 {
-                    UIManager.IsInGame = false;
-                    UIManager.Instance.ShowEndGameMenu(true);
+                    _uiService.IsInGame = false;
+                    _uiService.ShowEndGameMenu(true);
                 }
                 _audioService.Play(AudioClipType.StopHit);
             }
@@ -198,7 +226,7 @@ namespace Assets.Scripts.Controllers
         {
             _gameDataService.Revived = true;
             ResetTrain();
-            UIManager.Instance.SetPause();
+            _uiService.SetPause();
             UpdateTrainPoints();
         }
 
@@ -207,8 +235,19 @@ namespace Assets.Scripts.Controllers
             _levelService.ResetSpeed();
             Points = 1;
             UpdateTrainPoints();
+            Trains.ForEach(train =>
+            {
+                if (train == this) return;
+                Destroy(train.gameObject);
+            });
+
+            Trains.Clear();
+            Trains.Add(this);
+
+            IsBoosted = false;
+            _trailObject.SetActive(false);
+
             GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(stop => stop.GetComponent<PoolObject>().ReturnToPool());
-            UIManager.Instance.HideEndGameMenu();
         }
 
         private IEnumerator ActivateBoost()
@@ -222,7 +261,7 @@ namespace Assets.Scripts.Controllers
 
             while (t <= 5)
             {
-                t += UIManager.IsInGame ? Time.deltaTime : 0;
+                t += _uiService.IsInGame ? Time.deltaTime : 0;
                 yield return null;
             }
 
@@ -239,7 +278,7 @@ namespace Assets.Scripts.Controllers
             var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
             var newTrainController = newTrain.GetComponent<TrainController>();
             newTrainController.NextTrain = lastTrain;
-            HeadTrain.Trains.Add(newTrainController);
+            Trains.Add(newTrainController);
             newTrain.GetComponent<SpriteRenderer>().sprite = _spriteRenderer.sprite;
             _audioService.Play(AudioClipType.NewTrain);
         }
@@ -281,7 +320,7 @@ namespace Assets.Scripts.Controllers
 
             TargetPoint = railPoint != null ? railPoint.localPosition : NextTrain.LastTrainPos;
 
-            _gameDataService.Score = TargetRail.Row;
+            _gameDataService.Score = TargetRail.Row - MapGenerator.Instance.DeltaRow;
         }
 
         public override void SetRotation(Vector2 vectorToTarget)

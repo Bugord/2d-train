@@ -7,8 +7,7 @@ using UnityEngine.UI;
 
 public class MainMenuController : PanelBase
 {
-    public Button StartButton;
-    public Button SettingButton;
+    [SerializeField] private Button _startButton;
     public Button ShopButton;
     public Button RateButton;
     public Button CoinsStoreButton;
@@ -22,13 +21,38 @@ public class MainMenuController : PanelBase
 
     private AchievementsService _achievementsService;
     private LeaderBoardsService _leaderBoardsService;
+    private UIService _uiService;
 
     private void Awake()
     {
         _achievementsService = ServiceLocator.GetService<AchievementsService>();
         _leaderBoardsService = ServiceLocator.GetService<LeaderBoardsService>();
+        _uiService = ServiceLocator.GetService<UIService>();
         
         _achievementsButton.onClick.AddListener(_achievementsService.ShowAchievementsUI);
         _leaderboardButton.onClick.AddListener(_leaderBoardsService.ShowLeaderBoardUI);
+
+        _startButton.onClick.AddListener(StartGame);
+        _uiService.OpenMainMenu += Open;
+        _uiService.UpdateMainMenuData += UpdateData;
+        UpdateData();
+    }
+
+    private void StartGame()
+    {
+        SetActivePanel(false);
+        _uiService.ShowInGameUI();
+    }
+
+    private void Open()
+    {
+        SetActivePanel(true);
+        UpdateData();
+    }
+
+    private void UpdateData()
+    {
+        BestScore.text = CloudVariables.ImportantValues[0].ToString();
+        Coins.text = CloudVariables.ImportantValues[1].ToString();
     }
 }

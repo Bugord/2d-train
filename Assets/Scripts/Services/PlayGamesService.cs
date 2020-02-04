@@ -13,11 +13,13 @@ namespace Assets.Scripts.Services
         const string SAVE_NAME = "HighScoreAndCoinsandSkins";
         bool isSaving;
         bool isCloudDataLoaded = false;
-        public Action SignInAction;
+        
+        private UIService _uiService;
 
         // Start is called before the first frame update
         public PlayGamesService()
         {
+            _uiService = ServiceLocator.GetService<UIService>();
             //setting default value, if the game is played for the first time
             if (!PlayerPrefs.HasKey(SAVE_NAME))
                 PlayerPrefs.SetString(SAVE_NAME, string.Empty);
@@ -40,7 +42,7 @@ namespace Assets.Scripts.Services
             Social.localUser.Authenticate(success =>
             {
                 LoadData();
-                SignInAction?.Invoke();
+                _uiService.UpdateMainMenu();
             });
         }
 
@@ -222,6 +224,7 @@ namespace Assets.Scripts.Services
                 else
                     SaveLocal();
             }
+            _uiService.UpdateMainMenu();
         }
 
         private void LoadGame(ISavedGameMetadata game)
@@ -266,7 +269,7 @@ namespace Assets.Scripts.Services
                 //this method will compare cloud and local data
                 StringToGameData(cloudDataString, localDataString);
 
-                UIManager.Instance.UpdateUI();
+                _uiService.UpdateMainMenu();
             }
         }
 

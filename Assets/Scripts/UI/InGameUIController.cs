@@ -7,21 +7,50 @@ using UnityEngine.UI;
 
 public class InGameUIController : PanelBase
 {
-    public Button PauseButton;
-    public Text Score;
-    public Text Distance;
+    [SerializeField] private Button _pauseButton;
+    [SerializeField] private Text _score;
+    [SerializeField] private Text _distance;
 
     private GameDataService _gameDataService;
+    private UIService _uiService;
+    private AdsService _adsService;
 
     private void Awake()
     {
         _gameDataService = ServiceLocator.GetService<GameDataService>();
+        _uiService = ServiceLocator.GetService<UIService>();
+        _adsService = ServiceLocator.GetService<AdsService>();
+
+        _uiService.SetActiveInGameUI += SetActive;
+        _uiService.InGameCoinsUpdate += UpdateCoins;
+        _uiService.InGameDistanceUpdate += UpdateDistance;
+
+        _pauseButton.onClick.AddListener(_uiService.SetPause);
+    }
+    
+    private void SetActive(bool isActive)
+    {
+        if (isActive)
+        {
+            _score.text = "0";
+            _distance.text = "0";
+            _gameDataService.ResetGame();
+            _adsService.HideBanner();
+        }
+        else
+        {
+            _adsService.ShowBanner();
+        }
+        SetActivePanel(isActive);
     }
 
-    public void ResetFields()
+    private void UpdateCoins(int coins)
     {
-        Score.text = "0";
-        Distance.text = "0";
-        _gameDataService.ResetGame();
+        _score.text = coins.ToString();
+    }
+
+    private void UpdateDistance(int distance)
+    {
+        _distance.text = distance.ToString();
     }
 }

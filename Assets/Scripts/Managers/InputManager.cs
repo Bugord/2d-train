@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,13 @@ namespace Assets.Scripts
 
         public static event Action BackButton;
 
+        private UIService _uiService;
+
+        private void Awake()
+        {
+            _uiService = ServiceLocator.GetService<UIService>();
+        }
+
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -21,7 +29,7 @@ namespace Assets.Scripts
                 BackButton?.Invoke();
             }
 #if !UNITY_EDITOR
-            if (Input.touchCount == 0 && !UIManager.IsInGame)
+            if (Input.touchCount == 0 && !_uiService.IsInGame)
                 return;
 
             var touch = Input.GetTouch(0);

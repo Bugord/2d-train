@@ -11,43 +11,20 @@ namespace Assets.Scripts.Controllers
         public GameObject[] TrainPointSprites;
 
         public int Points = 1;
-    
-        public List<TrainController> Trains;
+        
         public Transform LookAtTarget;
     
         public TrainController NextTrain;
-        public static TrainController HeadTrain;
         public float distanceBetweenTrains;
     
         public bool IsDead;
         public bool IsBoosted;
     
         public Vector3 LastTrainPos;
-        private List<Vector3> _lastPoints;
-
-        protected AchievementsService _achievementsService;
-        protected AudioService _audioService;
-        protected LevelService _levelService;
-        protected AdsService _adsService;
-        protected SkinService _skinService;
-        protected GameDataService _gameDataService;
+        private List<Vector3> _lastPoints = new List<Vector3>();
         
-        private void Awake()
-        {
-            LastTrainPos = transform.position;
-            _lastPoints = new List<Vector3>();
-            _achievementsService = ServiceLocator.GetService<AchievementsService>();
-            _audioService = ServiceLocator.GetService<AudioService>();
-            _levelService = ServiceLocator.GetService<LevelService>();
-            _adsService = ServiceLocator.GetService<AdsService>();
-            _skinService = ServiceLocator.GetService<SkinService>();
-            _gameDataService = ServiceLocator.GetService<GameDataService>();
-        }
-    
         private void FixedUpdate()
         {
-            if (!UIManager.IsInGame) return;
-
             SetLastTrainPos();
             
             SetRotation(NextTrain.LookAtTarget.position - transform.position);

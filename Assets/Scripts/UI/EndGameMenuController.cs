@@ -16,32 +16,55 @@ public class EndGameMenuController : PanelBase
     private LevelService _levelService;
     private AdsService _adsService;
     private GameDataService _gameDataService;
+    private UIService _uiService;
+    private PlayGamesService _playGamesService;
 
     private void Awake()
     {
         _levelService = ServiceLocator.GetService<LevelService>();
         _adsService = ServiceLocator.GetService<AdsService>();
         _gameDataService = ServiceLocator.GetService<GameDataService>();
+        _uiService = ServiceLocator.GetService<UIService>();
+        _playGamesService = ServiceLocator.GetService<PlayGamesService>();
 
         ReviveButton.onClick.AddListener(_adsService.ShowReviveVideoAdvertisement);
         BonusButton.onClick.AddListener(_adsService.ShowBonusVideoAdvertisement);
 
-        ReviveButton.gameObject.SetActive(false);
-        BonusButton.gameObject.SetActive(false);
-
         _adsService.BonusAdvertisementUpdate += delegate(bool isReady) { BonusButton.interactable = isReady; };
         _adsService.ReviveAdvertisementUpdate += delegate (bool isReady) { ReviveButton.interactable = isReady; };
+        _adsService.BonusCoins += GetBonus;
+        _uiService.OpenEndGameMenu += Open;
         _exitToMenu.onClick.AddListener(ExitToMainMenu);
     }
 
-    public void ExitToMainMenu()
+    private void Open(bool canRevive)
+    {
+        ReviveButton.gameObject.SetActive(canRevive);
+        SetEndGameData();
+        SetActivePanel(true);
+    }
+
+    private void ExitToMainMenu()
     {
         SetActivePanel(false);
         _gameDataService.SetLastLevel(_levelService.Level);
-        UIManager.Instance.ExitToMainMenu();
+        _gameDataService.UpdateCloudVariables();
+        _playGamesService.SaveData();
+        BonusButton.gameObject.SetActive(true);
+        MapGenerator.Instance.ResetGenerator();
+        _levelService.UpdateService();
+        _uiService.UpdateMainMenu();
+        _uiService.ExitToMainMenu();
     }
 
-    public void SetEndGameData()
+    private void GetBonus()
+    {
+        _gameDataService.Coins *= 2;
+        SetEndGameData();
+        BonusButton.gameObject.SetActive(false);
+    }
+
+    private void SetEndGameData()
     {
         _coins.text = _gameDataService.Coins.ToString();
         _distance.text = _gameDataService.Score.ToString();

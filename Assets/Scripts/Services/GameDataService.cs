@@ -82,12 +82,14 @@ namespace Assets.Scripts.Services
             BonusReceived = false;
         }
 
-        public void ResetProgress()
+        public void UpdateCloudVariables()
         {
-            PlayerPrefs.DeleteAll();
-            PlayerPrefs.Save();
-        
-            UIManager.Instance.UpdateUI();
+            if (Score > CloudVariables.ImportantValues[0])
+            {
+                CloudVariables.ImportantValues[0] = Score;
+            }
+
+            CloudVariables.ImportantValues[1] += Coins;
         }
     }
 }

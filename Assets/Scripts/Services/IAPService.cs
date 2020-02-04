@@ -19,9 +19,11 @@ using UnityEngine.Purchasing;
             public static string PRODUCT_10000_COINS = "swipy_rails_coins_10000";
 
             private PlayGamesService _playGamesService;
+            private UIService _uiService;
 
             public IAPService()
             {
+                _uiService = ServiceLocator.GetService<UIService>();
                 _playGamesService = ServiceLocator.GetService<PlayGamesService>();
                 // If we haven't set up the Unity Purchasing reference
                 if (m_StoreController == null)
@@ -176,8 +178,7 @@ using UnityEngine.Purchasing;
                 }
 
                 _playGamesService.SaveData();
-                UIManager.Instance.UpdateUI();
-
+                
                 // Return a flag indicating whether this product has completely been received, or if the application needs 
                 // to be reminded of this purchase at next app launch. Use PurchaseProcessingResult.Pending when still 
                 // saving purchased products to the cloud, and when that save is delayed. 

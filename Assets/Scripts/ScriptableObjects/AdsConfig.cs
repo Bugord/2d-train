@@ -9,12 +9,14 @@ namespace Assets.Scripts.ScriptableObjects
         [SerializeField] private string _gameOverPlacementId;
         [SerializeField] private string _reviveVideoPlacementId;
         [SerializeField] private string _bonusVideoPlacementId;
+        [SerializeField] private string _swipyRailsBannerPlacement;
         [SerializeField] private bool _testMode;
 
         public string GameId => _gameId;
         public string GameOverPlacementId => _gameOverPlacementId;
         public string ReviveVideoPlacementId => _reviveVideoPlacementId;
         public string BonusVideoPlacementId => _bonusVideoPlacementId;
+        public string BannerPlacementId => _swipyRailsBannerPlacement;
         public bool TestMode => _testMode;
     }
 }

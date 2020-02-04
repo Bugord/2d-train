@@ -14,10 +14,12 @@ namespace Assets.Scripts.Services
         private float _step;
         private LevelSettings _levelSettings;
         private GameDataService _gameDataService;
+        private UIService _uiService;
 
         public LevelService(LevelSettings levelSettings)
         {
             _gameDataService = ServiceLocator.GetService<GameDataService>();
+            _uiService = ServiceLocator.GetService<UIService>();
             _levelSettings = levelSettings;
             MapGenerator.LevelUp += OnLevelUp;
             UpdateService();
@@ -25,7 +27,7 @@ namespace Assets.Scripts.Services
         
         public float GetSpeed()
         {
-            if (_speed < _maxSpeed && UIManager.IsInGame)
+            if (_speed < _maxSpeed && _uiService.IsInGame)
             {
                 _speed += (_maxSpeed - _levelSettings.DefaultSpeed) * Mathf.Atan(Mathf.Lerp(0, Mathf.PI * 0.5f, _step));
                 _step += _levelSettings.SpeedStep;

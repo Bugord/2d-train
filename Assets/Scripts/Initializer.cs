@@ -22,6 +22,7 @@ namespace Assets.Scripts
 
         private void Awake()
         {
+            ServiceLocator.Register(new UIService());
             ServiceLocator.Register(new PlayGamesService());
             ServiceLocator.Register(new GameDataService());
             ServiceLocator.Register(new AchievementsService());

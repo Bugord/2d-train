@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CoinsStoreController : PanelBase
 {
-    public Button BackButton;
+    [SerializeField] private Button _backButton;
 
     [SerializeField] private Button _coins1000;
     [SerializeField] private Button _coins3000;
@@ -16,16 +16,14 @@ public class CoinsStoreController : PanelBase
     [SerializeField] private Button _coins10000;
 
     private IAPService _iapService;
+    private UIService _uiService;
 
     private void Awake()
     {
         _iapService = ServiceLocator.GetService<IAPService>();
-    }
+        _uiService = ServiceLocator.GetService<UIService>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        BackButton.onClick.AddListener(GoBack);
+        _backButton.onClick.AddListener(BackToMainMenu);
 
         _coins1000.onClick.AddListener(BuyCoins(1000));
         _coins3000.onClick.AddListener(BuyCoins(3000));
@@ -33,8 +31,15 @@ public class CoinsStoreController : PanelBase
         _coins7000.onClick.AddListener(BuyCoins(7000));
         _coins10000.onClick.AddListener(BuyCoins(10000));
     }
+
     private UnityAction BuyCoins(int coins)
     {
         return () => { _iapService.BuyCoins(coins); };
+    }
+
+    private void BackToMainMenu()
+    {
+        SetActivePanel(false);
+        _uiService.ShowMainMenu();
     }
 }

@@ -16,4 +16,5 @@ MonoBehaviour:
   _gameOverPlacementId: GameOver
   _reviveVideoPlacementId: ReviveVideo
   _bonusVideoPlacementId: BonusVideo
+  _swipyRailsBannerPlacement: swipyRailsBannerPlacement
   _testMode: 1

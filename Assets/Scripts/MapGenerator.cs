@@ -8,6 +8,7 @@ using Assets.Scripts.Enums;
 using Assets.Scripts.ObjectsPool;
 using Assets.Scripts.Services;
 using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
@@ -54,6 +55,7 @@ namespace Assets.Scripts
         public Row OldRow;
         public Row NewRow;
         public int CurrentRow;
+        public int DeltaRow;
         public HeadTrainController TrainController;
 
         public static Dictionary<int, Row> _rowsList;
@@ -75,6 +77,8 @@ namespace Assets.Scripts
             {
                 _railPrefabsDictionary.Add(prefab.RailDirection, prefab);
             }
+
+            DeltaRow = 0;
         }
 
         private void Start()
@@ -120,7 +124,12 @@ namespace Assets.Scripts
                 InitialRailController.SwitchRail(false);
             }
         }
-        
+
+        public void ResetGenerator()
+        {
+            DeltaRow = TrainController.TargetRail.Row;
+        }
+
         public void GenerateRails()
         {
             NewRow = new Row();
@@ -206,6 +215,7 @@ namespace Assets.Scripts
             }
 
             GenerateItems(circleConfig);
+            
             _rowsList.Add(CurrentRow, NewRow);
             OldRow = new Row(NewRow);
 
