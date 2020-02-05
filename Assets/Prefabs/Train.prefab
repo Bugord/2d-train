@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 214380971
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: dc96cc8b2e5de8c43a0770d949162956, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -123,7 +123,6 @@ MonoBehaviour:
   - {fileID: 4342386746283277645}
   - {fileID: 6187848124708379374}
   Points: 0
-  Trains: []
   LookAtTarget: {fileID: 6158119791099444316}
   NextTrain: {fileID: 0}
   distanceBetweenTrains: 1.15

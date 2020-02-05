@@ -75,6 +75,8 @@ namespace Assets.Scripts.Controllers
 #if UNITY_EDITOR
         private void Update()
         {
+            if (!_uiService.IsInGame) return;
+            
             var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
 
             if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
@@ -106,6 +108,7 @@ namespace Assets.Scripts.Controllers
         private void InputManagerOnSwipe(SwipeDirection direction)
         {
 #if !UNITY_EDITOR
+        if (!_uiService.IsInGame) return;
         TargetRail.SwitchRail(direction);
         _audioService.Play(AudioClipType.Swipe);
 #endif
@@ -124,7 +127,7 @@ namespace Assets.Scripts.Controllers
         private void OnTriggerEnter2D(Collider2D col)
         {
             PoolObject poolObject = col.GetComponent<PoolObject>();
-            if (col.tag == "Point")
+            if (col.CompareTag("Point"))
             {
                 if (IsBoosted)
                 {
@@ -135,10 +138,10 @@ namespace Assets.Scripts.Controllers
                     poolObject.ReturnToPool();
                 }
 
-                if (Trains.Count <= 5)
+                if (Trains.Count <= 5 || true)
                 {
                     Points++;
-                    if (Points > 2 * Trains.Count && Trains.Count < 5)
+                    if (Points > 2 * Trains.Count && (Trains.Count < 5 || true))
                     {
                         GenerateNewTrain();
                         Points = 1;
@@ -154,13 +157,13 @@ namespace Assets.Scripts.Controllers
                 if (Trains != null)
                     _audioService.Play(AudioClipType.Coin, 0.5f + _levelService.GetSpeed()*0.05f);
             }
-            else if (col.tag == "Boost")
+            else if (col.CompareTag("Boost"))
             {
                 poolObject.ReturnToPool();
                 StartCoroutine(ActivateBoost());
                 _achievementsService.UnlockAchievement(GPGSIds.achievement_speed_of_light);
             }
-            else if (col.tag == "Stop" && !IsBoosted)
+            else if (col.CompareTag("Stop") && !IsBoosted)
             {
                 poolObject.ReturnToPool();
                 if (Points > 2 * (Trains.Count - 1))
@@ -248,6 +251,7 @@ namespace Assets.Scripts.Controllers
             _trailObject.SetActive(false);
 
             GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(stop => stop.GetComponent<PoolObject>().ReturnToPool());
+            GameObject.FindGameObjectsWithTag("Boost").ToList().ForEach(boost => boost.GetComponent<PoolObject>().ReturnToPool());
         }
 
         private IEnumerator ActivateBoost()

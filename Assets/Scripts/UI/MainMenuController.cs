@@ -8,10 +8,10 @@ using UnityEngine.UI;
 public class MainMenuController : PanelBase
 {
     [SerializeField] private Button _startButton;
-    public Button ShopButton;
-    public Button RateButton;
-    public Button CoinsStoreButton;
-    public Button AddCoinsButton;
+    [SerializeField] private Button _shopButton;
+    [SerializeField] private Button _rateButton;
+    [SerializeField] private Button _coinsStoreButton;
+    [SerializeField] private Button _addCoinsButton;
 
     [SerializeField] private Button _achievementsButton;
     [SerializeField] private Button _leaderboardButton;

@@ -5,7 +5,7 @@ namespace Assets.Scripts.Services
     public class UIService
     {
         public bool IsInGame;
-
+        
         public event Action<int> InGameDistanceUpdate;
         public event Action<int> InGameCoinsUpdate;
         public event Action GameRestart;
@@ -41,6 +41,7 @@ namespace Assets.Scripts.Services
         {
             IsInGame = false;
             GameRestart?.Invoke();
+            SetActiveInGameUI?.Invoke(false);
             ShowMainMenu();
         }
 

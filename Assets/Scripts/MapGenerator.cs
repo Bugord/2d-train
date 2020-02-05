@@ -94,10 +94,10 @@ namespace Assets.Scripts
         
         private void LateUpdate()
         {
-            if (TrainController.Trains.Count % 4 == 0)
-            {
-                RowsBefore = (int)(TrainController.Trains.Count * 0.25f) + 3;
-            }
+            // if (TrainController.Trains.Count % 4 == 0)
+            // {
+            //     RowsBefore = (int)(TrainController.Trains.Count * 0.25f) + 3;
+            // }
 
             if (CurrentRow <= TrainController.TargetRail.Row + RowsAfter)
             {
