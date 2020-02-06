@@ -35,6 +35,18 @@ namespace Assets.Scripts.Services
             set => PlayerPrefs.SetInt("BonusReceived", value ? 1 : 0);
         }
 
+        public bool SoundOn
+        {
+            get
+            {
+                if (!PlayerPrefs.HasKey("SoundOn"))
+                    PlayerPrefs.SetInt("SoundOn", 1);
+
+                return PlayerPrefs.GetInt("SoundOn") == 1;
+            }
+            set => PlayerPrefs.SetInt("SoundOn", value ? 1 : 0);
+        }
+
         public string CurrentSkinId
         {
             get

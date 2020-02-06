@@ -137,18 +137,15 @@ namespace Assets.Scripts.Controllers
                 {
                     poolObject.ReturnToPool();
                 }
-
-                if (Trains.Count <= 5)    
+                
+                Points++;
+                if (Points > 2 * Trains.Count)
                 {
-                    Points++;
-                    if (Points > 2 * Trains.Count && Trains.Count < 5)
-                    {
-                        GenerateNewTrain();
-                        Points = 1;
-                    }
-
-                    UpdateTrainPoints();
+                    GenerateNewTrain();
+                    Points = 1;
                 }
+
+                UpdateTrainPoints();
 
                 _gameDataService.Coins++;
                 _uiService.UpdateInGameCoins(_gameDataService.Coins);
@@ -166,10 +163,9 @@ namespace Assets.Scripts.Controllers
             else if (col.CompareTag("Stop") && !IsBoosted)
             {
                 poolObject.ReturnToPool();
-                if (Points > 2 * (Trains.Count - 1))
-                {
-                    Points -= Points - 2 * (Trains.Count - 1);
-                }
+                
+                Points = 1;
+                UpdateTrainPoints();
 
                 _levelService.ResetSpeed();
 

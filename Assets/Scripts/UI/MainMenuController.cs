@@ -34,6 +34,9 @@ public class MainMenuController : PanelBase
         _leaderboardButton.onClick.AddListener(_leaderBoardsService.ShowLeaderBoardUI);
 
         _startButton.onClick.AddListener(StartGame);
+        _rateButton.onClick.AddListener(RateApp);
+        _shopButton.onClick.AddListener(OpenShop);
+
         _uiService.OpenMainMenu += Open;
         _uiService.UpdateMainMenuData += UpdateData;
         UpdateData();
@@ -45,10 +48,20 @@ public class MainMenuController : PanelBase
         _uiService.ShowInGameUI();
     }
 
+    private void RateApp()
+    {
+        Application.OpenURL("market://details?id=com.TILGaming.Train/");
+    }
+
     private void Open()
     {
         SetActivePanel(true);
         UpdateData();
+    }
+
+    private void OpenShop()
+    {
+
     }
 
     private void UpdateData()

@@ -5,6 +5,7 @@ using Assets.Scripts.Controllers;
 using Assets.Scripts.Enums;
 using Assets.Scripts.ScriptableObjects;
 using UnityEngine;
+using UnityScript.Steps;
 
 namespace Assets.Scripts.Services
 {
@@ -12,6 +13,7 @@ namespace Assets.Scripts.Services
     {
         private PoolService _poolService;
         private AudioCollection _audioCollection;
+        public bool volumeOn;
 
         [Serializable]
         public struct TypedAudioClip
@@ -25,11 +27,11 @@ namespace Assets.Scripts.Services
             _poolService = ServiceLocator.GetService<PoolService>();
             _audioCollection = audioCollection;
         }
-
+        
         public void Play(AudioClipType clipType, float pitchLevel = 1)
         {
             var audioSourceController = _poolService.GetObject<AudioSourceController>("AudioSource");
-            audioSourceController.Play(_audioCollection.GetAudioClip(clipType), pitchLevel);
+            audioSourceController.Play(_audioCollection.GetAudioClip(clipType), pitchLevel, Convert.ToInt32(volumeOn));
         }
     }
 }

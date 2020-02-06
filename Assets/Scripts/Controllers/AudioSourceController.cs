@@ -11,10 +11,11 @@ namespace Assets.Scripts.Controllers
             _audioSource = GetComponent<AudioSource>();
         }
 
-        public void Play(AudioClip clip, float pitchLevel)
+        public void Play(AudioClip clip, float pitchLevel, float volume)
         {
             _audioSource.clip = clip;
             _audioSource.pitch = pitchLevel;
+            _audioSource.volume = volume;
             _audioSource.Play();
         }
 
