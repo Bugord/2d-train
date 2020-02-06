@@ -16,6 +16,7 @@ public class MainMenuController : PanelBase
     [SerializeField] private Button _achievementsButton;
     [SerializeField] private Button _leaderboardButton;
 
+    public Text LastScore;
     public Text BestScore;
     public Text Coins;
 
@@ -52,6 +53,7 @@ public class MainMenuController : PanelBase
 
     private void UpdateData()
     {
+        LastScore.text = CloudVariables.ImportantValues[4].ToString();
         BestScore.text = CloudVariables.ImportantValues[0].ToString();
         Coins.text = CloudVariables.ImportantValues[1].ToString();
     }

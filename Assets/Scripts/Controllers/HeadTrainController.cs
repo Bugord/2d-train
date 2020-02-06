@@ -138,10 +138,10 @@ namespace Assets.Scripts.Controllers
                     poolObject.ReturnToPool();
                 }
 
-                if (Trains.Count <= 5 || true)
+                if (Trains.Count <= 5)    
                 {
                     Points++;
-                    if (Points > 2 * Trains.Count && (Trains.Count < 5 || true))
+                    if (Points > 2 * Trains.Count && Trains.Count < 5)
                     {
                         GenerateNewTrain();
                         Points = 1;
@@ -344,7 +344,7 @@ namespace Assets.Scripts.Controllers
             }
 
             transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + vectorToTarget,
-                newSpeed * Time.deltaTime);
+                newSpeed * Time.fixedDeltaTime);
         }
     }
 }

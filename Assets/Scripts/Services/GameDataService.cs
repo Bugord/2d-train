@@ -90,6 +90,7 @@ namespace Assets.Scripts.Services
             }
 
             CloudVariables.ImportantValues[1] += Coins;
+            CloudVariables.ImportantValues[4] = Score;
         }
     }
 }

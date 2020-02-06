@@ -3,7 +3,7 @@
 public class CameraControllerScript : MonoBehaviour
 {
     public Transform target;
-    
+    [SerializeField] private float _smoothStep = 0.125f;
     private Vector3 offset;         
     [SerializeField] private RectTransform _storeButton;
     [SerializeField] private Transform _initialRail;
@@ -20,8 +20,10 @@ public class CameraControllerScript : MonoBehaviour
         offset = transform.position - target.position;
     }
     
-    void Update()
+    void FixedUpdate()
     {
-        transform.position = target.position + offset;
+        Vector3 desiredPosition = target.position + offset;
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _smoothStep);
+        transform.position = smoothedPosition;
     }
 }

@@ -8,6 +8,7 @@ public class CloudVariables : MonoBehaviour
     //1 is coins 
     //2 is AdsRemoved
     //3 skins status should look like int number, but will be used as bin to identify unlocked skins (10000101010010)
-    public static int[] ImportantValues = new int[4];
+    //4 is LastScore
+    public static int[] ImportantValues = new int[5];
 
 }
