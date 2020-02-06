@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,12 +9,12 @@ namespace UI
     {
         [SerializeField] private Image _circleImage;
 
-        public void SetTimer(float time)
+        public void SetTimer(float time, Action callBack)
         {
-            StartCoroutine(RunTimer(time));
+            StartCoroutine(RunTimer(time, callBack));
         }
 
-        private IEnumerator RunTimer(float time)
+        private IEnumerator RunTimer(float time, Action callBack)
         {
             var watch = 0f;
             
@@ -25,6 +26,7 @@ namespace UI
             }
 
             _circleImage.fillAmount = 1;
+            callBack();
         }
     }
 }
