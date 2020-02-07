@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\LocalRep\2D-train" t="IncludeRecursive">
+    <e p="C:\GitRepositories\2D-train" t="IncludeRecursive">
       <e p="2D-train.sln" t="IncludeFlat" />
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
@@ -12,9 +12,6 @@
           <e p="JSON" t="Include">
             <e p="JSONObject.cs" t="Include" />
             <e p="Readme.txt" t="Include" />
-            <e p="TestScene" t="Include">
-              <e p="JSONObjectTester.cs" t="Include" />
-            </e>
           </e>
         </e>
         <e p="GooglePlayGames" t="Include">
@@ -161,6 +158,7 @@
           <e p="UnityPurchasing" t="Include">
             <e p="Editor" t="Include">
               <e p="IAPButtonEditor.cs" t="Include" />
+              <e p="IAPGeneratedCredentials.cs.template" t="Include" />
             </e>
             <e p="script" t="Include">
               <e p="CodelessIAPStoreListener.cs" t="Include" />
@@ -248,7 +246,7 @@
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
     </e>
-    <e p="C:\Users\m.dolnik\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\m.dolnik\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_2D-train.2066898635.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Asus\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Asus\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_2d-train.-1286702001.00" t="ExcludeRecursive" />
   </component>
 </project>

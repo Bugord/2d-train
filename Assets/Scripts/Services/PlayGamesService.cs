@@ -10,7 +10,7 @@ namespace Assets.Scripts.Services
 {
     public class PlayGamesService
     {
-        const string SAVE_NAME = "HighScoreAndCoinsandSkins";
+        const string SAVE_NAME = "HighScoreAndCoinsandSkinsandLastScore";
         bool isSaving;
         bool isCloudDataLoaded = false;
         
