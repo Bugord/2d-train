@@ -8,6 +8,7 @@ namespace UI
 {
     public class TimerButtonController : MonoBehaviour
     {
+        [SerializeField] private string _playerPrefKey;
         [SerializeField] private Image _circleImage;
         [SerializeField] private Sprite _runningSptite;
         [SerializeField] private Sprite _readySprite;
@@ -15,46 +16,47 @@ namespace UI
         private DateTime startSystemTime {
             get
             {
-                if (!PlayerPrefs.HasKey("FreeCoinsTimer"))
+                if (!PlayerPrefs.HasKey(_playerPrefKey))
                 {
                     return DateTime.Now;
                 }
                 
-                return DateTime.Parse(PlayerPrefs.GetString("FreeCoinsTimer"));
+                return DateTime.Parse(PlayerPrefs.GetString(_playerPrefKey));
             }
             set
             {
-                PlayerPrefs.SetString("FreeCoinsTimer", value.ToString());
+                PlayerPrefs.SetString(_playerPrefKey, value.ToString());
             }
         }
-        private float watch;
+        private float _watch;
 
         public event Action TimerEnded;
         
         protected void SetTimer(Action<float> callBack)
         {
-            watch = 0f;
+            _watch = 0f;
             startSystemTime = DateTime.Now;
             StartCoroutine(RunTimer(callBack));
         }
 
         protected void UpdateTimer(Action<float> callBack)
         {
-            watch = (float)(DateTime.Now - startSystemTime).TotalSeconds;
+            _watch = (float)(DateTime.Now - startSystemTime).TotalSeconds;
             StartCoroutine(RunTimer(callBack));
         }
 
         private IEnumerator RunTimer(Action<float> callBack)
         {
             _circleImage.sprite = _runningSptite;
-            while (watch <= time)
+            while (_watch <= time)
             {
-                watch += Time.deltaTime;
-                _circleImage.fillAmount = watch / time;
-                callBack(watch);
+                _watch += Time.deltaTime;
+                _circleImage.fillAmount = _watch / time;
+                callBack(_watch);
                 yield return null;
             }
             TimerEnded?.Invoke();
+            _circleImage.fillAmount = 1;
             _circleImage.sprite = _readySprite;
         }
     }

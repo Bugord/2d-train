@@ -22,19 +22,26 @@ public class InGameUIController : PanelBase
         _adsService = ServiceLocator.GetService<AdsService>();
 
         _uiService.SetActiveInGameUI += SetActive;
+        _uiService.GameRestart += ResetInGameUI;
         _uiService.InGameCoinsUpdate += UpdateCoins;
         _uiService.InGameDistanceUpdate += UpdateDistance;
 
         _pauseButton.onClick.AddListener(_uiService.SetPause);
+        
+        _gameDataService.ResetGame();
     }
-    
+
+    private void ResetInGameUI()
+    {
+        _score.text = "0";
+        _distance.text = "0";
+        _gameDataService.ResetGame();
+    }
+
     private void SetActive(bool isActive)
     {
         if (isActive)
         {
-            _score.text = "0";
-            _distance.text = "0";
-            _gameDataService.ResetGame();
             _adsService.HideBanner();
         }
         else

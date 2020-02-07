@@ -10,13 +10,19 @@ namespace Controllers
     {
         private Button _button;
         [SerializeField] private Text _text;
+        [SerializeField] private int _freeCoinsCount;
 
         private AdsService _adsService;
+        private PlayGamesService _playGamesService;
+        private UIService _uiService;
 
         void Awake()
         {
             _button = GetComponent<Button>();
             _adsService = ServiceLocator.GetService<AdsService>();
+            _playGamesService = ServiceLocator.GetService<PlayGamesService>();
+            _uiService = ServiceLocator.GetService<UIService>();
+            
             _button.onClick.AddListener(_adsService.ShowFreeCoinsVideoAdvertisement);
             _adsService.FreeCoins += GetFreeCoins;
             TimerEnded += OnTimerEnded;
@@ -35,6 +41,9 @@ namespace Controllers
 
         private void GetFreeCoins()
         {
+            CloudVariables.ImportantValues[1] += _freeCoinsCount;
+            _playGamesService.SaveData();
+            _uiService.UpdateMainMenu();
             SetTimer(CallBack);
             _button.interactable = false;
         }

@@ -34,6 +34,7 @@ public class EndGameMenuController : PanelBase
         _adsService.ReviveAdvertisementUpdate += delegate (bool isReady) { ReviveButton.interactable = isReady; };
         _adsService.BonusCoins += GetBonus;
         _uiService.OpenEndGameMenu += Open;
+        _uiService.OpenPauseMenu += () => SetActivePanel(false);
         _exitToMenu.onClick.AddListener(ExitToMainMenu);
     }
 
@@ -51,6 +52,7 @@ public class EndGameMenuController : PanelBase
         _gameDataService.UpdateCloudVariables();
         _playGamesService.SaveData();
         BonusButton.gameObject.SetActive(true);
+        ReviveButton.gameObject.SetActive(true);
         MapGenerator.Instance.ResetGenerator();
         _levelService.UpdateService();
         _uiService.UpdateMainMenu();
