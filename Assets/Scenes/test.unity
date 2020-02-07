@@ -447,21 +447,6 @@ PrefabInstance:
       propertyPath: TargetRail
       value: 
       objectReference: {fileID: 82253792}
-    - target: {fileID: 5053681557952644127, guid: 20cde0b1f5b225f4cac750a334b43d61,
-        type: 3}
-      propertyPath: m_SortingLayerID
-      value: 214380971
-      objectReference: {fileID: 0}
-    - target: {fileID: 5053681557952644127, guid: 20cde0b1f5b225f4cac750a334b43d61,
-        type: 3}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5053681557952644127, guid: 20cde0b1f5b225f4cac750a334b43d61,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20cde0b1f5b225f4cac750a334b43d61, type: 3}
 --- !u!1 &840240416
@@ -739,6 +724,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5641847226421619061, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
+      objectReference: {fileID: 0}
     - target: {fileID: 5641847226421619065, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -843,11 +833,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5641847226421619061, guid: 9bd7266369d945f4f871f8e05f1257bf,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 5641847226421619064, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}

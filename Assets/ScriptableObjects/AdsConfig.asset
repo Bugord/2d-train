@@ -17,5 +17,5 @@ MonoBehaviour:
   _reviveVideoPlacementId: ReviveVideo
   _bonusVideoPlacementId: BonusVideo
   _swipyRailsBannerPlacement: swipyRailsBannerPlacement
-  _freeCoinsVideoPlacementId: GameOver
+  _freeCoinsVideoPlacementId: SR_FreeCoins
   _testMode: 1

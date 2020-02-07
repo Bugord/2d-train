@@ -10,7 +10,10 @@ namespace Controllers
     {
         private Button _button;
         [SerializeField] private Text _text;
+        [SerializeField] private Color _readyColor;
+        [SerializeField] private Color _runningColor;
         [SerializeField] private int _freeCoinsCount;
+        [SerializeField] private GameObject _lightObject;
 
         private AdsService _adsService;
         private PlayGamesService _playGamesService;
@@ -30,13 +33,18 @@ namespace Controllers
 
         private void OnEnable()
         {
+            _button.interactable = false;
+            _text.color = _runningColor;
+            _lightObject.SetActive(false);
             UpdateTimer(CallBack);
         }
 
         private void OnTimerEnded()
         {
             _text.text = "FREE COINS";
+            _text.color = _readyColor;
             _button.interactable = true;
+            _lightObject.SetActive(true);
         }
 
         private void GetFreeCoins()
@@ -46,6 +54,8 @@ namespace Controllers
             _uiService.UpdateMainMenu();
             SetTimer(CallBack);
             _button.interactable = false;
+            _text.color = _runningColor;
+            _lightObject.SetActive(false);
         }
 
         private void CallBack(float currentTime)
