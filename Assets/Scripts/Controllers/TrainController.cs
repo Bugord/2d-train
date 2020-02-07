@@ -34,7 +34,7 @@ namespace Assets.Scripts.Controllers
         public void SetLastTrainPos()
         {
             _lastPoints.Add(transform.position);
-            _lastPoints.RemoveAll(p => Vector3.Distance(transform.position, p) > distanceBetweenTrains);
+            _lastPoints.RemoveAll(p => Vector3.Distance(transform.position, p) >= distanceBetweenTrains);
             LastTrainPos = _lastPoints.First();
         }
     

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
 
 namespace UI
@@ -18,7 +17,7 @@ namespace UI
             {
                 if (!PlayerPrefs.HasKey(_playerPrefKey))
                 {
-                    return DateTime.Now;
+                    return DateTime.MinValue;
                 }
                 
                 return DateTime.Parse(PlayerPrefs.GetString(_playerPrefKey));

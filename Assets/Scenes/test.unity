@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -179,6 +180,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -382,11 +384,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3968992545633443954, guid: 20cde0b1f5b225f4cac750a334b43d61,
-        type: 3}
-      propertyPath: m_Name
-      value: HeadTrain
-      objectReference: {fileID: 0}
     - target: {fileID: 745352147833053844, guid: 20cde0b1f5b225f4cac750a334b43d61,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -441,6 +438,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968992545633443954, guid: 20cde0b1f5b225f4cac750a334b43d61,
+        type: 3}
+      propertyPath: m_Name
+      value: HeadTrain
       objectReference: {fileID: 0}
     - target: {fileID: 5946942233567491298, guid: 20cde0b1f5b225f4cac750a334b43d61,
         type: 3}
@@ -609,21 +611,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1868523421}
     m_Modifications:
-    - target: {fileID: 4201040003240201475, guid: cd66bc341b771684da7be92f7a35f6a5,
-        type: 3}
-      propertyPath: m_Name
-      value: Rail_Strait_Big_Fat (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
-        type: 3}
-      propertyPath: NextRail
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
-        type: 3}
-      propertyPath: Row
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1664730702905287636, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -679,6 +666,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4201040003240201475, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: m_Name
+      value: Rail_Strait_Big_Fat (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 4897734478439029862, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
       propertyPath: m_Color.a
@@ -715,6 +707,16 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: NextRail
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: Row
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd66bc341b771684da7be92f7a35f6a5, type: 3}
 --- !u!1001 &1386185893
@@ -729,6 +731,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5641847226421619064, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 885805236}
     - target: {fileID: 5641847226421619065, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -834,11 +841,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5641847226421619064, guid: 9bd7266369d945f4f871f8e05f1257bf,
-        type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 885805236}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bd7266369d945f4f871f8e05f1257bf, type: 3}
 --- !u!114 &1590117176 stripped
