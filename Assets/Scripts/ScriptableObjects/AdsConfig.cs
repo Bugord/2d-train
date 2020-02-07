@@ -10,6 +10,7 @@ namespace Assets.Scripts.ScriptableObjects
         [SerializeField] private string _reviveVideoPlacementId;
         [SerializeField] private string _bonusVideoPlacementId;
         [SerializeField] private string _swipyRailsBannerPlacement;
+        [SerializeField] private string _freeCoinsVideoPlacementId;
         [SerializeField] private bool _testMode;
 
         public string GameId => _gameId;
@@ -17,6 +18,7 @@ namespace Assets.Scripts.ScriptableObjects
         public string ReviveVideoPlacementId => _reviveVideoPlacementId;
         public string BonusVideoPlacementId => _bonusVideoPlacementId;
         public string BannerPlacementId => _swipyRailsBannerPlacement;
+        public string FreeCoinsPlacementId => _freeCoinsVideoPlacementId;
         public bool TestMode => _testMode;
     }
 }

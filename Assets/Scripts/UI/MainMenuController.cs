@@ -3,16 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Services;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MainMenuController : PanelBase
 {
     [SerializeField] private Button _startButton;
-    [SerializeField] private Button _shopButton;
+    [SerializeField] private Button _storeButton;
     [SerializeField] private Button _rateButton;
-    [SerializeField] private Button _coinsStoreButton;
-    [SerializeField] private Button _addCoinsButton;
-
+    
     [SerializeField] private Button _achievementsButton;
     [SerializeField] private Button _leaderboardButton;
 
@@ -35,7 +34,7 @@ public class MainMenuController : PanelBase
 
         _startButton.onClick.AddListener(StartGame);
         _rateButton.onClick.AddListener(RateApp);
-        _shopButton.onClick.AddListener(OpenShop);
+        _storeButton.onClick.AddListener(OpenShop);
 
         _uiService.OpenMainMenu += Open;
         _uiService.UpdateMainMenuData += UpdateData;
@@ -61,7 +60,8 @@ public class MainMenuController : PanelBase
 
     private void OpenShop()
     {
-
+        SetActivePanel(false);
+        _uiService.ShowStoreUI();
     }
 
     private void UpdateData()

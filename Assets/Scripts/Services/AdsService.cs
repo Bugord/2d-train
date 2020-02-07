@@ -11,7 +11,9 @@ namespace Assets.Scripts.Services
         public event Action BonusCoins;
 
         public event Action<bool> ReviveAdvertisementUpdate;
-        public event Action<bool> BonusAdvertisementUpdate; 
+        public event Action<bool> BonusAdvertisementUpdate;
+
+        public event Action FreeCoins;
 
         private AdsConfig _adsConfig;
     
@@ -40,6 +42,11 @@ namespace Assets.Scripts.Services
         public void ShowBonusVideoAdvertisement()
         {
             Advertisement.Show(_adsConfig.BonusVideoPlacementId);
+        }
+
+        public void ShowFreeCoinsVideoAdvertisement()
+        {
+            Advertisement.Show(_adsConfig.FreeCoinsPlacementId);
         }
 
         public void ShowBanner()
@@ -95,6 +102,11 @@ namespace Assets.Scripts.Services
                 if (placementId == _adsConfig.BonusVideoPlacementId)
                 {
                     BonusCoins?.Invoke();
+                }
+
+                if (placementId == _adsConfig.FreeCoinsPlacementId)
+                {
+                    FreeCoins?.Invoke();
                 }
             }
             else if (showResult == ShowResult.Skipped)

@@ -31,6 +31,13 @@ public class ShopController : PanelBase
         BackButton.onClick.AddListener(BackToMainMenu);
         _getRandomSkin.onClick.AddListener(GetRandomSkin);
         _pages.ForEach(page => _skinsList.AddRange(page.GetComponentsInChildren<SkinButton>()));
+        _uiService.OpenStoreMenu += Open;
+    }
+
+    private void Open()
+    {
+        UpdateSkins();
+        SetActivePanel(true);
     }
 
     private void GetRandomSkin()
