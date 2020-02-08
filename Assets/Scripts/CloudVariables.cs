@@ -11,4 +11,8 @@ public class CloudVariables : MonoBehaviour
     //4 is LastScore
     public static int[] ImportantValues = new int[5];
 
+    public static bool IsAdsRemoved()
+    {
+        return ImportantValues[2] == 1;
+    }
 }

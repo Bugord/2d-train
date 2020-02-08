@@ -199,6 +199,7 @@
           <e p="Initializer.cs" t="Include" />
           <e p="JsonUtil.cs" t="Include" />
           <e p="Managers" t="Include">
+            <e p="IAPManager.cs" t="Include" />
             <e p="InputManager.cs" t="Include" />
           </e>
           <e p="MapGenerator.cs" t="Include" />
@@ -218,7 +219,6 @@
             <e p="AdsService.cs" t="Include" />
             <e p="AudioService.cs" t="Include" />
             <e p="GameDataService.cs" t="Include" />
-            <e p="IAPService.cs" t="Include" />
             <e p="LeaderBoardsService.cs" t="Include" />
             <e p="LevelService.cs" t="Include" />
             <e p="PlayGamesService.cs" t="Include" />

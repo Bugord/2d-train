@@ -49,7 +49,7 @@ public class MainMenuController : PanelBase
 
     private void RateApp()
     {
-        Application.OpenURL("market://details?id=com.TILGaming.Train/");
+        Application.OpenURL("http://play.google.com/store/apps/details?id=" + Application.identifier);
     }
 
     private void Open()

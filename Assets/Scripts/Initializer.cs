@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.ScriptableObjects;
 using Assets.Scripts.Services;
+using Services;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -27,7 +28,6 @@ namespace Assets.Scripts
             ServiceLocator.Register(new GameDataService());
             ServiceLocator.Register(new AchievementsService());
             ServiceLocator.Register(new LeaderBoardsService());
-            ServiceLocator.Register(new IAPService());
             ServiceLocator.Register(new LevelService(_levelSettings));
             ServiceLocator.Register(new PoolService(_pools));
             ServiceLocator.Register(new AudioService(_audioCollection));

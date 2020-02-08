@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Services;
+using Services;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -14,13 +15,11 @@ public class CoinsStoreController : PanelBase
     [SerializeField] private Button _coins5000;
     [SerializeField] private Button _coins7000;
     [SerializeField] private Button _coins10000;
-
-    private IAPService _iapService;
+    
     private UIService _uiService;
 
     private void Awake()
     {
-        _iapService = ServiceLocator.GetService<IAPService>();
         _uiService = ServiceLocator.GetService<UIService>();
 
         _backButton.onClick.AddListener(BackToMainMenu);
@@ -34,7 +33,10 @@ public class CoinsStoreController : PanelBase
 
     private UnityAction BuyCoins(int coins)
     {
-        return () => { _iapService.BuyCoins(coins); };
+        return () =>
+        {
+            IAPManager.Instance.BuyCoins(coins);
+        };
     }
 
     private void BackToMainMenu()

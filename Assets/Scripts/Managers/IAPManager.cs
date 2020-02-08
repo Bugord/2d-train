@@ -1,12 +1,14 @@
 ﻿using System;
-using Assets.Scripts.UI;
+using Assets.Scripts;
+using Assets.Scripts.Services;
+using UI;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
 // Deriving the Purchaser class from IStoreListener enables it to receive messages from Unity Purchasing.
-    namespace Assets.Scripts.Services
+    namespace Services
     {
-        public class IAPService : IStoreListener
+        public class IAPManager : Singleton<IAPManager>, IStoreListener
         {
             private static IStoreController m_StoreController;          // The Unity Purchasing system.
             private static IExtensionProvider m_StoreExtensionProvider; // The store-specific Purchasing subsystems.
@@ -19,11 +21,9 @@ using UnityEngine.Purchasing;
             public static string PRODUCT_10000_COINS = "swipy_rails_coins_10000";
 
             private PlayGamesService _playGamesService;
-            private UIService _uiService;
-
-            public IAPService()
+            
+            public void Start()
             {
-                _uiService = ServiceLocator.GetService<UIService>();
                 _playGamesService = ServiceLocator.GetService<PlayGamesService>();
                 // If we haven't set up the Unity Purchasing reference
                 if (m_StoreController == null)
@@ -32,14 +32,14 @@ using UnityEngine.Purchasing;
                     InitializePurchasing();
                 }
             }
-    
+
             public void InitializePurchasing()
             {
                 if (IsInitialized())
                 {
                     return;
                 }
-
+                
                 var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         
                 builder.AddProduct(PRODUCT_REMOVE_ADS, ProductType.NonConsumable);
