@@ -53,7 +53,7 @@ public class SkinButton : MonoBehaviour
         }
         else
         {
-            _animator.SetBool(_skinUnlocked, true);
+            if (_animator != null) _animator.SetBool(_skinUnlocked, true);
         }
     }
 }
