@@ -13,9 +13,10 @@ namespace Assets.Scripts.Services
         public event Action UpdateMainMenuData;
         public event Action<bool> SetActiveInGameUI;
         public event Action<bool> OpenEndGameMenu;
+        public event Action<bool> SetActiveStoreMenu;
         public event Action OpenPauseMenu;
 
-        public event Action OpenStoreMenu;
+        
 
         public void UpdateInGameDistance(int distance)
         {
@@ -51,6 +52,7 @@ namespace Assets.Scripts.Services
         public void ShowMainMenu()
         {
             OpenMainMenu?.Invoke();
+            SetActiveStoreMenu?.Invoke(false);
         }
 
         public void UpdateMainMenu()
@@ -66,7 +68,7 @@ namespace Assets.Scripts.Services
 
         public void ShowStoreUI()
         {
-            OpenStoreMenu?.Invoke();
+            SetActiveStoreMenu?.Invoke(true);
         }
     }
 }

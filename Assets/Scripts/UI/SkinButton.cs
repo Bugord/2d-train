@@ -9,17 +9,22 @@ public class SkinButton : MonoBehaviour
     public Image SkinImage;
     [field: SerializeField]
     public bool IsUnlocked { get; private set; }
-
+    
     [SerializeField] private GameObject _mask;
+    [SerializeField] private GameObject _light;
     private SkinService _skinService;
+
+    private Animator _animator;
+    private readonly int _skinUnlocked = Animator.StringToHash("SkinUnlocked");
 
     public void Awake()
     {
         _skinService = ServiceLocator.GetService<SkinService>();
+        _animator = _mask.GetComponent<Animator>();
 
         if (IsUnlocked)
         {
-            HideMask();
+            HideMask(true);
         }
         GetComponent<Button>().onClick.AddListener(SetSkin);
     }
@@ -39,8 +44,16 @@ public class SkinButton : MonoBehaviour
         return this;
     }
 
-    private void HideMask()
+    private void HideMask(bool onAwake = false)
     {
-        _mask.SetActive(false);
+        _light.SetActive(true);
+        if (onAwake)
+        {
+            _mask.SetActive(false);
+        }
+        else
+        {
+            _animator.SetBool(_skinUnlocked, true);
+        }
     }
 }

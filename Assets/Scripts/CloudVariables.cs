@@ -15,4 +15,9 @@ public class CloudVariables : MonoBehaviour
     {
         return ImportantValues[2] == 1;
     }
+
+    public static int GetCoins()
+    {
+        return ImportantValues[1];
+    }
 }

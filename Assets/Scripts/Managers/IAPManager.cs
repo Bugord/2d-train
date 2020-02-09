@@ -21,7 +21,7 @@ using UnityEngine.Purchasing;
             public static string PRODUCT_10000_COINS = "swipy_rails_coins_10000";
 
             private PlayGamesService _playGamesService;
-            
+            public GameObject initCheck;
             public void Start()
             {
                 _playGamesService = ServiceLocator.GetService<PlayGamesService>();
@@ -127,6 +127,7 @@ using UnityEngine.Purchasing;
                 // Purchasing has succeeded initializing. Collect our Purchasing references.
                 Debug.Log("OnInitialized: PASS");
 
+                initCheck.SetActive(true);
                 // Overall Purchasing system, configured with products for this application.
                 m_StoreController = controller;
                 // Store specific subsystem, for accessing device-specific store features.

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Services
 {
@@ -8,9 +9,11 @@ namespace Assets.Scripts.Services
 
         public int RandomSkinCost;
 
+        public event Action<Sprite> UpdateSelectedTrainPreview; 
+
         private GameDataService _gameDataService;
 
-        public SkinService(int randomSkinCost = 100)
+        public SkinService(int randomSkinCost = 300)
         {
             RandomSkinCost = randomSkinCost;
             _gameDataService = ServiceLocator.GetService<GameDataService>();
@@ -20,12 +23,19 @@ namespace Assets.Scripts.Services
         {
             _gameDataService.CurrentSkinId = skin.name;
             _trainRenderer.sprite = skin;
+            UpdateSelectedTrainPreview?.Invoke(skin);
         }
 
         public void UpdateSkin(SpriteRenderer trainRenderer)
         {
             _trainRenderer = trainRenderer;
-            _trainRenderer.sprite = LoadSkinFromResource(_gameDataService.CurrentSkinId);
+            var sprite = LoadSkinFromResource(_gameDataService.CurrentSkinId);
+            _trainRenderer.sprite = sprite;
+        }
+
+        public Sprite GetCurrentSkin()
+        {
+            return _trainRenderer.sprite;
         }
 
         private Sprite LoadSkinFromResource(string skinId)

@@ -235,9 +235,10 @@
             <e p="PanelBase.cs" t="Include" />
             <e p="PausePanelController.cs" t="Include" />
             <e p="RemoveAdsController.cs" t="Include" />
-            <e p="ShopController.cs" t="Include" />
             <e p="SkinButton.cs" t="Include" />
+            <e p="SkinStoreController.cs" t="Include" />
             <e p="SoundSwitchButton.cs" t="Include" />
+            <e p="StoreController.cs" t="Include" />
             <e p="TimerButtonController.cs" t="Include" />
           </e>
         </e>
