@@ -12,6 +12,8 @@ namespace UI
         [SerializeField] private Text _coins;
         [SerializeField] private SkinStoreController _skinStoreController;
         [SerializeField] private CoinsStoreController _coinsStoreController;
+        [SerializeField] private Button _trainsButton;
+        [SerializeField] private Button _coinsButton;
 
         private UIService _uiService;
         
@@ -23,6 +25,30 @@ namespace UI
             _uiService.SetActiveStoreMenu += SetActive;
             _exitButton.onClick.AddListener(BackToMainMenu);
             _skinStoreController.UpdateStoreCoins += UpdateCoins;
+            _trainsButton.onClick.AddListener(OpenSkinStore);
+            _coinsButton.onClick.AddListener(OpenCoinsStore);
+            OpenSkinStore();
+        }
+
+        private void OnEnable()
+        {
+            OpenSkinStore();
+        }
+
+        private void OpenSkinStore()
+        {
+            _trainsButton.interactable = false;
+            _coinsButton.interactable = true;
+            _skinStoreController.SetActivePanel(true);
+            _coinsStoreController.SetActivePanel(false);
+        }
+        
+        private void OpenCoinsStore()
+        {
+            _coinsButton.interactable = false;
+            _trainsButton.interactable = true;
+            _skinStoreController.SetActivePanel(false);
+            _coinsStoreController.SetActivePanel(true);
         }
 
         private void SetActive(bool isActive)

@@ -35,7 +35,7 @@ namespace UI
      void Start ()
      {
          scroll = gameObject.GetComponent<ScrollRect>();
-         
+         scroll.horizontalScrollbar.onValueChanged.AddListener(UpdatePoints);
          screens = _pages.Count;
          
          if(screens > 0)
@@ -53,7 +53,22 @@ namespace UI
              points[0] = 0;
          }
      }
-     
+
+     private void UpdatePoints(float sliderValue)
+     {
+         var index = Math.Truncate(screens * Math.Abs(sliderValue));
+         
+         if (index > screens-1)
+         {
+             index = screens - 1;
+         }
+         
+         for (var i = 0; i < _indicators.Count; i++)
+         {
+             _indicators[i].sprite = i == (int) index ? _activePoint : _inactivePoint;
+         }
+     }
+
      void Update()
      {
          if(LerpH)
@@ -61,18 +76,7 @@ namespace UI
              scroll.horizontalNormalizedPosition = Mathf.Lerp( scroll.horizontalNormalizedPosition, targetH, 10*scroll.elasticity*Time.deltaTime);
              if(Mathf.Approximately(scroll.horizontalNormalizedPosition, targetH)) LerpH = false;            
          }
-         
-         var index = screens * Math.Abs(scroll.horizontalScrollbar.value);
-         index -= index % 1;
-         if (index > screens-1)
-         {
-             index = screens - 1;
-         }
-         for (var i = 0; i < _indicators.Count; i++)
-         {
-             _indicators[i].sprite = i == (int) index ? _activePoint : _inactivePoint;
-         }
-         
+
          if(LerpV)
          {
              scroll.verticalNormalizedPosition = Mathf.Lerp( scroll.verticalNormalizedPosition, targetV, 10*scroll.elasticity*Time.deltaTime);

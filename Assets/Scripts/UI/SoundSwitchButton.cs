@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Services;
+﻿using System;
+using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,8 +26,12 @@ namespace Assets.Scripts.UI
             _gameDataService = ServiceLocator.GetService<GameDataService>();
 
             _audioService.volumeOn = _gameDataService.SoundOn;
-            _image.sprite = _audioService.volumeOn ? _on : _off;
             _button.onClick.AddListener(SwitchVolume);
+        }
+
+        private void OnEnable()
+        {
+            _image.sprite = _audioService.volumeOn ? _on : _off;
         }
 
         private void SwitchVolume()
