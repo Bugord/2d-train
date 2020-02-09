@@ -14,20 +14,17 @@ namespace Controllers
         [SerializeField] private Color _runningColor;
         [SerializeField] private int _freeCoinsCount;
         [SerializeField] private GameObject _lightObject;
-
-        private AdsService _adsService;
+        
         private PlayGamesService _playGamesService;
         private UIService _uiService;
 
         void Awake()
         {
             _button = GetComponent<Button>();
-            _adsService = ServiceLocator.GetService<AdsService>();
             _playGamesService = ServiceLocator.GetService<PlayGamesService>();
             _uiService = ServiceLocator.GetService<UIService>();
             
-            _button.onClick.AddListener(_adsService.ShowFreeCoinsVideoAdvertisement);
-            _adsService.FreeCoins += GetFreeCoins;
+            _button.onClick.AddListener(GetFreeCoins);
             TimerEnded += OnTimerEnded;
         }
 
