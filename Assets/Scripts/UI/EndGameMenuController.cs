@@ -47,6 +47,7 @@ public class EndGameMenuController : PanelBase
 
     private void ExitToMainMenu()
     {
+        _adsService.ShowGameOverAdvertisement();
         SetActivePanel(false);
         _gameDataService.SetLastLevel(_levelService.Level);
         _gameDataService.UpdateCloudVariables();

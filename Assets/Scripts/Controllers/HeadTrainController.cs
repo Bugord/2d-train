@@ -322,12 +322,7 @@ namespace Assets.Scripts.Controllers
 
             _gameDataService.Score = TargetRail.Row - MapGenerator.Instance.DeltaRow;
         }
-
-        public override void SetRotation(Vector2 vectorToTarget)
-        {
-            transform.up = vectorToTarget;
-        }
-
+        
         public override void MoveTrain(Vector2 vectorToTarget)
         {
             if (IsDead) return;

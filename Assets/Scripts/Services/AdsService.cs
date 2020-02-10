@@ -16,7 +16,23 @@ namespace Assets.Scripts.Services
         public event Action FreeCoins;
 
         private AdsConfig _adsConfig;
-    
+        
+        private DateTime lastGameOverTime {
+            get
+            {
+                if (!PlayerPrefs.HasKey("LastGameOver"))
+                {
+                    return DateTime.MinValue;
+                }
+                
+                return DateTime.Parse(PlayerPrefs.GetString("LastGameOver"));
+            }
+            set
+            {
+                PlayerPrefs.SetString("LastGameOver", value.ToString());
+            }
+        }
+
         public AdsService(AdsConfig adsConfig)
         {
             _adsConfig = adsConfig;
@@ -31,7 +47,10 @@ namespace Assets.Scripts.Services
     
         public void ShowGameOverAdvertisement()
         {
-            Advertisement.Show(_adsConfig.GameOverPlacementId);
+            if ((float)(DateTime.Now - lastGameOverTime).TotalSeconds >= _adsConfig.GameOverPlacementTimeout)
+            {
+                Advertisement.Show(_adsConfig.GameOverPlacementId);
+            }
         }
 
         public void ShowReviveVideoAdvertisement()
@@ -116,6 +135,11 @@ namespace Assets.Scripts.Services
             else if (showResult == ShowResult.Failed)
             {
                 Debug.LogWarning("The ad did not finish due to an error.");
+            }
+
+            if (showResult == ShowResult.Finished || showResult == ShowResult.Skipped)
+            {
+                lastGameOverTime = DateTime.Now;
             }
         }
     }

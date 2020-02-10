@@ -38,16 +38,16 @@ namespace Assets.Scripts.Controllers
             LastTrainPos = _lastPoints.First();
         }
     
-        public virtual void SetRotation(Vector2 vectorToTarget)
+        public void SetRotation(Vector2 vectorToTarget)
         {
-            transform.up = vectorToTarget;
+            transform.up = Vector3.Lerp(transform.up, vectorToTarget, 0.5f);
         }
 
         public virtual void MoveTrain(Vector2 vectorToTarget)
         {
             if (IsDead) return;
         
-            transform.position = NextTrain.LastTrainPos;
+            transform.position = Vector3.Lerp(transform.position, NextTrain.LastTrainPos, 0.6f);
         }
     
     

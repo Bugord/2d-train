@@ -7,6 +7,7 @@ namespace Assets.Scripts.ScriptableObjects
     {
         [SerializeField] private string _gameId;
         [SerializeField] private string _gameOverPlacementId;
+        [SerializeField] private float _gameOverPlacementTimeout;
         [SerializeField] private string _reviveVideoPlacementId;
         [SerializeField] private string _bonusVideoPlacementId;
         [SerializeField] private string _swipyRailsBannerPlacement;
@@ -15,6 +16,7 @@ namespace Assets.Scripts.ScriptableObjects
 
         public string GameId => _gameId;
         public string GameOverPlacementId => _gameOverPlacementId;
+        public float GameOverPlacementTimeout => _gameOverPlacementTimeout;
         public string ReviveVideoPlacementId => _reviveVideoPlacementId;
         public string BonusVideoPlacementId => _bonusVideoPlacementId;
         public string BannerPlacementId => _swipyRailsBannerPlacement;
