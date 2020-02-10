@@ -180,7 +180,7 @@ namespace Assets.Scripts.Controllers
                 else
                 {
                     _uiService.IsInGame = false;
-                    _uiService.ShowEndGameMenu(!_gameDataService.Revived);
+                    _uiService.ShowReviveMenu(!_gameDataService.Revived);
                 }
                 _audioService.Play(AudioClipType.StopHit);
             }

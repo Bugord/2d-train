@@ -14,10 +14,27 @@ namespace Controllers
         [SerializeField] private Color _runningColor;
         [SerializeField] private int _freeCoinsCount;
         [SerializeField] private GameObject _lightObject;
+        [SerializeField] private string _playerPrefKey;
         
         private PlayGamesService _playGamesService;
         private UIService _uiService;
 
+        private DateTime startSystemTime {
+            get
+            {
+                if (!PlayerPrefs.HasKey(_playerPrefKey))
+                {
+                    return DateTime.MinValue;
+                }
+                
+                return DateTime.Parse(PlayerPrefs.GetString(_playerPrefKey));
+            }
+            set
+            {
+                PlayerPrefs.SetString(_playerPrefKey, value.ToString());
+            }
+        }
+        
         void Awake()
         {
             _button = GetComponent<Button>();
@@ -55,6 +72,18 @@ namespace Controllers
             _lightObject.SetActive(false);
         }
 
+        private void SetTimer(Action<float> callBack)
+        {
+            startSystemTime = DateTime.Now;
+            StartTimer(true, callBack);
+        }
+        
+        private void UpdateTimer(Action<float> callBack)
+        {
+            var watch = (float)(DateTime.Now - startSystemTime).TotalSeconds;
+            StartTimer(true, callBack, watch);
+        }
+        
         private void CallBack(float currentTime)
         {
             _text.text = GetTime((float)Math.Round(time - currentTime));

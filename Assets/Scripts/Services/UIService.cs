@@ -12,7 +12,8 @@ namespace Assets.Scripts.Services
         public event Action OpenMainMenu;
         public event Action UpdateMainMenuData;
         public event Action<bool> SetActiveInGameUI;
-        public event Action<bool> OpenEndGameMenu;
+        public event Action OpenEndGameMenu;
+        public event Action OpenReviveMenu; 
         public event Action<bool> SetActiveStoreMenu;
         public event Action OpenPauseMenu;
 
@@ -28,10 +29,23 @@ namespace Assets.Scripts.Services
             InGameCoinsUpdate?.Invoke(coins);
         }
 
-        public void ShowEndGameMenu(bool canRevive = false)
+        public void ShowReviveMenu(bool canRevive = false)
+        {
+            if (canRevive)
+            {
+                SetActiveInGameUI?.Invoke(false);
+                OpenReviveMenu?.Invoke();
+            }
+            else
+            {
+                ShowEndGameMenu();
+            }
+        }
+
+        public void ShowEndGameMenu()
         {
             SetActiveInGameUI?.Invoke(false);
-            OpenEndGameMenu?.Invoke(canRevive);
+            OpenEndGameMenu?.Invoke();
         }
         
         public void SetPause()
