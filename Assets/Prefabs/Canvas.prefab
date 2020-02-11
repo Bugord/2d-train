@@ -3704,7 +3704,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6662754660837217078}
-  - component: {fileID: 8750125302189633317}
   - component: {fileID: 1060567102884966777}
   m_Layer: 5
   m_Name: Content
@@ -3734,20 +3733,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 152.9}
   m_SizeDelta: {x: 0, y: -305.7}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8750125302189633317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4992193959576827585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 0
 --- !u!114 &1060567102884966777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7378,9 +7363,9 @@ RectTransform:
   m_Father: {fileID: 1743806216552009168}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 441, y: 859}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -99, y: -101}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2655634593982295496
@@ -7954,10 +7939,10 @@ RectTransform:
   m_Father: {fileID: 5641847226682594314}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0.00012207}
+  m_SizeDelta: {x: 1080, y: 1920.0001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8679185847965764102
 MonoBehaviour:
@@ -8208,6 +8193,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1565462059673332362}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (8)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8312,11 +8302,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (8)
       objectReference: {fileID: 0}
     - target: {fileID: 597482236252426270, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
@@ -8344,6 +8329,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24505251193690574}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (8)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8449,11 +8439,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (8)
-      objectReference: {fileID: 0}
     - target: {fileID: 597482236252426270, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: <IsUnlocked>k__BackingField
@@ -8480,6 +8465,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24505251193690574}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (5)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8585,11 +8575,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_Sprite
@@ -8611,6 +8596,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1565462059673332362}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (6)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8715,11 +8705,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (6)
       objectReference: {fileID: 0}
     - target: {fileID: 597482236252426270, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
@@ -8747,6 +8732,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1565462059673332362}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8852,11 +8842,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton
-      objectReference: {fileID: 0}
     - target: {fileID: 597482236252426270, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: <IsUnlocked>k__BackingField
@@ -8877,6 +8862,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24505251193690574}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (3)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8982,11 +8972,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_Sprite
@@ -9008,6 +8993,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24505251193690574}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9113,11 +9103,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton
-      objectReference: {fileID: 0}
     - target: {fileID: 597482236252426270, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: <IsUnlocked>k__BackingField
@@ -9144,6 +9129,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1565462059673332362}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (2)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9249,11 +9239,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_Sprite
@@ -9275,6 +9260,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24505251193690574}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9380,11 +9370,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_Sprite
@@ -9406,6 +9391,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1565462059673332362}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (7)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9511,11 +9501,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (7)
-      objectReference: {fileID: 0}
     - target: {fileID: 597482236252426270, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: <IsUnlocked>k__BackingField
@@ -9542,6 +9527,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1565462059673332362}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (5)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9647,11 +9637,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_Sprite
@@ -9673,6 +9658,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24505251193690574}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (6)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9778,11 +9768,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (6)
-      objectReference: {fileID: 0}
     - target: {fileID: 597482236252426270, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: <IsUnlocked>k__BackingField
@@ -9809,6 +9794,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1565462059673332362}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9914,11 +9904,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_Sprite
@@ -9940,6 +9925,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1565462059673332362}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (4)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10045,11 +10035,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_Sprite
@@ -10071,6 +10056,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24505251193690574}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (7)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10176,11 +10166,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (7)
-      objectReference: {fileID: 0}
     - target: {fileID: 597482236252426270, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: <IsUnlocked>k__BackingField
@@ -10207,6 +10192,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24505251193690574}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (2)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10312,11 +10302,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_Sprite
@@ -10338,6 +10323,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 24505251193690574}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (4)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10443,11 +10433,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_Sprite
@@ -10469,6 +10454,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1565462059673332362}
     m_Modifications:
+    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
+        type: 3}
+      propertyPath: m_Name
+      value: SkinButton (3)
+      objectReference: {fileID: 0}
     - target: {fileID: 2040387090650627725, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10573,11 +10563,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 132461042585484273, guid: fa9e637bcc10d814c8bb8c99024eae55,
-        type: 3}
-      propertyPath: m_Name
-      value: SkinButton (3)
       objectReference: {fileID: 0}
     - target: {fileID: 6573177899290163315, guid: fa9e637bcc10d814c8bb8c99024eae55,
         type: 3}

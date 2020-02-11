@@ -92,12 +92,8 @@ namespace Assets.Scripts.Controllers
 
         private void FixedUpdate()
         {
-            if (!_uiService.IsInGame)
-            {
-                _mainModule.startSpeed = 0;
-                return;
-            }
-
+            if (!_uiService.IsInGame) return;
+            
             SetLastTrainPos();
 
             var vectorToTarget = VectorToTarget();
@@ -263,6 +259,7 @@ namespace Assets.Scripts.Controllers
             IsBoosted = true;
             _trailObject.SetActive(true);
             _pointEffector.SetActive(true);
+            _mainModule.startSpeed = _levelService.BoostedSpeed*2;
 
             float t = 0;
 
@@ -276,6 +273,7 @@ namespace Assets.Scripts.Controllers
             IsBoosted = false;
             _trailObject.SetActive(false);
             _pointEffector.SetActive(false);
+            _mainModule.startSpeed = 0;
         }
 
         private void GenerateNewTrain()
@@ -340,7 +338,7 @@ namespace Assets.Scripts.Controllers
             {
                 newSpeed = _levelService.BoostedSpeed;
             }
-            _mainModule.startSpeed = newSpeed*2;
+
             transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + vectorToTarget,
                 newSpeed * Time.fixedDeltaTime);
         }

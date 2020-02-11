@@ -47,7 +47,7 @@ namespace Assets.Scripts.Controllers
         {
             if (IsDead) return;
         
-            transform.position = Vector3.Lerp(transform.position, NextTrain.LastTrainPos, 0.6f);
+            transform.position = Vector3.Lerp(transform.position, NextTrain.LastTrainPos, 0.85f);
         }
     
     

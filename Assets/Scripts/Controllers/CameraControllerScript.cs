@@ -16,7 +16,7 @@ public class CameraControllerScript : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        var storeButtonPosition = Camera.main.ScreenToWorldPoint(_storeButton.position) + Vector3.up * 0.07f;
+        var storeButtonPosition = Camera.main.ScreenToWorldPoint(_storeButton.position);
         
         storeButtonPosition.z = 0;
         target.position = storeButtonPosition;
@@ -42,7 +42,7 @@ public class CameraControllerScript : MonoBehaviour
             H = 0;
         }
         
-        H += Time.deltaTime*5;
+        H += Time.deltaTime;
         
         _camera.backgroundColor = Color.HSVToRGB(H / 360, S, V);
     }
