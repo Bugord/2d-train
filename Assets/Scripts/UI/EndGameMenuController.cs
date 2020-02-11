@@ -1,4 +1,6 @@
-﻿using Assets.Scripts;
+﻿using System;
+using System.Collections;
+using Assets.Scripts;
 using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.UI;
@@ -70,8 +72,8 @@ namespace UI
 
         private void SetEndGameData()
         {
-            _coins.text = _gameDataService.Coins.ToString();
-            _distance.text = _gameDataService.Score.ToString();
+            StartCoroutine(UpdateText(_coins, int.Parse(_coins.text), _gameDataService.Coins));
+            StartCoroutine(UpdateText(_distance, int.Parse(_distance.text), _gameDataService.Score));
         }
     }
 }

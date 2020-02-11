@@ -13,4 +13,15 @@ public class PanelBase : MonoBehaviour
     {
         root.SetActive(isActive);
     }
+    
+    protected IEnumerator UpdateText(Text text, int oldValue, int newValue)
+    {
+        float t = 0;
+        while (t <= 1)
+        {
+            t += Time.deltaTime*2;
+            text.text = ((int)Mathf.Lerp(oldValue, newValue, t)).ToString();
+            yield return null;
+        }
+    }
 }

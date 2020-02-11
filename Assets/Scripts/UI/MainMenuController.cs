@@ -38,7 +38,10 @@ public class MainMenuController : PanelBase
 
         _uiService.OpenMainMenu += Open;
         _uiService.UpdateMainMenuData += UpdateData;
-        UpdateData();
+        
+        LastScore.text = CloudVariables.ImportantValues[4].ToString();
+        BestScore.text = CloudVariables.ImportantValues[0].ToString();
+        Coins.text = CloudVariables.GetCoins().ToString();
     }
 
     private void StartGame()
@@ -68,6 +71,6 @@ public class MainMenuController : PanelBase
     {
         LastScore.text = CloudVariables.ImportantValues[4].ToString();
         BestScore.text = CloudVariables.ImportantValues[0].ToString();
-        Coins.text = CloudVariables.ImportantValues[1].ToString();
+        StartCoroutine(UpdateText(Coins, int.Parse(Coins.text), CloudVariables.GetCoins()));
     }
 }

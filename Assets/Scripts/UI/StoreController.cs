@@ -25,10 +25,11 @@ namespace UI
             
             _uiService.SetActiveStoreMenu += SetActive;
             _exitButton.onClick.AddListener(BackToMainMenu);
-            _skinStoreController.UpdateStoreCoins += UpdateCoins;
+            _skinStoreController.UpdateStoreCoins += () => { UpdateCoins(true); };
             _trainsButton.onClick.AddListener(OpenSkinStore);
             _coinsButton.onClick.AddListener(OpenCoinsStore);
             OpenSkinStore();
+            UpdateCoins();
         }
 
         private void OnEnable()
@@ -60,9 +61,16 @@ namespace UI
             UpdateCoins();
         }
 
-        private void UpdateCoins()
+        private void UpdateCoins(bool isAnimated = false)
         {
-            _coins.text = CloudVariables.GetCoins().ToString();
+            if (isAnimated)
+            {
+                StartCoroutine(UpdateText(_coins, int.Parse(_coins.text), CloudVariables.GetCoins()));
+            }
+            else
+            {
+                _coins.text = CloudVariables.GetCoins().ToString();
+            }
         }
 
         private void BackToMainMenu()
