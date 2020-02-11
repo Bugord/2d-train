@@ -230,13 +230,13 @@
           <e p="UI" t="Include">
             <e p="CoinsStoreController.cs" t="Include" />
             <e p="EndGameMenuController.cs" t="Include" />
+            <e p="HorizontalScrollSnap.cs" t="Include" />
             <e p="InGameUIController.cs" t="Include" />
             <e p="MainMenuController.cs" t="Include" />
             <e p="PanelBase.cs" t="Include" />
             <e p="PausePanelController.cs" t="Include" />
             <e p="RemoveAdsController.cs" t="Include" />
             <e p="ReviveMenuController.cs" t="Include" />
-            <e p="ScrollRectSnappingController.cs" t="Include" />
             <e p="SkinButton.cs" t="Include" />
             <e p="SkinStoreController.cs" t="Include" />
             <e p="SoundSwitchButton.cs" t="Include" />

@@ -25,6 +25,7 @@ public class CameraControllerScript : MonoBehaviour
         offset = transform.position - target.position;
         _camera = GetComponent<Camera>();
         Color.RGBToHSV(_camera.backgroundColor,out H,out S,out V);
+        H *= 360;
     }
     
     void FixedUpdate()
