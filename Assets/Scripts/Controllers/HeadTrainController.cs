@@ -31,6 +31,8 @@ namespace Assets.Scripts.Controllers
         private SpriteRenderer _spriteRenderer;
 
         [SerializeField] private GameObject _pointEffector;
+        [SerializeField] private ParticleSystem _particleSystem;
+        private ParticleSystem.MainModule _mainModule;
 
         private AchievementsService _achievementsService;
         private AudioService _audioService;
@@ -63,6 +65,7 @@ namespace Assets.Scripts.Controllers
 
             _skinService.UpdateSkin(_spriteRenderer);
             UpdateTrainPoints();
+            _mainModule = _particleSystem.main;
         }
 
         private void OnDestroy()
@@ -89,7 +92,11 @@ namespace Assets.Scripts.Controllers
 
         private void FixedUpdate()
         {
-            if (!_uiService.IsInGame) return;
+            if (!_uiService.IsInGame)
+            {
+                _mainModule.startSpeed = 0;
+                return;
+            }
 
             SetLastTrainPos();
 
@@ -333,7 +340,7 @@ namespace Assets.Scripts.Controllers
             {
                 newSpeed = _levelService.BoostedSpeed;
             }
-
+            _mainModule.startSpeed = newSpeed*2;
             transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + vectorToTarget,
                 newSpeed * Time.fixedDeltaTime);
         }

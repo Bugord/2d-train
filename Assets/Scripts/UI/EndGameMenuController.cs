@@ -40,6 +40,7 @@ namespace UI
 
         private void Open()
         {
+            InputManager.BackButton += ExitToMainMenu;
             SetEndGameData();
             SetActivePanel(true);
             _timerButton.StartTimer(false, null);
@@ -47,6 +48,7 @@ namespace UI
 
         private void ExitToMainMenu()
         {
+            InputManager.BackButton -= ExitToMainMenu;
             _adsService.ShowGameOverAdvertisement();
             SetActivePanel(false);
             _gameDataService.SetLastLevel(_levelService.Level);

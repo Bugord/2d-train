@@ -7,7 +7,8 @@ namespace Assets.Scripts.Services
     public class LevelService
     {
         public int Level { get; private set; }
-        public int StopsCount { get; private set; }
+        public int MaxStopsCount { get; private set; }
+        public int MinStopsCount { get; private set; }
         public float BoostedSpeed => _levelSettings.BoostedSpeed;
         private float _speed;
         private float _maxSpeed;
@@ -15,7 +16,7 @@ namespace Assets.Scripts.Services
         private LevelSettings _levelSettings;
         private GameDataService _gameDataService;
         private UIService _uiService;
-
+        
         public LevelService(LevelSettings levelSettings)
         {
             _gameDataService = ServiceLocator.GetService<GameDataService>();
@@ -40,7 +41,8 @@ namespace Assets.Scripts.Services
         {
             ResetSpeed();
             Level = 0;
-            StopsCount = 0;
+            MaxStopsCount = 0;
+            MinStopsCount = 0;
             _maxSpeed = 6;
             UpdateMaxSpeed();
         }
@@ -59,12 +61,22 @@ namespace Assets.Scripts.Services
 
             if (Level == 1)
             {
-                StopsCount = 1;
+                MaxStopsCount = 1;
+                MinStopsCount = 1;
             }
 
-            if (Level % 5 == 0 && StopsCount < 5)
+            if (Level % 5 == 0 && MaxStopsCount < 5)
             {
-                StopsCount++;
+                MaxStopsCount++;
+                switch (MaxStopsCount)
+                {
+                    case 4:
+                        MinStopsCount = 2;
+                        break;
+                    case 5:
+                        MinStopsCount = 3;
+                        break;
+                }
             }
         }
 

@@ -43,12 +43,19 @@ public class InGameUIController : PanelBase
         if (isActive)
         {
             _adsService.HideBanner();
+            InputManager.BackButton += SetPause;
         }
         else
         {
             _adsService.ShowBanner();
+            InputManager.BackButton -= SetPause;
         }
         SetActivePanel(isActive);
+    }
+
+    private void SetPause()
+    {
+        _uiService.SetPause();
     }
 
     private void UpdateCoins(int coins)

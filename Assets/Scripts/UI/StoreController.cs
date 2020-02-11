@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts;
 using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -54,10 +55,9 @@ namespace UI
         private void SetActive(bool isActive)
         {
             SetActivePanel(isActive);
-            if (isActive)
-            {
-                UpdateCoins();
-            }
+            if (!isActive) return;
+            InputManager.BackButton += BackToMainMenu;
+            UpdateCoins();
         }
 
         private void UpdateCoins()
@@ -67,6 +67,7 @@ namespace UI
 
         private void BackToMainMenu()
         {
+            InputManager.BackButton -= BackToMainMenu;
             SetActivePanel(false);
             _uiService.ShowMainMenu();
         }

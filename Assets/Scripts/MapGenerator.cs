@@ -415,7 +415,7 @@ namespace Assets.Scripts
                             {
                                 CircleRailsConfig[circleConfig] = true;
                                 print(circleConfig);
-                                for (int j = 0; j < Random.Range(1, _levelService.StopsCount); j++)
+                                for (int j = 0; j < Random.Range(_levelService.MinStopsCount, _levelService.MaxStopsCount+1); j++)
                                 {
                                     _poolService.GetObject<PoolObject>(_stop.name, stopRail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
                                     stopOffset += 0.25f;
@@ -424,7 +424,7 @@ namespace Assets.Scripts
                         }
                         else
                         {
-                            for (int j = 0; j < Random.Range(1, _levelService.StopsCount); j++)
+                            for (int j = 0; j < Random.Range(_levelService.MinStopsCount, _levelService.MaxStopsCount+1); j++)
                             {
                                 _poolService.GetObject<PoolObject>(_stop.name, stopRail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
                                 stopOffset += 0.25f;

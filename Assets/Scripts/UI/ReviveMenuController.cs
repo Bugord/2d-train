@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Services;
+﻿using Assets.Scripts;
+using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,12 +30,14 @@ namespace UI
 
         private void Open()
         {
+            InputManager.BackButton += ShowEndGameMenu;
             SetActivePanel(true);
             _timerButton.StartTimer(false, null);
         }
         
         private void ShowEndGameMenu()
         {
+            InputManager.BackButton -= ShowEndGameMenu;
             SetActivePanel(false);
             _uiService.ShowEndGameMenu();
         }

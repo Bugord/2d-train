@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using Assets.Scripts.Services;
 using Assets.Scripts.UI;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class PausePanelController : PanelBase
     public Button ExitToMenuButton;
 
     private UIService _uiService;
-    // Start is called before the first frame update
+    
     void Awake()
     {
         _uiService = ServiceLocator.GetService<UIService>();
@@ -23,6 +24,7 @@ public class PausePanelController : PanelBase
     private void Open()
     {
         SetActivePanel(true);
+        InputManager.BackButton += ContinueGame;
     }
 
     private void ExitToMainMenu()
@@ -33,8 +35,9 @@ public class PausePanelController : PanelBase
 
     private void ContinueGame()
     {
+        InputManager.BackButton -= ContinueGame;
         SetActivePanel(false);
-        _uiService.IsInGame = true;
         _uiService.ShowInGameUI();
+        _uiService.IsInGame = true;
     }
 }
