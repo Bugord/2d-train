@@ -30,6 +30,7 @@ namespace UI
             _coinsButton.onClick.AddListener(OpenCoinsStore);
             OpenSkinStore();
             UpdateCoins();
+            _uiService.OpenMainMenu += delegate { SetActivePanel(false); };
         }
 
         private void OnEnable()
@@ -57,7 +58,8 @@ namespace UI
         {
             SetActivePanel(isActive);
             if (!isActive) return;
-            InputManager.BackButton += BackToMainMenu;
+            
+            _uiService.CurrentPanel = this;
             UpdateCoins();
         }
 
@@ -75,7 +77,6 @@ namespace UI
 
         private void BackToMainMenu()
         {
-            InputManager.BackButton -= BackToMainMenu;
             SetActivePanel(false);
             _uiService.ShowMainMenu();
         }

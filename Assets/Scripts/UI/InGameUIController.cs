@@ -25,7 +25,7 @@ public class InGameUIController : PanelBase
         _uiService.GameRestart += ResetInGameUI;
         _uiService.InGameCoinsUpdate += UpdateCoins;
         _uiService.InGameDistanceUpdate += UpdateDistance;
-
+        
         _pauseButton.onClick.AddListener(_uiService.SetPause);
         
         _gameDataService.ResetGame();
@@ -51,13 +51,12 @@ public class InGameUIController : PanelBase
     {
         if (isActive)
         {
+            _uiService.CurrentPanel = this;
             _adsService.HideBanner();
-            InputManager.BackButton += SetPause;
         }
         else
         {
             _adsService.ShowBanner();
-            InputManager.BackButton -= SetPause;
         }
         SetActivePanel(isActive);
     }

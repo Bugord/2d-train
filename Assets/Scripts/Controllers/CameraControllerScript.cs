@@ -14,10 +14,10 @@ public class CameraControllerScript : MonoBehaviour
     private float V;
     
     // Use this for initialization
-    void Awake()
+    void Start()
     {
         _camera = GetComponent<Camera>();
-        var storeButtonPosition = _camera.ScreenToWorldPoint(_storeButton.position) + Vector3.up*0.07f;
+        var storeButtonPosition = _camera.ScreenToWorldPoint(_storeButton.position) + Vector3.up*0.15f;
         
         storeButtonPosition.z = 0;
         target.position = storeButtonPosition;

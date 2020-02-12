@@ -24,7 +24,7 @@ namespace Assets.Scripts
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyUp(KeyCode.Escape))
             {
                 BackButton?.Invoke();
             }

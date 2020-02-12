@@ -19,12 +19,13 @@ public class PausePanelController : PanelBase
         _continueButton.onClick.AddListener(ContinueGame);
         ExitToMenuButton.onClick.AddListener(ExitToMainMenu);
         _uiService.OpenPauseMenu += Open;
+        _uiService.SetActiveInGameUI += delegate(bool b) { if(b) SetActivePanel(false); };
     }
 
     private void Open()
     {
+        _uiService.CurrentPanel = this;
         SetActivePanel(true);
-        InputManager.BackButton += ContinueGame;
     }
 
     private void ExitToMainMenu()
@@ -35,7 +36,6 @@ public class PausePanelController : PanelBase
 
     private void ContinueGame()
     {
-        InputManager.BackButton -= ContinueGame;
         SetActivePanel(false);
         _uiService.ShowInGameUI();
         _uiService.IsInGame = true;

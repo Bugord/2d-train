@@ -26,18 +26,18 @@ namespace UI
             
             _adsService.ReviveAdvertisementUpdate += delegate (bool isReady) { _reviveButton.interactable = isReady; };
             _adsService.TrainRevive += ShowPauseMenu;
+            _uiService.OpenEndGameMenu += delegate { SetActivePanel(false); };
         }
 
         private void Open()
         {
-            InputManager.BackButton += ShowEndGameMenu;
+            _uiService.CurrentPanel = this;
             SetActivePanel(true);
             _timerButton.StartTimer(false, null);
         }
         
         private void ShowEndGameMenu()
         {
-            InputManager.BackButton -= ShowEndGameMenu;
             SetActivePanel(false);
             _uiService.ShowEndGameMenu();
         }

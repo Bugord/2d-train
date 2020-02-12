@@ -1,10 +1,12 @@
 ﻿using System;
+using UI;
 
 namespace Assets.Scripts.Services
 {
     public class UIService
     {
         public bool IsInGame;
+        public PanelBase CurrentPanel;
         
         public event Action<int> InGameDistanceUpdate;
         public event Action<int> InGameCoinsUpdate;
@@ -16,8 +18,12 @@ namespace Assets.Scripts.Services
         public event Action OpenReviveMenu; 
         public event Action<bool> SetActiveStoreMenu;
         public event Action OpenPauseMenu;
+        public event Action EndGameBackButton;
 
-        
+        public UIService()
+        {
+            InputManager.BackButton += OnBackButton;
+        }
 
         public void UpdateInGameDistance(int distance)
         {
@@ -83,6 +89,28 @@ namespace Assets.Scripts.Services
         public void ShowStoreUI()
         {
             SetActiveStoreMenu?.Invoke(true);
+        }
+
+        private void OnBackButton()
+        {
+            switch (CurrentPanel)
+            {
+                case PausePanelController _:
+                    ShowInGameUI();
+                    break;
+                case InGameUIController _:
+                    SetPause();
+                    break;
+                case StoreController _:
+                    ShowMainMenu();
+                    break;
+                case EndGameMenuController _:
+                    EndGameBackButton?.Invoke();
+                    break;
+                case ReviveMenuController _:
+                    ShowEndGameMenu();
+                    break;
+            }
         }
     }
 }

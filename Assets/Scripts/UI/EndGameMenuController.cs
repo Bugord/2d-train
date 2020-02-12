@@ -38,11 +38,12 @@ namespace UI
             _uiService.OpenEndGameMenu += Open;
             _uiService.OpenPauseMenu += () => SetActivePanel(false);
             _exitToMenu.onClick.AddListener(ExitToMainMenu);
+            _uiService.EndGameBackButton += ExitToMainMenu;
         }
 
         private void Open()
         {
-            InputManager.BackButton += ExitToMainMenu;
+            _uiService.CurrentPanel = this;
             SetEndGameData();
             SetActivePanel(true);
             _timerButton.StartTimer(false, null);
@@ -50,7 +51,6 @@ namespace UI
 
         private void ExitToMainMenu()
         {
-            InputManager.BackButton -= ExitToMainMenu;
             _adsService.ShowGameOverAdvertisement();
             SetActivePanel(false);
             _gameDataService.SetLastLevel(_levelService.Level);

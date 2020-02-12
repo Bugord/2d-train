@@ -28,6 +28,7 @@ public class MainMenuController : PanelBase
         _achievementsService = ServiceLocator.GetService<AchievementsService>();
         _leaderBoardsService = ServiceLocator.GetService<LeaderBoardsService>();
         _uiService = ServiceLocator.GetService<UIService>();
+        _uiService.CurrentPanel = this;
         
         _achievementsButton.onClick.AddListener(_achievementsService.ShowAchievementsUI);
         _leaderboardButton.onClick.AddListener(_leaderBoardsService.ShowLeaderBoardUI);
@@ -57,6 +58,7 @@ public class MainMenuController : PanelBase
 
     private void Open()
     {
+        _uiService.CurrentPanel = this;
         SetActivePanel(true);
         UpdateData();
     }
