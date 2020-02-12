@@ -31,9 +31,8 @@ namespace Assets.Scripts.Controllers
         private SpriteRenderer _spriteRenderer;
 
         [SerializeField] private GameObject _pointEffector;
-        [SerializeField] private ParticleSystem _particleSystem;
-        private ParticleSystem.MainModule _mainModule;
-
+        [SerializeField] private GameObject _particleSystem;
+        
         private AchievementsService _achievementsService;
         private AudioService _audioService;
         private LevelService _levelService;
@@ -65,7 +64,6 @@ namespace Assets.Scripts.Controllers
 
             _skinService.UpdateSkin(_spriteRenderer);
             UpdateTrainPoints();
-            _mainModule = _particleSystem.main;
         }
 
         private void OnDestroy()
@@ -259,7 +257,7 @@ namespace Assets.Scripts.Controllers
             IsBoosted = true;
             _trailObject.SetActive(true);
             _pointEffector.SetActive(true);
-            _mainModule.startSpeed = _levelService.BoostedSpeed*2;
+            _particleSystem.SetActive(true);
 
             float t = 0;
 
@@ -273,7 +271,7 @@ namespace Assets.Scripts.Controllers
             IsBoosted = false;
             _trailObject.SetActive(false);
             _pointEffector.SetActive(false);
-            _mainModule.startSpeed = 0;
+            _particleSystem.SetActive(false);
         }
 
         private void GenerateNewTrain()

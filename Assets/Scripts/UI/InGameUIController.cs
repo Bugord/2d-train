@@ -31,6 +31,15 @@ public class InGameUIController : PanelBase
         _gameDataService.ResetGame();
     }
 
+    void OnApplicationFocus(bool pauseStatus)
+    {
+        if(!pauseStatus && _uiService.IsInGame)
+        {
+            SetPause();
+        }
+    }
+
+    
     private void ResetInGameUI()
     {
         _score.text = "0";
