@@ -26,6 +26,7 @@ namespace UI
             _uiService.SetActiveStoreMenu += SetActive;
             _exitButton.onClick.AddListener(BackToMainMenu);
             _skinStoreController.UpdateStoreCoins += () => { UpdateCoins(true); };
+            _coinsStoreController.UpdateStoreCoins += () => { UpdateCoins(true); };
             _trainsButton.onClick.AddListener(OpenSkinStore);
             _coinsButton.onClick.AddListener(OpenCoinsStore);
             OpenSkinStore();

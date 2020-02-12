@@ -14,12 +14,11 @@ using UnityEngine.Purchasing;
             private static IExtensionProvider m_StoreExtensionProvider; // The store-specific Purchasing subsystems.
     
             public static string PRODUCT_REMOVE_ADS = "remove_ads";
-            public static string PRODUCT_1000_COINS = "swipy_rails_coins_1000x";
-            public static string PRODUCT_3000_COINS = "swipy_rails_coins_3000";
+            public static string PRODUCT_2000_COINS = "swipy_rails_coins_1000x";
             public static string PRODUCT_5000_COINS = "swipy_rails_coins_5000";
-            public static string PRODUCT_7000_COINS = "swipy_rails_coins_7000";
-            public static string PRODUCT_10000_COINS = "swipy_rails_coins_10000";
-
+            public static string PRODUCT_12000_COINS = "swipy_rails_coins_7000";
+            public event Action<int> CoinsPurchased; 
+            
             private PlayGamesService _playGamesService;
             
             public void Start()
@@ -43,12 +42,10 @@ using UnityEngine.Purchasing;
                 var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         
                 builder.AddProduct(PRODUCT_REMOVE_ADS, ProductType.NonConsumable);
-                builder.AddProduct(PRODUCT_1000_COINS, ProductType.Consumable);
-                builder.AddProduct(PRODUCT_3000_COINS, ProductType.Consumable);
+                builder.AddProduct(PRODUCT_2000_COINS, ProductType.Consumable);
                 builder.AddProduct(PRODUCT_5000_COINS, ProductType.Consumable);
-                builder.AddProduct(PRODUCT_7000_COINS, ProductType.Consumable);
-                builder.AddProduct(PRODUCT_10000_COINS, ProductType.Consumable);
-        
+                builder.AddProduct(PRODUCT_12000_COINS, ProductType.Consumable);
+                
                 UnityPurchasing.Initialize(this, builder);
             }
 
@@ -71,20 +68,14 @@ using UnityEngine.Purchasing;
             {
                 switch (coins)
                 {
-                    case 1000:
-                        BuyProductID(PRODUCT_1000_COINS);
-                        break;
-                    case 3000:
-                        BuyProductID(PRODUCT_3000_COINS);
+                    case 2000:
+                        BuyProductID(PRODUCT_2000_COINS);
                         break;
                     case 5000:
                         BuyProductID(PRODUCT_5000_COINS);
                         break;
-                    case 7000:
-                        BuyProductID(PRODUCT_7000_COINS);
-                        break;
-                    case 10000:
-                        BuyProductID(PRODUCT_10000_COINS);
+                    case 12000:
+                        BuyProductID(PRODUCT_12000_COINS);
                         break;
                 }
             }
@@ -143,34 +134,20 @@ using UnityEngine.Purchasing;
                 // A consumable product has been purchased by this user.
                 if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_REMOVE_ADS, StringComparison.Ordinal))
                 {
-                    Debug.LogError("Ads removed." + args.purchasedProduct.metadata.localizedDescription);
                     CloudVariables.ImportantValues[2] = 1;
                     RemoveAdsController.DestroyButton();
                 } 
-                else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_1000_COINS, StringComparison.Ordinal))
+                else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_2000_COINS, StringComparison.Ordinal))
                 {
-                    Debug.LogError("1000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                    CloudVariables.ImportantValues[1] += 1000;
-                }
-                else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_3000_COINS, StringComparison.Ordinal))
-                {
-                    Debug.LogError("3000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                    CloudVariables.ImportantValues[1] += 3000;
+                    CoinsPurchased?.Invoke(2000);
                 }
                 else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_5000_COINS, StringComparison.Ordinal))
                 {
-                    Debug.LogError("5000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                    CloudVariables.ImportantValues[1] += 5000;
+                    CoinsPurchased?.Invoke(5000);
                 }
-                else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_7000_COINS, StringComparison.Ordinal))
+                else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_12000_COINS, StringComparison.Ordinal))
                 {
-                    Debug.LogError("7000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                    CloudVariables.ImportantValues[1] += 7000;
-                }
-                else if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_10000_COINS, StringComparison.Ordinal))
-                {
-                    Debug.LogError("10000 Coins." + args.purchasedProduct.metadata.localizedDescription);
-                    CloudVariables.ImportantValues[1] += 10000;
+                    CoinsPurchased?.Invoke(12000);
                 }
                 else
                 {

@@ -23,7 +23,7 @@ namespace UI
 
         public event Action UpdateStoreCoins;
 
-            private void Awake()
+        private void Awake()
         {
             _uiService = ServiceLocator.GetService<UIService>();
             _playGamesService = ServiceLocator.GetService<PlayGamesService>();

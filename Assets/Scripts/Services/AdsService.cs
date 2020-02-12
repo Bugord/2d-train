@@ -13,7 +13,7 @@ namespace Assets.Scripts.Services
         public event Action<bool> ReviveAdvertisementUpdate;
         public event Action<bool> BonusAdvertisementUpdate;
 
-        public event Action FreeCoins;
+        public event Action<int> FreeCoins;
 
         private AdsConfig _adsConfig;
         
@@ -125,7 +125,7 @@ namespace Assets.Scripts.Services
 
                 if (placementId == _adsConfig.FreeCoinsPlacementId)
                 {
-                    FreeCoins?.Invoke();
+                    FreeCoins?.Invoke(100);
                 }
             }
             else if (showResult == ShowResult.Skipped)
