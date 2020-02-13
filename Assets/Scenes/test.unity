@@ -5042,6 +5042,7 @@ MonoBehaviour:
   TrainController: {fileID: 1590117176}
   RowsBefore: 2
   RowsAfter: 6
+  tutorialRail: {fileID: 0}
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0
@@ -5404,7 +5405,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  _gradientSmoothness: 100
+  _gradientSmoothness: 70
 --- !u!1001 &1154755000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6173,6 +6174,51 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1850215534916931799, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641847226421619064, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 885805236}
+    - target: {fileID: 5431323875279230595, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -361.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831139627616469241, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00048828125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314791336518780530, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314791336518780530, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314791336518780530, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314791336518780530, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314791336518780530, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314791336518780530, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0

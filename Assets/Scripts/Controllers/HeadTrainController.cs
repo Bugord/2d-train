@@ -27,9 +27,7 @@ namespace Assets.Scripts.Controllers
         public bool Turning;
 
         [SerializeField] private GameObject _trailObject;
-
-        private SpriteRenderer _spriteRenderer;
-
+        
         [SerializeField] private GameObject _pointEffector;
         [SerializeField] private GameObject _particleSystem;
         
@@ -40,6 +38,7 @@ namespace Assets.Scripts.Controllers
         private SkinService _skinService;
         private GameDataService _gameDataService;
         private UIService _uiService;
+        private bool IsFirstTime;
 
         private void Awake()
         {
@@ -64,6 +63,7 @@ namespace Assets.Scripts.Controllers
 
             _skinService.UpdateSkin(_spriteRenderer);
             UpdateTrainPoints();
+            IsFirstTime = !PlayerPrefs.HasKey("FirstTime");
         }
 
         private void OnDestroy()
@@ -76,6 +76,7 @@ namespace Assets.Scripts.Controllers
 #if UNITY_EDITOR
         private void Update()
         {
+            _spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
             if (!_uiService.IsInGame) return;
             
             var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
@@ -84,7 +85,7 @@ namespace Assets.Scripts.Controllers
             {
                 TargetRail.SwitchRail();
                 _audioService.Play(AudioClipType.Swipe);
-                _uiService.IsInTutorial = false;
+                _uiService.ShowTutorial(false);
             }
         }
 #endif
@@ -92,13 +93,17 @@ namespace Assets.Scripts.Controllers
         private void FixedUpdate()
         {
             if (!_uiService.IsInGame || _uiService.IsInTutorial) return;
-            
-            if (TargetRail.NextActiveRail == MapGenerator.Instance.tutorialRail && 
-                Vector2.Distance(MapGenerator.Instance.tutorialRail.transform.position, transform.position) < 2)
+            if (IsFirstTime)
             {
-                _uiService.IsInTutorial = true;
+                if (TargetRail.NextActiveRail == MapGenerator.Instance.tutorialRail &&
+                    Vector2.Distance(MapGenerator.Instance.tutorialRail.transform.position, transform.position) < 2)
+                {
+                    _uiService.ShowTutorial(true);
+                    IsFirstTime = false;
+                    PlayerPrefs.SetString("FirstTime", "");
+                }
             }
-            
+
             SetLastTrainPos();
 
             var vectorToTarget = VectorToTarget();
@@ -119,7 +124,7 @@ namespace Assets.Scripts.Controllers
         if (!_uiService.IsInGame) return;
         TargetRail.SwitchRail(direction);
         _audioService.Play(AudioClipType.Swipe);
-        _uiService.IsInTutorial = false;
+        _uiService.ShowTutorial(false);
 #endif
         }
 

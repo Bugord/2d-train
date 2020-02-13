@@ -20,10 +20,16 @@ namespace Assets.Scripts.Services
         public event Action<bool> SetActiveStoreMenu;
         public event Action OpenPauseMenu;
         public event Action EndGameBackButton;
+        public event Action<bool> SetActiveTutorial; 
 
         public UIService()
         {
             InputManager.BackButton += OnBackButton;
+        }
+
+        public void ShowTutorial(bool isActive)
+        {
+            SetActiveTutorial?.Invoke(isActive);
         }
 
         public void UpdateInGameDistance(int distance)

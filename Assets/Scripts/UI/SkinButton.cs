@@ -46,6 +46,7 @@ public class SkinButton : MonoBehaviour
 
     private void HideMask(bool onAwake = false)
     {
+        SkinImage.color = Color.white;
         _light.SetActive(true);
         if (onAwake)
         {

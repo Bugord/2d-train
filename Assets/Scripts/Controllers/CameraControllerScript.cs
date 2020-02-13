@@ -21,7 +21,7 @@ namespace Controllers
         void Start()
         {
             _camera = GetComponent<Camera>();
-            var storeButtonPosition = _camera.ScreenToWorldPoint(_storeButton.position) + Vector3.up*0.15f;
+            var storeButtonPosition = _storeButton.position + Vector3.up*0.15f;
             
             storeButtonPosition.z = 0;
             target.position = storeButtonPosition;

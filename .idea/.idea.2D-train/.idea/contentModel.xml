@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\LocalRep\2D-train" t="IncludeRecursive">
+    <e p="C:\GitRepositories\2D-train" t="IncludeRecursive">
       <e p="2D-train.sln" t="IncludeFlat" />
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
@@ -185,6 +185,7 @@
             <e p="FreeCoinsButtonController.cs" t="Include" />
             <e p="HeadTrainController.cs" t="Include" />
             <e p="RailController.cs" t="Include" />
+            <e p="ResetButtonController.cs" t="Include" />
             <e p="TrainController.cs" t="Include" />
           </e>
           <e p="Enums" t="Include">
@@ -249,7 +250,7 @@
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
     </e>
-    <e p="C:\Users\m.dolnik\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\m.dolnik\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_2D-train.2066898635.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Asus\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Asus\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_2d-train.-1286702001.00" t="ExcludeRecursive" />
   </component>
 </project>

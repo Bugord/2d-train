@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Services;
 using Assets.Scripts.UI;
@@ -22,6 +23,22 @@ namespace Assets.Scripts.Controllers
     
         public Vector3 LastTrainPos;
         private List<Vector3> _lastPoints = new List<Vector3>();
+        
+        protected SpriteRenderer _spriteRenderer;
+        
+        public Gradient gradient;
+
+        public float gradientSmoothness;
+
+        private void Start()
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        void Update()
+        {
+            _spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
+        }
         
         private void FixedUpdate()
         {
@@ -47,7 +64,7 @@ namespace Assets.Scripts.Controllers
         {
             if (IsDead) return;
         
-            transform.position = Vector3.Lerp(transform.position, NextTrain.LastTrainPos, 0.5f);
+            transform.position = Vector3.Lerp(transform.position, NextTrain.LastTrainPos, 0.8f);
         }
     
     

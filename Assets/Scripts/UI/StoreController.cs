@@ -60,6 +60,7 @@ namespace UI
             SetActivePanel(isActive);
             if (!isActive) return;
             
+            OpenSkinStore();
             _uiService.CurrentPanel = this;
             UpdateCoins();
         }

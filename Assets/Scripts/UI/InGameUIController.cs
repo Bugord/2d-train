@@ -10,11 +10,12 @@ public class InGameUIController : PanelBase
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Text _score;
     [SerializeField] private Text _distance;
+    [SerializeField] private GameObject _tutorialFinger;
 
     private GameDataService _gameDataService;
     private UIService _uiService;
     private AdsService _adsService;
-
+    
     private void Awake()
     {
         _gameDataService = ServiceLocator.GetService<GameDataService>();
@@ -25,6 +26,7 @@ public class InGameUIController : PanelBase
         _uiService.GameRestart += ResetInGameUI;
         _uiService.InGameCoinsUpdate += UpdateCoins;
         _uiService.InGameDistanceUpdate += UpdateDistance;
+        _uiService.SetActiveTutorial += SetActiveTutorial;
         
         _pauseButton.onClick.AddListener(_uiService.SetPause);
         
@@ -39,7 +41,26 @@ public class InGameUIController : PanelBase
         }
     }
 
-    
+    private void SetActiveTutorial(bool isActive)
+    {
+        if (isActive)
+        {
+            _uiService.IsInTutorial = true;
+            _tutorialFinger.SetActive(true);
+        }
+        else
+        {
+            StartCoroutine(TurnOffTutor());
+        }
+    }
+
+    private IEnumerator TurnOffTutor()
+    {
+        yield return new WaitForSeconds(2);
+        _uiService.IsInTutorial = false;
+        _tutorialFinger.SetActive(false);
+    }
+
     private void ResetInGameUI()
     {
         _score.text = "0";
