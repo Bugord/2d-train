@@ -197,7 +197,8 @@ namespace UI
         private void DistributePages()
         {
             int _offset = 0;
-            int _step = Screen.width;
+            //int _step = Screen.width;
+            int _step = 1080;
             int _dimension = 0;
 
             int currentXPosition = 0;
