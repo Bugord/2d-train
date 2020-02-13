@@ -56,7 +56,10 @@ public class InGameUIController : PanelBase
         }
         else
         {
-            _adsService.ShowBanner();
+            if (!CloudVariables.IsAdsRemoved())
+            {
+                _adsService.ShowBanner();
+            }
         }
         SetActivePanel(isActive);
     }

@@ -8,10 +8,12 @@ namespace UI
     public class RemoveAdsController : MonoBehaviour
     {
         private static Button _removeAdsButton;
+        private static AdsService _adsService;
         
         private void Awake()
         {
             _removeAdsButton = GetComponent<Button>();
+            _adsService = ServiceLocator.GetService<AdsService>();
             if (CloudVariables.IsAdsRemoved())
             {
                 DestroyButton();
@@ -30,6 +32,7 @@ namespace UI
             if (_removeAdsButton != null)
             {
                 Destroy(_removeAdsButton.gameObject);
+                _adsService.HideBanner();
             }
         }
     }

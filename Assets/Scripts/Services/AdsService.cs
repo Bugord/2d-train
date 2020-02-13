@@ -91,7 +91,7 @@ namespace Assets.Scripts.Services
             {
                 BonusAdvertisementUpdate?.Invoke(true);
             }
-            else if (placementId == _adsConfig.BannerPlacementId)
+            else if (placementId == _adsConfig.BannerPlacementId && !CloudVariables.IsAdsRemoved())
             {
                 Advertisement.Banner.Show(_adsConfig.BannerPlacementId);
             }

@@ -51,7 +51,10 @@ namespace UI
 
         private void ExitToMainMenu()
         {
-            _adsService.ShowGameOverAdvertisement();
+            if (!CloudVariables.IsAdsRemoved())
+            {
+                _adsService.ShowGameOverAdvertisement();
+            }
             SetActivePanel(false);
             _gameDataService.SetLastLevel(_levelService.Level);
             _gameDataService.UpdateCloudVariables();
