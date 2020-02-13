@@ -84,13 +84,20 @@ namespace Assets.Scripts.Controllers
             {
                 TargetRail.SwitchRail();
                 _audioService.Play(AudioClipType.Swipe);
+                _uiService.IsInTutorial = false;
             }
         }
 #endif
 
         private void FixedUpdate()
         {
-            if (!_uiService.IsInGame) return;
+            if (!_uiService.IsInGame || _uiService.IsInTutorial) return;
+            
+            if (TargetRail.NextActiveRail == MapGenerator.Instance.tutorialRail && 
+                Vector2.Distance(MapGenerator.Instance.tutorialRail.transform.position, transform.position) < 2)
+            {
+                _uiService.IsInTutorial = true;
+            }
             
             SetLastTrainPos();
 
@@ -112,6 +119,7 @@ namespace Assets.Scripts.Controllers
         if (!_uiService.IsInGame) return;
         TargetRail.SwitchRail(direction);
         _audioService.Play(AudioClipType.Swipe);
+        _uiService.IsInTutorial = false;
 #endif
         }
 

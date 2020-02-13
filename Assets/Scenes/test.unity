@@ -5040,8 +5040,8 @@ MonoBehaviour:
   CurrentRow: 1
   DeltaRow: 0
   TrainController: {fileID: 1590117176}
-  RowsBefore: 3
-  RowsAfter: 4
+  RowsBefore: 2
+  RowsAfter: 6
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0
@@ -5371,7 +5371,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1590117177}
-  _smoothStep: 0.1
+  _smoothStepY: 0.1
+  _smoothStepX: 0.05
   _storeButton: {fileID: 1697296950}
   _initialRail: {fileID: 512353475}
   _gradient:

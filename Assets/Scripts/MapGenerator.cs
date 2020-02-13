@@ -68,6 +68,9 @@ namespace Assets.Scripts
         private PoolService _poolService;
         private LevelService _levelService;
 
+        private bool _hasFirstStop = false;
+        public RailController tutorialRail = new RailController();
+
         private void Awake()
         {
             _poolService = ServiceLocator.GetService<PoolService>();
@@ -94,11 +97,6 @@ namespace Assets.Scripts
         
         private void LateUpdate()
         {
-            // if (TrainController.Trains.Count % 4 == 0)
-            // {
-            //     RowsBefore = (int)(TrainController.Trains.Count * 0.25f) + 3;
-            // }
-
             if (CurrentRow <= TrainController.TargetRail.Row + RowsAfter)
             {
                 if (CurrentRow % 10 == 0)
@@ -133,7 +131,7 @@ namespace Assets.Scripts
         public void GenerateRails()
         {
             NewRow = new Row();
-            int maxRailCountFromOutput = CurrentRow <= 3 ? 1 : 3;
+            int maxRailCountFromOutput = CurrentRow <= 4 ? 1 : 3;
 
             var enabledPrefabs = GetRailPrefabs(OldRow.Outputs);
 
@@ -147,7 +145,7 @@ namespace Assets.Scripts
 
                 List<RailController> prefabs = enabledPrefabs[outputId];
 
-                int newRailsCount = Random.Range(1, maxRailCountFromOutput + 1);
+                int newRailsCount = CurrentRow > 4 && !_hasFirstStop ? 2 : Random.Range(1, maxRailCountFromOutput + 1);
 
                 List<int> indexes = GetPrefabsIndexes(newRailsCount, prefabs.Count);
 
@@ -362,7 +360,7 @@ namespace Assets.Scripts
 
         private void GenerateItems(CircleRailConfig circleConfig)
         {
-            if (CurrentRow <= 3)
+            if (CurrentRow - DeltaRow <= 3)
             {
                 var rail = NewRow.Rails.FirstOrDefault();
                 if (rail != null)
@@ -372,7 +370,28 @@ namespace Assets.Scripts
                     }
             }
 
-            if (CurrentRow < 5) return;
+            if (!_hasFirstStop)
+            {
+                if (NewRow.Rails.Count >= 2)
+                {
+                    float stopOffset = 0;
+                    var rail = NewRow.Rails.FirstOrDefault();
+                    
+                    if (rail != null)
+                    {
+                        for (int j = 0; j < 2; j++)
+                        {
+                            _poolService.GetObject<PoolObject>(_stop.name, rail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
+                            stopOffset += 0.25f;
+                        }
+                        _hasFirstStop = true;
+                        tutorialRail = rail;
+                        return;
+                    }
+                }
+            }
+            
+            if (CurrentRow - DeltaRow < 5) return;
 
             var outputs = NewRow.Outputs.OrderBy(o => o.Key).ToList();
 

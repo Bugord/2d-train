@@ -6,6 +6,7 @@ namespace Assets.Scripts.Services
     public class UIService
     {
         public bool IsInGame;
+        public bool IsInTutorial = false;
         public PanelBase CurrentPanel;
         
         public event Action<int> InGameDistanceUpdate;
