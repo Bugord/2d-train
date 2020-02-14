@@ -68,8 +68,8 @@ namespace Assets.Scripts
         private PoolService _poolService;
         private LevelService _levelService;
 
-        private bool _hasFirstStop = false;
-        public RailController tutorialRail = new RailController();
+        private bool _hasFirstStop;
+        public List<Row> TutorialRows = new List<Row>();
 
         private void Awake()
         {
@@ -145,7 +145,33 @@ namespace Assets.Scripts
 
                 List<RailController> prefabs = enabledPrefabs[outputId];
 
-                int newRailsCount = CurrentRow > 4 && !_hasFirstStop ? 2 : Random.Range(1, maxRailCountFromOutput + 1);
+                int newRailsCount = 1; 
+                if (_hasFirstStop)
+                {
+                    newRailsCount = Random.Range(1, maxRailCountFromOutput + 1);
+                }
+                else
+                {
+                    switch (CurrentRow)
+                    {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 6:
+                        case 9:
+                            newRailsCount = 1;
+                            break;
+                        case 4:
+                        case 5:
+                        case 7:
+                        case 8:
+                            newRailsCount = 2;
+                            break;
+                        case 10:
+                            newRailsCount = 3;
+                            break;
+                    }
+                }
 
                 List<int> indexes = GetPrefabsIndexes(newRailsCount, prefabs.Count);
 
@@ -223,6 +249,17 @@ namespace Assets.Scripts
         private List<int> GetPrefabsIndexes(int newRailsCount, int prefabsCount)
         {
             List<int> indexes = new List<int>();
+
+            if (CurrentRow < 11)
+            {
+                for (int i = 0; i < prefabsCount; i++)
+                {
+                    indexes.Add(i);
+                }
+
+                return indexes;
+            }
+
             for (int i = 0; i < newRailsCount; i++)
             {
                 int index = Random.Range(0, prefabsCount);
@@ -253,6 +290,48 @@ namespace Assets.Scripts
 
                 List<RailController> newRails = new List<RailController>();
 
+                switch (CurrentRow)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 6:
+                    case 9:
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                        prefabs.Add(1, newRails);
+                        return prefabs;
+                    case 4:
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
+                        prefabs.Add(1, newRails);
+                        return prefabs;
+                    case 5:
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                        prefabs.Add(1, newRails);
+                        newRails = new List<RailController>();
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
+                        prefabs.Add(2, newRails);
+                        return prefabs;
+                    case 7:
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                        prefabs.Add(1, newRails);
+                        return prefabs;
+                    case 8:
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                        prefabs.Add(1, newRails);
+                        newRails = new List<RailController>();
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
+                        prefabs.Add(0, newRails);
+                        return prefabs;
+                    case 10:
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
+                        newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
+                        prefabs.Add(1, newRails);
+                        return prefabs;
+                }
+                
                 switch (outputId)
                 {
                     case 0:
@@ -360,6 +439,75 @@ namespace Assets.Scripts
 
         private void GenerateItems(CircleRailConfig circleConfig)
         {
+            if (!_hasFirstStop)
+            {
+                RailController rail;
+                float stopOffset = 0;
+                switch (CurrentRow)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                        rail = NewRow.Rails.FirstOrDefault();
+                        if (rail != null)
+                            foreach (var pos in rail.PointPositions)
+                            {
+                                _poolService.GetObject<PoolObject>(_point.name, pos.position, Quaternion.identity);
+                            }
+
+                        NewRow.Outputs[rail.OutputId].HasObject = true;
+                        return;
+                    case 4:
+                        rail = NewRow.Rails.FirstOrDefault();
+                        if (rail != null)
+                            for (var j = 0; j < 2; j++)
+                            {
+                                _poolService.GetObject<PoolObject>(_stop.name, rail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
+                                stopOffset += 0.25f;
+                            }
+                        NewRow.Outputs[rail.OutputId].HasObject = true;
+                        TutorialRows.Add(NewRow);
+                        return;
+                    case 5:
+                    case 6:
+                    case 8:
+                    case 9:
+                        return;
+                    case 7:
+                        rail = NewRow.Rails.LastOrDefault();
+                        if (rail != null)
+                            for (var j = 0; j < 2; j++)
+                            {
+                                _poolService.GetObject<PoolObject>(_stop.name, rail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
+                                stopOffset += 0.25f;
+                            }
+                        NewRow.Outputs[rail.OutputId].HasObject = true;
+                        TutorialRows.Add(NewRow);
+                        return;
+                    case 10:
+                        rail = NewRow.Rails.FirstOrDefault();
+                        if (rail != null)
+                            for (var j = 0; j < 2; j++)
+                            {
+                                _poolService.GetObject<PoolObject>(_stop.name, rail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
+                                stopOffset += 0.25f;
+                            }
+                        NewRow.Outputs[rail.OutputId].HasObject = true;
+                        stopOffset = 0;
+                        rail = NewRow.Rails.LastOrDefault();
+                        if (rail != null)
+                            for (var j = 0; j < 2; j++)
+                            {
+                                _poolService.GetObject<PoolObject>(_stop.name, rail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
+                                stopOffset += 0.25f;
+                            }
+                        NewRow.Outputs[rail.OutputId].HasObject = true;
+                        TutorialRows.Add(NewRow);
+                        _hasFirstStop = true;
+                        return;
+                }
+            }
+            
             if (CurrentRow - DeltaRow <= 3)
             {
                 var rail = NewRow.Rails.FirstOrDefault();
@@ -368,30 +516,8 @@ namespace Assets.Scripts
                     {
                         _poolService.GetObject<PoolObject>(_point.name, pos.position, Quaternion.identity);
                     }
+                return;
             }
-
-            if (!_hasFirstStop)
-            {
-                if (NewRow.Rails.Count >= 2)
-                {
-                    float stopOffset = 0;
-                    var rail = NewRow.Rails.FirstOrDefault();
-                    
-                    if (rail != null)
-                    {
-                        for (int j = 0; j < 2; j++)
-                        {
-                            _poolService.GetObject<PoolObject>(_stop.name, rail.EndPoint.position + Vector3.down * stopOffset, _stop.transform.rotation);
-                            stopOffset += 0.25f;
-                        }
-                        _hasFirstStop = true;
-                        tutorialRail = rail;
-                        return;
-                    }
-                }
-            }
-            
-            if (CurrentRow - DeltaRow < 5) return;
 
             var outputs = NewRow.Outputs.OrderBy(o => o.Key).ToList();
 

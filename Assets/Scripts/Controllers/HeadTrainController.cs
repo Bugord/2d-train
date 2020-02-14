@@ -7,6 +7,7 @@ using Assets.Scripts.ObjectsPool;
 using Assets.Scripts.Services;
 using Assets.Scripts.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Controllers
 {
@@ -39,6 +40,7 @@ namespace Assets.Scripts.Controllers
         private GameDataService _gameDataService;
         private UIService _uiService;
         private bool IsFirstTime;
+        private bool LockControlls;
 
         private void Awake()
         {
@@ -64,6 +66,7 @@ namespace Assets.Scripts.Controllers
             _skinService.UpdateSkin(_spriteRenderer);
             UpdateTrainPoints();
             IsFirstTime = !PlayerPrefs.HasKey("FirstTime");
+            LockControlls = IsFirstTime;
         }
 
         private void OnDestroy()
@@ -81,11 +84,24 @@ namespace Assets.Scripts.Controllers
             
             var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
 
-            if (Input.GetKeyDown(KeyCode.Mouse0) || touch)
+            if ((Input.GetKeyDown(KeyCode.Mouse0) || touch) && !LockControlls)
             {
                 TargetRail.SwitchRail();
                 _audioService.Play(AudioClipType.Swipe);
-                _uiService.ShowTutorial(false);
+                
+                Row nextTutorRow = MapGenerator.Instance.TutorialRows.FirstOrDefault();
+                if (_uiService.IsInTutorial && nextTutorRow != null)
+                {
+                    if (!nextTutorRow.Outputs.First(o => o.Key == TargetRail.NextActiveRail.OutputId).Value.HasObject)
+                    {
+                        _uiService.ShowTutorial(false);
+                        MapGenerator.Instance.TutorialRows.Remove(nextTutorRow);
+                        if (MapGenerator.Instance.TutorialRows.Count != 0)
+                        {
+                            LockControlls = true;
+                        }
+                    }
+                }
             }
         }
 #endif
@@ -93,14 +109,26 @@ namespace Assets.Scripts.Controllers
         private void FixedUpdate()
         {
             if (!_uiService.IsInGame || _uiService.IsInTutorial) return;
+            
             if (IsFirstTime)
             {
-                if (TargetRail.NextActiveRail == MapGenerator.Instance.tutorialRail &&
-                    Vector2.Distance(MapGenerator.Instance.tutorialRail.transform.position, transform.position) < 2)
+                Row nextTutorRow = MapGenerator.Instance.TutorialRows.FirstOrDefault();
+                if (nextTutorRow != null && MapGenerator._rowsList[TargetRail.NextActiveRail.Row] == nextTutorRow)
                 {
-                    _uiService.ShowTutorial(true);
-                    IsFirstTime = false;
-                    PlayerPrefs.SetString("FirstTime", "");
+                    if (Vector2.Distance(nextTutorRow.Rails.First().transform.position, transform.position) < 2)
+                    {
+                        SwipeDirection swipeDirection =
+                            TargetRail.OutputId > nextTutorRow.Outputs.First(o => !o.Value.HasObject).Key
+                                ? SwipeDirection.Left
+                                : SwipeDirection.Right;
+                        
+                        _uiService.ShowTutorial(true, swipeDirection);
+                        LockControlls = false;
+                    }
+                    else
+                    {
+                        LockControlls = true;
+                    }
                 }
             }
 
@@ -124,7 +152,19 @@ namespace Assets.Scripts.Controllers
         if (!_uiService.IsInGame) return;
         TargetRail.SwitchRail(direction);
         _audioService.Play(AudioClipType.Swipe);
-        _uiService.ShowTutorial(false);
+        Row nextTutorRow = MapGenerator.Instance.TutorialRows.FirstOrDefault();
+        if (_uiService.IsInTutorial && nextTutorRow != null)
+        {
+            if (!nextTutorRow.Outputs.First(o => o.Key == TargetRail.NextActiveRail.OutputId).Value.HasObject)
+            {
+                _uiService.ShowTutorial(false);
+                MapGenerator.Instance.TutorialRows.Remove(nextTutorRow);
+                if (MapGenerator.Instance.TutorialRows.Count != 0)
+                {
+                    LockControlls = true;
+                }
+            }
+        }
 #endif
         }
 
@@ -260,7 +300,8 @@ namespace Assets.Scripts.Controllers
             IsBoosted = false;
             _trailObject.SetActive(false);
 
-            GameObject.FindGameObjectsWithTag("Stop").ToList().ForEach(stop => stop.GetComponent<PoolObject>().ReturnToPool());
+            GameObject.FindGameObjectsWithTag("Stop").ToList().Where(s => Vector3.Distance(s.transform.position, transform.position) < 20).ToList().
+                ForEach(stop => stop.GetComponent<PoolObject>().ReturnToPool());
             GameObject.FindGameObjectsWithTag("Boost").ToList().ForEach(boost => boost.GetComponent<PoolObject>().ReturnToPool());
         }
 

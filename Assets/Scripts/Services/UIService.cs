@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts.Enums;
 using UI;
 
 namespace Assets.Scripts.Services
@@ -20,16 +21,16 @@ namespace Assets.Scripts.Services
         public event Action<bool> SetActiveStoreMenu;
         public event Action OpenPauseMenu;
         public event Action EndGameBackButton;
-        public event Action<bool> SetActiveTutorial; 
+        public event Action<bool, SwipeDirection> SetActiveTutorial; 
 
         public UIService()
         {
             InputManager.BackButton += OnBackButton;
         }
 
-        public void ShowTutorial(bool isActive)
+        public void ShowTutorial(bool isActive, SwipeDirection swipeDirection = SwipeDirection.Up)
         {
-            SetActiveTutorial?.Invoke(isActive);
+            SetActiveTutorial?.Invoke(isActive, swipeDirection);
         }
 
         public void UpdateInGameDistance(int distance)

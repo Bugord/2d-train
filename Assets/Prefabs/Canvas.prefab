@@ -3261,7 +3261,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7831139627616469241
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3300,7 +3300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6422934729170214421
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3320,7 +3320,7 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -419.83, y: -516}
   m_SizeDelta: {x: 240.33333, y: 370.33334}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.49999997, y: 0.5}
 --- !u!222 &2771042082102744383
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3583,7 +3583,7 @@ TrailRenderer:
   m_SortingLayerID: -201105685
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Time: 0.3
+  m_Time: 0.2
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -3652,7 +3652,7 @@ TrailRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 2
     shadowBias: 0.5
     generateLightingData: 0
   m_MinVertexDistance: 0.1
@@ -5643,7 +5643,7 @@ MonoBehaviour:
   _pauseButton: {fileID: 5641847228030104997}
   _score: {fileID: 7535233073737948883}
   _distance: {fileID: 1430586591078196197}
-  _tutorialFinger: {fileID: 3201218704286069043}
+  _tutorialFinger: {fileID: 7446029414564171249}
 --- !u!1 &5641847226563502526
 GameObject:
   m_ObjectHideFlags: 0

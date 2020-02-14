@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
+using Assets.Scripts.Enums;
 using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,12 +11,13 @@ public class InGameUIController : PanelBase
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Text _score;
     [SerializeField] private Text _distance;
-    [SerializeField] private GameObject _tutorialFinger;
+    [SerializeField] private Animator _tutorialFinger;
 
     private GameDataService _gameDataService;
     private UIService _uiService;
     private AdsService _adsService;
-    
+    private static readonly int IsRight = Animator.StringToHash("isRight");
+
     private void Awake()
     {
         _gameDataService = ServiceLocator.GetService<GameDataService>();
@@ -41,24 +43,11 @@ public class InGameUIController : PanelBase
         }
     }
 
-    private void SetActiveTutorial(bool isActive)
+    private void SetActiveTutorial(bool isActive, SwipeDirection swipeDirection)
     {
-        if (isActive)
-        {
-            _uiService.IsInTutorial = true;
-            _tutorialFinger.SetActive(true);
-        }
-        else
-        {
-            StartCoroutine(TurnOffTutor());
-        }
-    }
-
-    private IEnumerator TurnOffTutor()
-    {
-        yield return new WaitForSeconds(2);
-        _uiService.IsInTutorial = false;
-        _tutorialFinger.SetActive(false);
+        _uiService.IsInTutorial = isActive;
+        _tutorialFinger.gameObject.SetActive(isActive);
+        _tutorialFinger.SetBool(IsRight, swipeDirection == SwipeDirection.Right); 
     }
 
     private void ResetInGameUI()

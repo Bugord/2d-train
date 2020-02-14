@@ -5041,8 +5041,7 @@ MonoBehaviour:
   DeltaRow: 0
   TrainController: {fileID: 1590117176}
   RowsBefore: 2
-  RowsAfter: 6
-  tutorialRail: {fileID: 0}
+  RowsAfter: 20
 --- !u!4 &507326456
 Transform:
   m_ObjectHideFlags: 0
@@ -5427,6 +5426,16 @@ PrefabInstance:
         type: 3}
       propertyPath: Row
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: InputId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5380603162231468307, guid: cd66bc341b771684da7be92f7a35f6a5,
+        type: 3}
+      propertyPath: OutputId
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1664730702905287636, guid: cd66bc341b771684da7be92f7a35f6a5,
         type: 3}
@@ -6221,6 +6230,16 @@ PrefabInstance:
     - target: {fileID: 8314791336518780530, guid: 9bd7266369d945f4f871f8e05f1257bf,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3201218704286069043, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3528207824378191608, guid: 9bd7266369d945f4f871f8e05f1257bf,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
