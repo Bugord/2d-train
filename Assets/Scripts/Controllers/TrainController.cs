@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Services;
@@ -33,26 +34,34 @@ namespace Assets.Scripts.Controllers
         private void Start()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
-        }
-
-        void Update()
-        {
-            _spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
+            StartCoroutine(SetLastTrainPos());
+            StartCoroutine(SetTrainColor());
         }
         
+        private IEnumerator SetTrainColor()
+        {
+            while (true)
+            {
+                _spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
+                yield return null;
+            }
+        }
+
         private void FixedUpdate()
         {
-            SetLastTrainPos();
-            
             SetRotation(NextTrain.LookAtTarget.position - transform.position);
             MoveTrain(NextTrain.LastTrainPos);
         }
 
-        public void SetLastTrainPos()
+        public IEnumerator SetLastTrainPos()
         {
-            _lastPoints.Add(transform.position);
-            _lastPoints.RemoveAll(p => Vector3.Distance(transform.position, p) >= distanceBetweenTrains);
-            LastTrainPos = _lastPoints.First();
+            while (true)
+            {
+                _lastPoints.Add(transform.position);
+                _lastPoints.RemoveAll(p => Vector3.Distance(transform.position, p) >= distanceBetweenTrains);
+                LastTrainPos = _lastPoints.First();
+                yield return null;
+            }
         }
     
         public void SetRotation(Vector2 vectorToTarget)

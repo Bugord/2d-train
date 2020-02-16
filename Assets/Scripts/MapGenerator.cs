@@ -67,14 +67,16 @@ namespace Assets.Scripts
 
         private PoolService _poolService;
         private LevelService _levelService;
+        private UIService _uiService;
 
         private bool _hasFirstStop;
         public List<Row> TutorialRows = new List<Row>();
-
+        
         private void Awake()
         {
             _poolService = ServiceLocator.GetService<PoolService>();
             _levelService = ServiceLocator.GetService<LevelService>();
+            _uiService = ServiceLocator.GetService<UIService>();
             _railPrefabsDictionary = new Dictionary<RailDirection, RailController>();
             foreach (var prefab in RailPrefabs)
             {
@@ -117,7 +119,7 @@ namespace Assets.Scripts
                 }
             }
 
-            if (CurrentRow == RowsAfter)
+            if (CurrentRow == RowsAfter && !_uiService.IsFirstTime)
             {
                 InitialRailController.SwitchRail(false);
             }
@@ -145,32 +147,40 @@ namespace Assets.Scripts
 
                 List<RailController> prefabs = enabledPrefabs[outputId];
 
-                int newRailsCount = 1; 
-                if (_hasFirstStop)
+                int newRailsCount = 1;
+                if (_uiService.IsFirstTime)
                 {
-                    newRailsCount = Random.Range(1, maxRailCountFromOutput + 1);
+                    if (_hasFirstStop)
+                    {
+                        newRailsCount = Random.Range(1, maxRailCountFromOutput + 1);
+                    }
+                    else
+                    {
+                        switch (CurrentRow)
+                        {
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 6:
+                            case 9:
+                                newRailsCount = 1;
+                                break;
+                            case 4:
+                            case 5:
+                            case 7:
+                            case 8:
+                                newRailsCount = 2;
+                                break;
+                            case 10:
+                                newRailsCount = 3;
+                                break;
+                        }
+                    }
                 }
                 else
                 {
-                    switch (CurrentRow)
-                    {
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 6:
-                        case 9:
-                            newRailsCount = 1;
-                            break;
-                        case 4:
-                        case 5:
-                        case 7:
-                        case 8:
-                            newRailsCount = 2;
-                            break;
-                        case 10:
-                            newRailsCount = 3;
-                            break;
-                    }
+                    if (CurrentRow >= 4)
+                        newRailsCount = Random.Range(1, maxRailCountFromOutput + 1);
                 }
 
                 List<int> indexes = GetPrefabsIndexes(newRailsCount, prefabs.Count);
@@ -250,7 +260,7 @@ namespace Assets.Scripts
         {
             List<int> indexes = new List<int>();
 
-            if (CurrentRow < 11)
+            if (CurrentRow < 11 && _uiService.IsFirstTime)
             {
                 for (int i = 0; i < prefabsCount; i++)
                 {
@@ -290,48 +300,51 @@ namespace Assets.Scripts
 
                 List<RailController> newRails = new List<RailController>();
 
-                switch (CurrentRow)
+                if (_uiService.IsFirstTime)
                 {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 6:
-                    case 9:
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
-                        prefabs.Add(1, newRails);
-                        return prefabs;
-                    case 4:
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
-                        prefabs.Add(1, newRails);
-                        return prefabs;
-                    case 5:
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
-                        prefabs.Add(1, newRails);
-                        newRails = new List<RailController>();
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
-                        prefabs.Add(2, newRails);
-                        return prefabs;
-                    case 7:
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
-                        prefabs.Add(1, newRails);
-                        return prefabs;
-                    case 8:
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
-                        prefabs.Add(1, newRails);
-                        newRails = new List<RailController>();
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
-                        prefabs.Add(0, newRails);
-                        return prefabs;
-                    case 10:
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
-                        newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
-                        prefabs.Add(1, newRails);
-                        return prefabs;
+                    switch (CurrentRow)
+                    {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 6:
+                        case 9:
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                            prefabs.Add(1, newRails);
+                            return prefabs;
+                        case 4:
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                            prefabs.Add(1, newRails);
+                            return prefabs;
+                        case 5:
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                            prefabs.Add(1, newRails);
+                            newRails = new List<RailController>();
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
+                            prefabs.Add(2, newRails);
+                            return prefabs;
+                        case 7:
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
+                            prefabs.Add(1, newRails);
+                            return prefabs;
+                        case 8:
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                            prefabs.Add(1, newRails);
+                            newRails = new List<RailController>();
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
+                            prefabs.Add(0, newRails);
+                            return prefabs;
+                        case 10:
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Strait]);
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Left]);
+                            newRails.Add(_railPrefabsDictionary[RailDirection.Right]);
+                            prefabs.Add(1, newRails);
+                            return prefabs;
+                    }
                 }
-                
+
                 switch (outputId)
                 {
                     case 0:
@@ -439,7 +452,7 @@ namespace Assets.Scripts
 
         private void GenerateItems(CircleRailConfig circleConfig)
         {
-            if (!_hasFirstStop)
+            if (!_hasFirstStop && _uiService.IsFirstTime)
             {
                 RailController rail;
                 float stopOffset = 0;
@@ -458,7 +471,7 @@ namespace Assets.Scripts
                         NewRow.Outputs[rail.OutputId].HasObject = true;
                         return;
                     case 4:
-                        rail = NewRow.Rails.FirstOrDefault();
+                        rail = NewRow.Rails.LastOrDefault();
                         if (rail != null)
                             for (var j = 0; j < 2; j++)
                             {
@@ -474,7 +487,7 @@ namespace Assets.Scripts
                     case 9:
                         return;
                     case 7:
-                        rail = NewRow.Rails.LastOrDefault();
+                        rail = NewRow.Rails.FirstOrDefault();
                         if (rail != null)
                             for (var j = 0; j < 2; j++)
                             {
@@ -494,7 +507,7 @@ namespace Assets.Scripts
                             }
                         NewRow.Outputs[rail.OutputId].HasObject = true;
                         stopOffset = 0;
-                        rail = NewRow.Rails.LastOrDefault();
+                        rail = NewRow.Rails[1];
                         if (rail != null)
                             for (var j = 0; j < 2; j++)
                             {

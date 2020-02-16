@@ -2,6 +2,7 @@
 using System.Linq;
 using Assets.Scripts.Enums;
 using Assets.Scripts.ObjectsPool;
+using Assets.Scripts.Services;
 using UnityEngine;
 
 namespace Assets.Scripts.Controllers
@@ -31,6 +32,8 @@ namespace Assets.Scripts.Controllers
         public List<Transform> PointPositions;
 
         public bool IsActive;
+
+        private UIService _uiService;
         
         private void OnEnable()
         {
@@ -38,8 +41,9 @@ namespace Assets.Scripts.Controllers
             _spriteMask = GetComponent<SpriteMask>();
         }
 
-        private void Start()
+        private void Awake()
         {
+            _uiService = ServiceLocator.GetService<UIService>();
             NextRails = new List<RailController>();
         }
         
@@ -138,7 +142,14 @@ namespace Assets.Scripts.Controllers
             }
 
             UpdateRailSprite();
-            NextActiveRail.SwitchRail(direction, normalVariant);
+            if (_uiService.IsFirstTime)
+            {
+                NextActiveRail.SwitchRail(normalVariant);
+            }
+            else
+            {
+                NextActiveRail.SwitchRail(direction, normalVariant);
+            }
         }
 
         public void UpdateRailSprite()

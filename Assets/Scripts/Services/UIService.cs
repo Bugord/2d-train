@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Enums;
 using UI;
+using UnityEngine;
 
 namespace Assets.Scripts.Services
 {
@@ -8,6 +9,11 @@ namespace Assets.Scripts.Services
     {
         public bool IsInGame;
         public bool IsInTutorial = false;
+        public bool IsFirstTime
+        {
+            get => !PlayerPrefs.HasKey("FirstTime");
+            set => PlayerPrefs.SetString("FirstTime", value.ToString());
+        }
         public PanelBase CurrentPanel;
         
         public event Action<int> InGameDistanceUpdate;
@@ -90,7 +96,7 @@ namespace Assets.Scripts.Services
 
         public void ShowInGameUI()
         {
-            IsInGame = true;
+            IsInGame = !IsFirstTime;
             SetActiveInGameUI?.Invoke(true);
         }
 

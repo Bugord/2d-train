@@ -39,8 +39,9 @@ namespace Assets.Scripts.Controllers
         private SkinService _skinService;
         private GameDataService _gameDataService;
         private UIService _uiService;
-        private bool IsFirstTime;
+        
         private bool LockControlls;
+        private bool IsFirstTime;
 
         private void Awake()
         {
@@ -65,8 +66,8 @@ namespace Assets.Scripts.Controllers
 
             _skinService.UpdateSkin(_spriteRenderer);
             UpdateTrainPoints();
-            IsFirstTime = !PlayerPrefs.HasKey("FirstTime");
-            LockControlls = IsFirstTime;
+            LockControlls = _uiService.IsFirstTime;
+            IsFirstTime = _uiService.IsFirstTime;
         }
 
         private void OnDestroy()
@@ -88,17 +89,25 @@ namespace Assets.Scripts.Controllers
             {
                 TargetRail.SwitchRail();
                 _audioService.Play(AudioClipType.Swipe);
-                
-                Row nextTutorRow = MapGenerator.Instance.TutorialRows.FirstOrDefault();
-                if (_uiService.IsInTutorial && nextTutorRow != null)
+
+                if (IsFirstTime)
                 {
-                    if (!nextTutorRow.Outputs.First(o => o.Key == TargetRail.NextActiveRail.OutputId).Value.HasObject)
+                    Row nextTutorRow = MapGenerator.Instance.TutorialRows.FirstOrDefault();
+                    if (_uiService.IsInTutorial && nextTutorRow != null)
                     {
-                        _uiService.ShowTutorial(false);
-                        MapGenerator.Instance.TutorialRows.Remove(nextTutorRow);
-                        if (MapGenerator.Instance.TutorialRows.Count != 0)
+                        if (!nextTutorRow.Outputs.First(o => o.Key == TargetRail.NextActiveRail.OutputId).Value.HasObject)
                         {
-                            LockControlls = true;
+                            _uiService.ShowTutorial(false);
+                            MapGenerator.Instance.TutorialRows.Remove(nextTutorRow);
+                            if (MapGenerator.Instance.TutorialRows.Count != 0)
+                            {
+                                LockControlls = true;
+                            }
+                            else
+                            {
+                                _uiService.IsFirstTime = false;
+                                IsFirstTime = false;
+                            }
                         }
                     }
                 }
@@ -132,8 +141,6 @@ namespace Assets.Scripts.Controllers
                 }
             }
 
-            SetLastTrainPos();
-
             var vectorToTarget = VectorToTarget();
 
             SetRotation(vectorToTarget);
@@ -149,19 +156,27 @@ namespace Assets.Scripts.Controllers
         private void InputManagerOnSwipe(SwipeDirection direction)
         {
 #if !UNITY_EDITOR
-        if (!_uiService.IsInGame) return;
+        if (!_uiService.IsInGame || LockControlls) return;
         TargetRail.SwitchRail(direction);
         _audioService.Play(AudioClipType.Swipe);
-        Row nextTutorRow = MapGenerator.Instance.TutorialRows.FirstOrDefault();
-        if (_uiService.IsInTutorial && nextTutorRow != null)
+        if (IsFirstTime)
         {
-            if (!nextTutorRow.Outputs.First(o => o.Key == TargetRail.NextActiveRail.OutputId).Value.HasObject)
+            Row nextTutorRow = MapGenerator.Instance.TutorialRows.FirstOrDefault();
+            if (_uiService.IsInTutorial && nextTutorRow != null)
             {
-                _uiService.ShowTutorial(false);
-                MapGenerator.Instance.TutorialRows.Remove(nextTutorRow);
-                if (MapGenerator.Instance.TutorialRows.Count != 0)
+                if (!nextTutorRow.Outputs.First(o => o.Key == TargetRail.NextActiveRail.OutputId).Value.HasObject)
                 {
-                    LockControlls = true;
+                    _uiService.ShowTutorial(false);
+                    MapGenerator.Instance.TutorialRows.Remove(nextTutorRow);
+                    if (MapGenerator.Instance.TutorialRows.Count != 0)
+                    {
+                        LockControlls = true;
+                    }
+                    else
+                    {
+                        _uiService.IsFirstTime = false;
+                        IsFirstTime = false;
+                    }
                 }
             }
         }

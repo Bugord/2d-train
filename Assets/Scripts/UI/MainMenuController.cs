@@ -45,6 +45,14 @@ public class MainMenuController : PanelBase
         Coins.text = CloudVariables.GetCoins().ToString();
     }
 
+    private void Start()
+    {
+        if (_uiService.IsFirstTime)
+        {
+            StartGame();
+        }
+    }
+
     private void StartGame()
     {
         SetActivePanel(false);

@@ -5,6 +5,7 @@ using Assets.Scripts.Enums;
 using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = System.Diagnostics.Debug;
 
 public class InGameUIController : PanelBase
 {
@@ -12,6 +13,7 @@ public class InGameUIController : PanelBase
     [SerializeField] private Text _score;
     [SerializeField] private Text _distance;
     [SerializeField] private Animator _tutorialFinger;
+    [SerializeField] private Button _tutorStartButton;
 
     private GameDataService _gameDataService;
     private UIService _uiService;
@@ -23,7 +25,7 @@ public class InGameUIController : PanelBase
         _gameDataService = ServiceLocator.GetService<GameDataService>();
         _uiService = ServiceLocator.GetService<UIService>();
         _adsService = ServiceLocator.GetService<AdsService>();
-
+        
         _uiService.SetActiveInGameUI += SetActive;
         _uiService.GameRestart += ResetInGameUI;
         _uiService.InGameCoinsUpdate += UpdateCoins;
@@ -33,6 +35,14 @@ public class InGameUIController : PanelBase
         _pauseButton.onClick.AddListener(_uiService.SetPause);
         
         _gameDataService.ResetGame();
+        
+        _tutorStartButton.onClick.AddListener(() =>
+        {
+            _tutorStartButton.gameObject.SetActive(false);
+            _uiService.ShowInGameUI();
+            _uiService.IsInGame = true; 
+        });
+        _tutorStartButton.gameObject.SetActive(_uiService.IsFirstTime);
     }
 
     void OnApplicationFocus(bool pauseStatus)
@@ -59,10 +69,12 @@ public class InGameUIController : PanelBase
 
     private void SetActive(bool isActive)
     {
+        SetActivePanel(isActive);
         if (isActive)
         {
             _uiService.CurrentPanel = this;
             _adsService.HideBanner();
+            _tutorStartButton.gameObject.SetActive(_tutorStartButton.gameObject.activeInHierarchy);
         }
         else
         {
@@ -71,7 +83,6 @@ public class InGameUIController : PanelBase
                 _adsService.ShowBanner();
             }
         }
-        SetActivePanel(isActive);
     }
 
     private void SetPause()
