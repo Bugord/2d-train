@@ -180,6 +180,7 @@
           <e p="CloudVariables.cs" t="Include" />
           <e p="Controllers" t="Include">
             <e p="AudioSourceController.cs" t="Include" />
+            <e p="BoostStarController.cs" t="Include" />
             <e p="CameraControllerScript.cs" t="Include" />
             <e p="CameraMaskController.cs" t="Include" />
             <e p="FreeCoinsButtonController.cs" t="Include" />

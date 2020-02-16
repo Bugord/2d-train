@@ -121,7 +121,7 @@ namespace Assets.Scripts
 
             if (CurrentRow == RowsAfter && !_uiService.IsFirstTime)
             {
-                InitialRailController.SwitchRail(false);
+                InitialRailController.SwitchRail();
             }
         }
 

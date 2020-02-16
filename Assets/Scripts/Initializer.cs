@@ -23,11 +23,11 @@ namespace Assets.Scripts
 
         private void Awake()
         {
+            ServiceLocator.Register(new LeaderBoardsService());
             ServiceLocator.Register(new UIService());
             ServiceLocator.Register(new PlayGamesService());
             ServiceLocator.Register(new GameDataService());
             ServiceLocator.Register(new AchievementsService());
-            ServiceLocator.Register(new LeaderBoardsService());
             ServiceLocator.Register(new LevelService(_levelSettings));
             ServiceLocator.Register(new PoolService(_pools));
             ServiceLocator.Register(new AudioService(_audioCollection));

@@ -12,6 +12,13 @@ namespace Assets.Scripts.Services
         //In game score;
         public int Score;
 
+        private LeaderBoardsService _leaderBoardsService;
+
+        public GameDataService()
+        {
+            _leaderBoardsService = ServiceLocator.GetService<LeaderBoardsService>();
+        }
+
         public bool Revived {
             get
             {
@@ -99,6 +106,7 @@ namespace Assets.Scripts.Services
             if (Score > CloudVariables.ImportantValues[0])
             {
                 CloudVariables.ImportantValues[0] = Score;
+                _leaderBoardsService.AddScoreToLeaderBoard(GPGSIds.leaderboard_high_score, Score);
             }
 
             CloudVariables.ImportantValues[1] += Coins;

@@ -66,14 +66,14 @@ namespace Assets.Scripts.Controllers
     
         public void SetRotation(Vector2 vectorToTarget)
         {
-            transform.up = Vector3.Lerp(transform.up, vectorToTarget, 0.5f);
+            transform.up = Vector3.Lerp(transform.up, vectorToTarget, 0.7f);
         }
 
         public virtual void MoveTrain(Vector2 vectorToTarget)
         {
             if (IsDead) return;
         
-            transform.position = Vector3.Lerp(transform.position, NextTrain.LastTrainPos, 0.8f);
+            transform.position = Vector3.Lerp(transform.position, NextTrain.LastTrainPos, Time.time);
         }
     
     

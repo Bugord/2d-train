@@ -31,6 +31,7 @@ namespace Assets.Scripts.Controllers
         
         [SerializeField] private GameObject _pointEffector;
         [SerializeField] private GameObject _particleSystem;
+        [SerializeField] private Animator _boostAnimator;
         
         private AchievementsService _achievementsService;
         private AudioService _audioService;
@@ -323,6 +324,8 @@ namespace Assets.Scripts.Controllers
         private IEnumerator ActivateBoost()
         {
             _audioService.Play(AudioClipType.BoostStart);
+            _boostAnimator.gameObject.SetActive(true);
+            _boostAnimator.Play("Boost");
             IsBoosted = true;
             _trailObject.SetActive(true);
             _pointEffector.SetActive(true);
@@ -338,6 +341,7 @@ namespace Assets.Scripts.Controllers
 
             _audioService.Play(AudioClipType.BoostEnd);
             IsBoosted = false;
+            _boostAnimator.gameObject.SetActive(false);
             _trailObject.SetActive(false);
             _pointEffector.SetActive(false);
             _particleSystem.SetActive(false);
