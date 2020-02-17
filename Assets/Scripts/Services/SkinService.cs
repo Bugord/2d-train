@@ -13,7 +13,7 @@ namespace Assets.Scripts.Services
 
         private GameDataService _gameDataService;
 
-        public SkinService(int randomSkinCost = 1000)
+        public SkinService(int randomSkinCost = 500)
         {
             RandomSkinCost = randomSkinCost;
             _gameDataService = ServiceLocator.GetService<GameDataService>();

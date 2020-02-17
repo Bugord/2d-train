@@ -34,7 +34,30 @@ namespace Controllers
                 PlayerPrefs.SetString(_playerPrefKey, value.ToString());
             }
         }
-        
+
+        private DateTime startDay
+        {
+            get
+            {
+                if (!PlayerPrefs.HasKey("StartDay"))
+                {
+                    return DateTime.Now;
+                }
+                
+                return DateTime.Parse(PlayerPrefs.GetString("StartDay"));
+            }
+            set
+            {
+                PlayerPrefs.SetString("StartDay", value.ToString());
+            }
+        }
+
+        private int lastTime
+        {
+            get => !PlayerPrefs.HasKey("LastTime") ? 0 : PlayerPrefs.GetInt("LastTime");
+            set => PlayerPrefs.SetInt("LastTime", value);
+        }
+
         void Awake()
         {
             _button = GetComponent<Button>();
@@ -43,6 +66,7 @@ namespace Controllers
             
             _button.onClick.AddListener(GetFreeCoins);
             TimerEnded += OnTimerEnded;
+            time = 5;
         }
 
         private void OnEnable()
@@ -65,6 +89,50 @@ namespace Controllers
         {
             CloudVariables.ImportantValues[1] += _freeCoinsCount;
             _playGamesService.SaveData();
+            if (startDay.Day < DateTime.Now.Day)
+            {
+                startDay = DateTime.Now;
+                lastTime = 60;
+                time = 60;
+            }
+            else
+            {
+                switch (lastTime)
+                {
+                    case 0:
+                        time = 60;
+                        lastTime = 60;
+                        break;
+                    case 60:
+                        time = 300;
+                        lastTime = 300;
+                        break;
+                    case 300:
+                        time = 600;
+                        lastTime = 600;
+                        break;
+                    case 600:
+                        time = 1800;
+                        lastTime = 1800;
+                        break;
+                    case 1800:
+                        time = 3600;
+                        lastTime = 3600;
+                        break;
+                    case 3600:
+                        time = 10800;
+                        lastTime = 10800;
+                        break;
+                    case 10800:
+                        time = 21600;
+                        lastTime = 21600;
+                        break;
+                    case 21600:
+                        time = 32400;
+                        lastTime = 32400;
+                        break;
+                }
+            }
             _uiService.UpdateMainMenu();
             SetTimer(CallBack);
             _button.interactable = false;

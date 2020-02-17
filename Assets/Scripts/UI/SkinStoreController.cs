@@ -11,6 +11,7 @@ namespace UI
     public class SkinStoreController : PanelBase
     {
         [SerializeField] private Button _getRandomSkin;
+        [SerializeField] private Text _randomSkinButtonText;
         [SerializeField] private Image _selectedTrainPreview;
 
         [SerializeField] private List<RectTransform> _pages;
@@ -39,12 +40,13 @@ namespace UI
         private void GetRandomSkin()
         {
             var lockedSkins = _skinsList.Where(skin => !skin.IsUnlocked).ToList();
-            if (lockedSkins.Count <= 0 || _skinService.RandomSkinCost > CloudVariables.ImportantValues[1]) return;
+            var skinCost = GetSkinCost();
+            if (lockedSkins.Count <= 0 || skinCost > CloudVariables.ImportantValues[1]) return;
             {
                 var newSkin = lockedSkins[Random.Range(0, lockedSkins.Count - 1)].UnlockSkin().SkinImage.sprite;
                 _skinService.SetSkin(newSkin);
 
-                CloudVariables.ImportantValues[1] -= _skinService.RandomSkinCost;
+                CloudVariables.ImportantValues[1] -= skinCost;
 
                 var binString = "1";
                 _skinsList.ForEach(skin =>
@@ -66,7 +68,20 @@ namespace UI
                 _playGamesService.SaveData(); 
                 _uiService.UpdateMainMenu();
                 UpdateStoreCoins?.Invoke();
+                _randomSkinButtonText.text = $"{GetSkinCost()} COINS";
             }
+        }
+
+        private int GetSkinCost()
+        {
+            var unLockedSkinsCount = _skinsList.Where(skin => skin.IsUnlocked).ToList().Count;
+            var skinCost = _skinService.RandomSkinCost + 250 * (unLockedSkinsCount - 1);
+            if (skinCost > 1500)
+            {
+                skinCost = 1500;
+            }
+
+            return skinCost;
         }
 
         public void UpdateSkins()
@@ -80,6 +95,8 @@ namespace UI
                     _skinsList?[i].UnlockSkin();
                 }
             }
+            
+            _randomSkinButtonText.text = $"{GetSkinCost()} COINS";
         }
 
         private void UpdateSelectedPreview(Sprite sprite)

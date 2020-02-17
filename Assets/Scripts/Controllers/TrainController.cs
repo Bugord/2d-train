@@ -52,7 +52,7 @@ namespace Assets.Scripts.Controllers
             SetRotation(NextTrain.LookAtTarget.position - transform.position);
             MoveTrain(NextTrain.LastTrainPos);
         }
-
+       
         public IEnumerator SetLastTrainPos()
         {
             while (true)
@@ -60,6 +60,7 @@ namespace Assets.Scripts.Controllers
                 _lastPoints.Add(transform.position);
                 _lastPoints.RemoveAll(p => Vector3.Distance(transform.position, p) >= distanceBetweenTrains);
                 LastTrainPos = _lastPoints.First();
+             
                 yield return null;
             }
         }
@@ -73,7 +74,8 @@ namespace Assets.Scripts.Controllers
         {
             if (IsDead) return;
         
-            transform.position = Vector3.Lerp(transform.position, NextTrain.LastTrainPos, Time.time);
+            transform.position = Vector2.MoveTowards(transform.position, NextTrain.LastTrainPos,
+                15*Time.deltaTime);
         }
     
     
