@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Services;
+using Services;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -21,6 +22,7 @@ namespace UI
         private PlayGamesService _playGamesService;
         private SkinService _skinService;
         private UIService _uiService;
+        private NotificationService _notificationService;
 
         public event Action UpdateStoreCoins;
 
@@ -29,6 +31,7 @@ namespace UI
             _uiService = ServiceLocator.GetService<UIService>();
             _playGamesService = ServiceLocator.GetService<PlayGamesService>();
             _skinService = ServiceLocator.GetService<SkinService>();
+            _notificationService = ServiceLocator.GetService<NotificationService>();
             _skinsList = new List<SkinButton>();
             _getRandomSkin.onClick.AddListener(GetRandomSkin);
             _pages.ForEach(page => _skinsList.AddRange(page.GetComponentsInChildren<SkinButton>()));
@@ -39,6 +42,7 @@ namespace UI
         
         private void GetRandomSkin()
         {
+            _notificationService.ShowTestNotification();
             var lockedSkins = _skinsList.Where(skin => !skin.IsUnlocked).ToList();
             var skinCost = GetSkinCost();
             if (lockedSkins.Count <= 0 || skinCost > CloudVariables.ImportantValues[1]) return;

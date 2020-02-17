@@ -33,6 +33,7 @@ namespace Assets.Scripts
             ServiceLocator.Register(new AudioService(_audioCollection));
             ServiceLocator.Register(new AdsService(_adsConfig));
             ServiceLocator.Register(new SkinService());
+            ServiceLocator.Register(new NotificationService());
         }
     }
 }
