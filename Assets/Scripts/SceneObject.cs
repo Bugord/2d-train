@@ -5,9 +5,16 @@ using UnityEngine;
 
 public class SceneObject : PoolObject
 {
+    private Camera _camera;
+
+    void Awake()
+    {
+        _camera = Camera.main;
+    }
+
     void Update()
     {
-        if (Camera.main.transform.position.y > transform.position.y + 10)
+        if (_camera.transform.position.y > transform.position.y + 10)
         {
             ReturnToPool();
         }

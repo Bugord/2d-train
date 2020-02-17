@@ -32,8 +32,10 @@ namespace Assets.Scripts.Controllers
         public List<Transform> PointPositions;
 
         public bool IsActive;
-
+        
         private UIService _uiService;
+
+        private Camera _camera;
         
         private void OnEnable()
         {
@@ -45,11 +47,13 @@ namespace Assets.Scripts.Controllers
         {
             _uiService = ServiceLocator.GetService<UIService>();
             NextRails = new List<RailController>();
+            _camera = Camera.main;
         }
         
         public void SwitchRail()
         {
             if (NextRails.Count == 0) return;
+            
             NextRails = NextRails.OrderBy(rail => rail.OutputId).ToList();
 
             var currentWayIndex = NextRails.FindIndex(way => way == NextActiveRail);
@@ -102,6 +106,7 @@ namespace Assets.Scripts.Controllers
             if (NextActiveRail == null) return;
 
             var rails = MapGenerator._rowsList[NextActiveRail.Row].Rails;
+            
             foreach (var rail in rails)
             {
                 if (rail == NextActiveRail)
@@ -116,9 +121,9 @@ namespace Assets.Scripts.Controllers
                 {
                     rail._spriteRenderer.sprite = rail._thinSprite;
                     float h, s, v;
-                    Color.RGBToHSV(Camera.main.backgroundColor, out h, out s, out v);
+                    Color.RGBToHSV(_camera.backgroundColor, out h, out s, out v);
                     rail._spriteRenderer.color = Color.HSVToRGB(h, s +0.1f, v - 0.45f);
-                    rail._spriteRenderer.sortingOrder = 0;
+                    rail._spriteRenderer.sortingOrder = 1;
                     rail._spriteMask.enabled = false;
                     rail.IsActive = false;
                 }
