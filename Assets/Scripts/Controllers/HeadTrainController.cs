@@ -159,7 +159,7 @@ namespace Assets.Scripts.Controllers
 #if !UNITY_EDITOR
         if (!_uiService.IsInGame || LockControlls) return;
         TargetRail.SwitchRail(direction);
-        _audioService.Play(AudioClipType.Swipe);
+        _audioService.Play(AudioClipType.Swipe, direction);
         if (IsFirstTime)
         {
             Row nextTutorRow = MapGenerator.Instance.TutorialRows.FirstOrDefault();
@@ -222,7 +222,8 @@ namespace Assets.Scripts.Controllers
                 _achievementsService.UnlockAchievement(GPGSIds.achievement_first_coin);
 
                 if (Trains != null)
-                    _audioService.Play(AudioClipType.Coin, 0.5f + _levelService.GetSpeed()*0.05f);
+                    //_audioService.Play(AudioClipType.Coin, 0.5f + _levelService.GetSpeed()*0.05f);
+                    _audioService.Play(AudioClipType.Coin);
             }
             else if (col.CompareTag("Boost"))
             {
@@ -403,15 +404,15 @@ namespace Assets.Scripts.Controllers
         {
             if (IsDead) return;
 
-            var newSpeed = _levelService.GetSpeed();
+            speed = _levelService.GetSpeed();
 
             if (IsBoosted)
             {
-                newSpeed = _levelService.BoostedSpeed;
+                speed = _levelService.BoostedSpeed;
             }
 
             transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + vectorToTarget,
-                newSpeed * Time.fixedDeltaTime);
+                speed * Time.fixedDeltaTime);
         }
     }
 }

@@ -33,8 +33,12 @@ namespace Assets.Scripts.Services
             }
         }
 
+        private UIService _uiService;
+        
         public AdsService(AdsConfig adsConfig)
         {
+            _uiService = ServiceLocator.GetService<UIService>();
+            
             _adsConfig = adsConfig;
 
             ReviveAdvertisementUpdate?.Invoke(Advertisement.IsReady(_adsConfig.ReviveVideoPlacementId));
@@ -91,7 +95,7 @@ namespace Assets.Scripts.Services
             {
                 BonusAdvertisementUpdate?.Invoke(true);
             }
-            else if (placementId == _adsConfig.BannerPlacementId && !CloudVariables.IsAdsRemoved())
+            else if (placementId == _adsConfig.BannerPlacementId && !CloudVariables.IsAdsRemoved() && _uiService.CurrentPanel is MainMenuController)
             {
                 Advertisement.Banner.Show(_adsConfig.BannerPlacementId);
             }

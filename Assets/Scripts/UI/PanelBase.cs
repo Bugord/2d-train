@@ -14,7 +14,7 @@ public class PanelBase : MonoBehaviour
         root.SetActive(isActive);
     }
     
-    protected IEnumerator UpdateText(Text text, int oldValue, int newValue)
+    protected IEnumerator UpdateText(Text text, int oldValue, long newValue)
     {
         float t = 0;
         while (t <= 1)

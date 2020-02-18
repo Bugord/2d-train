@@ -11,8 +11,8 @@ namespace UI
         [SerializeField] private Image _circleImage;
         [SerializeField] private Sprite _runningSptite;
         [SerializeField] private Sprite _readySprite;
-        public float time;
-        
+        public float time { get; set; }
+
         private float _watch;
 
         public event Action TimerEnded;

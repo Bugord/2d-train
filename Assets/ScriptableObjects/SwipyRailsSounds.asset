@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: SwipyRailsSounds
   m_EditorClassIdentifier: 
   _typedAudioClipsList:
-  - clip: {fileID: 8300000, guid: 1a4163b4b0411d44dbed804f788c86fd, type: 3}
+  - clip: {fileID: 8300000, guid: 7f871477562f9934c9b9c4edfef0a2d1, type: 3}
     clipType: 0
   - clip: {fileID: 8300000, guid: c6371b676bfbf2d4f907ac42ad9afcac, type: 3}
     clipType: 1
-  - clip: {fileID: 8300000, guid: cb7273d7f858d1247bdf9513c848556d, type: 3}
+  - clip: {fileID: 8300000, guid: 2697a1291247398488e250b80b805e66, type: 3}
     clipType: 2
   - clip: {fileID: 8300000, guid: 45e3f4324eb03c44c844a82f0608ccc8, type: 3}
     clipType: 3

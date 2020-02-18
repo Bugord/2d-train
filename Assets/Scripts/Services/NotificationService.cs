@@ -19,6 +19,8 @@ namespace Services
             };
             
             AndroidNotificationCenter.RegisterNotificationChannel(_channel);
+
+            Application.quitting += () => { SetReminderNotification(1); };
         }
 
         public void ShowTestNotification()
@@ -45,6 +47,30 @@ namespace Services
             {
                 Debug.Log("App was opened with notification!");
             }
+        }
+
+        private void SetReminderNotification(float hours)
+        {
+            var notification = new AndroidNotification()
+            {
+                Title = "Hey, come back!",
+                Text = "Collect ALL coins!",
+                FireTime = DateTime.Now.AddHours(hours)
+            };
+
+            AndroidNotificationCenter.SendNotification(notification, _channel.Id);
+        }
+
+        public void ShowFreeCoinsNotification(float delay)
+        {
+            var notification = new AndroidNotification()
+            {
+                Title = "Free coins!",
+                Text = "Collect your free coins now!",
+                FireTime = DateTime.Now.AddSeconds(delay)
+            };
+
+            AndroidNotificationCenter.SendNotification(notification, _channel.Id);
         }
     }
 }

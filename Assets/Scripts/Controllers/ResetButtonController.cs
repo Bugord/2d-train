@@ -21,7 +21,7 @@ namespace Controllers
 
         private void ResetData()
         {
-            CloudVariables.ImportantValues = new int[5];
+            CloudVariables.ImportantValues = new long[5];
             _playGamesService.SaveData();
             PlayerPrefs.DeleteAll();
             _uiService.UpdateMainMenu();

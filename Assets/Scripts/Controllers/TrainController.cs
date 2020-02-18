@@ -31,6 +31,8 @@ namespace Assets.Scripts.Controllers
 
         public float gradientSmoothness;
 
+        public float speed;
+
         private void Start()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -67,15 +69,17 @@ namespace Assets.Scripts.Controllers
     
         public void SetRotation(Vector2 vectorToTarget)
         {
-            transform.up = Vector3.Lerp(transform.up, vectorToTarget, 0.7f);
+            transform.up = Vector3.Lerp(transform.up, vectorToTarget, 0.85f);
         }
 
         public virtual void MoveTrain(Vector2 vectorToTarget)
         {
             if (IsDead) return;
-        
+
+            speed = NextTrain.speed;
+            
             transform.position = Vector2.MoveTowards(transform.position, NextTrain.LastTrainPos,
-                15*Time.deltaTime);
+                speed*1.225f*Time.fixedDeltaTime);
         }
     
     

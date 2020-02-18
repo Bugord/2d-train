@@ -223,6 +223,7 @@
             <e p="GameDataService.cs" t="Include" />
             <e p="LeaderBoardsService.cs" t="Include" />
             <e p="LevelService.cs" t="Include" />
+            <e p="NotificationService.cs" t="Include" />
             <e p="PlayGamesService.cs" t="Include" />
             <e p="PoolService.cs" t="Include" />
             <e p="SkinService.cs" t="Include" />
@@ -230,6 +231,7 @@
           </e>
           <e p="Singleton.cs" t="Include" />
           <e p="UI" t="Include">
+            <e p="AdsTimerButton.cs" t="Include" />
             <e p="CoinsStoreController.cs" t="Include" />
             <e p="EndGameMenuController.cs" t="Include" />
             <e p="HorizontalScrollSnap.cs" t="Include" />

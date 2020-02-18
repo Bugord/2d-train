@@ -33,5 +33,11 @@ namespace Assets.Scripts.Services
             var audioSourceController = _poolService.GetObject<AudioSourceController>("AudioSource");
             audioSourceController.Play(_audioCollection.GetAudioClip(clipType), pitchLevel, Convert.ToInt32(volumeOn));
         }
+        
+        public void Play(AudioClipType clipType, SwipeDirection direction)
+        {
+            var audioSourceController = _poolService.GetObject<AudioSourceController>("AudioSource");
+            audioSourceController.Play(_audioCollection.GetAudioClip(clipType), direction, Convert.ToInt32(volumeOn));
+        }
     }
 }

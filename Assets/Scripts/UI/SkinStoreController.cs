@@ -5,6 +5,7 @@ using Assets.Scripts.Services;
 using Services;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = System.Diagnostics.Debug;
 using Random = UnityEngine.Random;
 
 namespace UI
@@ -15,6 +16,7 @@ namespace UI
         [SerializeField] private Text _randomSkinButtonText;
         [SerializeField] private Image _selectedTrainPreview;
 
+        [SerializeField] private HorizontalScrollSnap _scroll;
         [SerializeField] private List<RectTransform> _pages;
 
         private List<SkinButton> _skinsList;
@@ -22,8 +24,7 @@ namespace UI
         private PlayGamesService _playGamesService;
         private SkinService _skinService;
         private UIService _uiService;
-        private NotificationService _notificationService;
-
+        
         public event Action UpdateStoreCoins;
 
         private void Awake()
@@ -31,7 +32,6 @@ namespace UI
             _uiService = ServiceLocator.GetService<UIService>();
             _playGamesService = ServiceLocator.GetService<PlayGamesService>();
             _skinService = ServiceLocator.GetService<SkinService>();
-            _notificationService = ServiceLocator.GetService<NotificationService>();
             _skinsList = new List<SkinButton>();
             _getRandomSkin.onClick.AddListener(GetRandomSkin);
             _pages.ForEach(page => _skinsList.AddRange(page.GetComponentsInChildren<SkinButton>()));
@@ -42,13 +42,26 @@ namespace UI
         
         private void GetRandomSkin()
         {
-            _notificationService.ShowTestNotification();
             var lockedSkins = _skinsList.Where(skin => !skin.IsUnlocked).ToList();
             var skinCost = GetSkinCost();
             if (lockedSkins.Count <= 0 || skinCost > CloudVariables.ImportantValues[1]) return;
             {
                 var newSkin = lockedSkins[Random.Range(0, lockedSkins.Count - 1)].UnlockSkin().SkinImage.sprite;
                 _skinService.SetSkin(newSkin);
+
+                int newSkinPageId = (int)Math.Truncate((decimal) Convert.ToInt32(newSkin.name.Split('_')[1]) / 9);
+
+                int deltaPage = newSkinPageId - _scroll.CurrentScreen();
+                
+                if (deltaPage > 0)
+                {
+                    _scroll.NextScreen(Math.Abs(deltaPage));
+                }
+                else
+                {
+                    _scroll.PreviousScreen(Math.Abs(deltaPage));
+                }
+                
 
                 CloudVariables.ImportantValues[1] -= skinCost;
 
@@ -67,7 +80,7 @@ namespace UI
                     }
                 });
 
-                CloudVariables.ImportantValues[3] = Convert.ToInt32(binString, 2);
+                CloudVariables.ImportantValues[3] = Convert.ToInt64(binString, 2);
             
                 _playGamesService.SaveData(); 
                 _uiService.UpdateMainMenu();

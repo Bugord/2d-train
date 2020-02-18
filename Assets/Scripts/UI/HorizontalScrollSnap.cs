@@ -104,26 +104,26 @@ namespace UI
 
 
         //Function for switching screens with buttons
-        public void NextScreen()
+        public void NextScreen(int pages = 1)
         {
             if (CurrentScreen() < _screens - 1)
             {
                 _lerp = true;
-                _lerp_target = _positions[CurrentScreen() + 1];
+                _lerp_target = _positions[CurrentScreen() + pages];
 
-                ChangeBulletsInfo(CurrentScreen() + 1);
+                ChangeBulletsInfo(CurrentScreen() + pages);
             }
         }
 
         //Function for switching screens with buttons
-        public void PreviousScreen()
+        public void PreviousScreen(int pages = 1)
         {
             if (CurrentScreen() > 0)
             {
                 _lerp = true;
-                _lerp_target = _positions[CurrentScreen() - 1];
+                _lerp_target = _positions[CurrentScreen() - pages];
 
-                ChangeBulletsInfo(CurrentScreen() - 1);
+                ChangeBulletsInfo(CurrentScreen() - pages);
             }
         }
 

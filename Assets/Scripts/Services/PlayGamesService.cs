@@ -63,7 +63,7 @@ namespace Assets.Scripts.Services
                 isCloudDataLoaded = true;
                 return;
             }
-            int[] cloudArray = JsonUtil.JsonStringToArray(cloudData, "myKey", str => int.Parse(str));
+            long[] cloudArray = JsonUtil.JsonStringToArray(cloudData, "myKey", str => long.Parse(str));
 
             if (localData == string.Empty)
             {
@@ -72,7 +72,7 @@ namespace Assets.Scripts.Services
                 isCloudDataLoaded = true;
                 return;
             }
-            int[] localArray = JsonUtil.JsonStringToArray(localData, "myKey", str => int.Parse(str));
+            long[] localArray = JsonUtil.JsonStringToArray(localData, "myKey", str => long.Parse(str));
 
             //if it's the first time that game has been launched after installing it and successfuly logging into Google Play Games
             if (PlayerPrefs.GetInt("IsFirstTime") == 1)
@@ -112,7 +112,7 @@ namespace Assets.Scripts.Services
         {
             if (localData != string.Empty)
                 CloudVariables.ImportantValues = JsonUtil.JsonStringToArray(localData, "myKey",
-                    str => int.Parse(str));
+                    str => long.Parse(str));
         }
 
         //used for loading data from the cloud or locally

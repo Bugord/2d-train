@@ -11,7 +11,7 @@ namespace UI
     {
         [SerializeField] private Text _coins;
         [SerializeField] private Text _distance;
-        [SerializeField] private TimerButtonController _timerButton;
+        [SerializeField] private AdsTimerButton _timerButton;
         
         [SerializeField] private Button _bonusButton;
         [SerializeField] private Button _exitToMenu;

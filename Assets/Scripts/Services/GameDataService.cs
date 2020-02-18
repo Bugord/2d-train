@@ -106,9 +106,10 @@ namespace Assets.Scripts.Services
             if (Score > CloudVariables.ImportantValues[0])
             {
                 CloudVariables.ImportantValues[0] = Score;
-                _leaderBoardsService.AddScoreToLeaderBoard(GPGSIds.leaderboard_high_score, Score);
             }
 
+            _leaderBoardsService.AddScoreToLeaderBoard(GPGSIds.leaderboard_high_score, Score);
+            
             CloudVariables.ImportantValues[1] += Coins;
             CloudVariables.ImportantValues[4] = Score;
         }

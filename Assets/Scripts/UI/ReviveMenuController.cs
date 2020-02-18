@@ -8,7 +8,7 @@ namespace UI
     public class ReviveMenuController : PanelBase
     {
         [SerializeField] private Button _reviveButton;
-        [SerializeField] private TimerButtonController _timerButton;
+        [SerializeField] private AdsTimerButton _timerButton;
         [SerializeField] private Button _noThanksButton;
 
         private AdsService _adsService;

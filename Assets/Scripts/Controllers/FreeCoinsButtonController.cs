@@ -1,8 +1,10 @@
 ﻿using System;
 using Assets.Scripts.Services;
+using Services;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = System.Diagnostics.Debug;
 
 namespace Controllers
 {
@@ -18,6 +20,7 @@ namespace Controllers
         
         private PlayGamesService _playGamesService;
         private UIService _uiService;
+        private NotificationService _notificationService;
 
         private DateTime startSystemTime {
             get
@@ -63,10 +66,10 @@ namespace Controllers
             _button = GetComponent<Button>();
             _playGamesService = ServiceLocator.GetService<PlayGamesService>();
             _uiService = ServiceLocator.GetService<UIService>();
+            _notificationService = ServiceLocator.GetService<NotificationService>();
             
             _button.onClick.AddListener(GetFreeCoins);
             TimerEnded += OnTimerEnded;
-            time = 5;
         }
 
         private void OnEnable()
@@ -101,38 +104,33 @@ namespace Controllers
                 {
                     case 0:
                         time = 60;
-                        lastTime = 60;
                         break;
                     case 60:
                         time = 300;
-                        lastTime = 300;
                         break;
                     case 300:
                         time = 600;
-                        lastTime = 600;
                         break;
                     case 600:
                         time = 1800;
-                        lastTime = 1800;
                         break;
                     case 1800:
                         time = 3600;
-                        lastTime = 3600;
                         break;
                     case 3600:
                         time = 10800;
-                        lastTime = 10800;
                         break;
                     case 10800:
                         time = 21600;
-                        lastTime = 21600;
                         break;
                     case 21600:
                         time = 32400;
-                        lastTime = 32400;
                         break;
                 }
+                lastTime = (int)time;
             }
+            
+            _notificationService.ShowFreeCoinsNotification(time);
             _uiService.UpdateMainMenu();
             SetTimer(CallBack);
             _button.interactable = false;
@@ -149,6 +147,7 @@ namespace Controllers
         private void UpdateTimer(Action<float> callBack)
         {
             var watch = (float)(DateTime.Now - startSystemTime).TotalSeconds;
+            time = lastTime;
             StartTimer(true, callBack, watch);
         }
         
