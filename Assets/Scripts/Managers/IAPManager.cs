@@ -14,9 +14,9 @@ using UnityEngine.Purchasing;
             private static IExtensionProvider m_StoreExtensionProvider; // The store-specific Purchasing subsystems.
     
             public static string PRODUCT_REMOVE_ADS = "remove_ads";
-            public static string PRODUCT_2000_COINS = "swipy_rails_coins_1000x";
-            public static string PRODUCT_5000_COINS = "swipy_rails_coins_5000";
-            public static string PRODUCT_12000_COINS = "swipy_rails_coins_7000";
+            public static string PRODUCT_2000_COINS = "sr_coins_2000";
+            public static string PRODUCT_5000_COINS = "sr_coins_5000";
+            public static string PRODUCT_12000_COINS = "sr_coins_12000";
             public event Action<int> CoinsPurchased; 
             
             private PlayGamesService _playGamesService;

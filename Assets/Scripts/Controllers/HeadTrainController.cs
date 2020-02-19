@@ -250,7 +250,7 @@ namespace Assets.Scripts.Controllers
                 {
                     Trains.Remove(trainToRemove);
                     trainToRemove.IsDead = true;
-                    trainToRemove.ReturnToPool();
+                    trainToRemove.ReturnToPool(1.5f);
                 }
                 else
                 {

@@ -62,7 +62,8 @@ namespace Services
                 Title = "Hey, come back!",
                 Text = "Collect ALL coins!",
                 FireTime = DateTime.Now.AddHours(hours),
-                SmallIcon = "default_icon"
+                LargeIcon = "default_icon",
+                SmallIcon = "icon_small"
             };
 
             AndroidNotificationCenter.DeleteNotificationChannel(_reminderChannel.Id);
@@ -77,7 +78,8 @@ namespace Services
                 Title = "Free coins!",
                 Text = "Collect your free coins now!",
                 FireTime = DateTime.Now.AddSeconds(delay),
-                SmallIcon = "default_icon"
+                LargeIcon = "default_icon",
+                SmallIcon = "icon_small"
             };
 
             AndroidNotificationCenter.DeleteNotificationChannel(_freeCoinsChannel.Id);

@@ -52,6 +52,7 @@ namespace Assets.Scripts.Controllers
 
         private void FixedUpdate()
         {
+            if (IsDead) return;
             SetRotation(NextTrain.LookAtTarget.position - transform.position);
             MoveTrain(NextTrain.LastTrainPos);
         }
@@ -75,8 +76,6 @@ namespace Assets.Scripts.Controllers
 
         public virtual void MoveTrain(Vector2 vectorToTarget)
         {
-            if (IsDead) return;
-
             speed = NextTrain.speed;
             
             transform.position = Vector2.MoveTowards(transform.position, NextTrain.LastTrainPos,

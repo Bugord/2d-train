@@ -41,5 +41,8 @@ MonoBehaviour:
     - com.unity3d.player.UnityPlayerActivity
   TrackedResourceAssets:
   - Id: default_icon
-    Type: 0
+    Type: 1
     Asset: {fileID: 2800000, guid: f2bb973955f40ca43bf7db69718732e9, type: 3}
+  - Id: icon_small
+    Type: 0
+    Asset: {fileID: 2800000, guid: a5ce96dbfbcf55d44bbaa46928995db4, type: 3}
