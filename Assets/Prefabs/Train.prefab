@@ -129,6 +129,7 @@ MonoBehaviour:
   IsDead: 0
   IsBoosted: 0
   LastTrainPos: {x: 0, y: 0, z: 0}
+  spriteRenderer: {fileID: 212868603171124608}
   gradient:
     serializedVersion: 2
     key0: {r: 0.39999998, g: 0.64269656, b: 1, a: 1}
@@ -159,6 +160,7 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   gradientSmoothness: 70
+  speed: 0
 --- !u!70 &2205464656970735962
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

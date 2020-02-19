@@ -5133,7 +5133,6 @@ MonoBehaviour:
   _circleImage: {fileID: 359649744578505105}
   _runningSptite: {fileID: 21300000, guid: d4e931a678153e449a980e9cf5221bd9, type: 3}
   _readySprite: {fileID: 21300000, guid: d4e931a678153e449a980e9cf5221bd9, type: 3}
-  time: 0
 --- !u!1 &5428990072886254765
 GameObject:
   m_ObjectHideFlags: 0
@@ -5381,11 +5380,10 @@ MonoBehaviour:
   _circleImage: {fileID: 6626974274611079772}
   _runningSptite: {fileID: 21300000, guid: 5196c30b64991734da987951e131f9ca, type: 3}
   _readySprite: {fileID: 21300000, guid: 5196c30b64991734da987951e131f9ca, type: 3}
-  time: 2
   _text: {fileID: 2866336404000000406}
   _readyColor: {r: 0.12156863, g: 0.7411765, b: 0.37254903, a: 1}
   _runningColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
-  _freeCoinsCount: 10000
+  _freeCoinsCount: 100000
   _lightObject: {fileID: 1234386959349210888}
   _playerPrefKey: FreeCoinsTimer
 --- !u!1 &5631386931961720571
@@ -7326,7 +7324,6 @@ MonoBehaviour:
   _circleImage: {fileID: 6095226133411681204}
   _runningSptite: {fileID: 21300000, guid: d4e931a678153e449a980e9cf5221bd9, type: 3}
   _readySprite: {fileID: 21300000, guid: d4e931a678153e449a980e9cf5221bd9, type: 3}
-  time: 0
 --- !u!1 &6313962251028765126
 GameObject:
   m_ObjectHideFlags: 0

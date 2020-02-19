@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.ObjectsPool;
 using Assets.Scripts.Services;
 using Assets.Scripts.UI;
 using UnityEngine;
 
 namespace Assets.Scripts.Controllers
 {
-    public class TrainController : MonoBehaviour
+    public class TrainController : PoolObject
     {
         public GameObject[] TrainPointSprites;
 
@@ -25,7 +26,7 @@ namespace Assets.Scripts.Controllers
         public Vector3 LastTrainPos;
         private List<Vector3> _lastPoints = new List<Vector3>();
         
-        protected SpriteRenderer _spriteRenderer;
+        public SpriteRenderer spriteRenderer;
         
         public Gradient gradient;
 
@@ -35,19 +36,19 @@ namespace Assets.Scripts.Controllers
 
         private void Start()
         {
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
             StartCoroutine(SetLastTrainPos());
-            StartCoroutine(SetTrainColor());
+            //StartCoroutine(SetTrainColor());
         }
         
-        private IEnumerator SetTrainColor()
-        {
-            while (true)
-            {
-                _spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
-                yield return null;
-            }
-        }
+        // private IEnumerator SetTrainColor()
+        // {
+        //     while (true)
+        //     {
+        //         _spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
+        //         yield return null;
+        //     }
+        // }
 
         private void FixedUpdate()
         {
@@ -81,7 +82,5 @@ namespace Assets.Scripts.Controllers
             transform.position = Vector2.MoveTowards(transform.position, NextTrain.LastTrainPos,
                 speed*1.225f*Time.fixedDeltaTime);
         }
-    
-    
     }
 }

@@ -40,6 +40,7 @@ namespace Assets.Scripts.Controllers
         private SkinService _skinService;
         private GameDataService _gameDataService;
         private UIService _uiService;
+        private PoolService _poolService;
         
         private bool LockControlls;
         private bool IsFirstTime;
@@ -54,9 +55,10 @@ namespace Assets.Scripts.Controllers
             _skinService = ServiceLocator.GetService<SkinService>();
             _gameDataService = ServiceLocator.GetService<GameDataService>();
             _uiService = ServiceLocator.GetService<UIService>();
+            _poolService = ServiceLocator.GetService<PoolService>();
 
             Trains = new List<TrainController>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
             TargetPointList = TargetRail.WayPoints;
             TargetPoint = TargetPointList[0].localPosition;
             Trains.Add(this);
@@ -65,7 +67,7 @@ namespace Assets.Scripts.Controllers
             _adsService.TrainRevive += ReviveTrain;
             _uiService.GameRestart += ResetTrain;
 
-            _skinService.UpdateSkin(_spriteRenderer);
+            _skinService.UpdateSkin(spriteRenderer);
             UpdateTrainPoints();
             LockControlls = _uiService.IsFirstTime;
             IsFirstTime = _uiService.IsFirstTime;
@@ -81,7 +83,7 @@ namespace Assets.Scripts.Controllers
 #if UNITY_EDITOR
         private void Update()
         {
-            _spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
+            //_spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
             if (!_uiService.IsInGame) return;
             
             var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
@@ -147,6 +149,8 @@ namespace Assets.Scripts.Controllers
             SetRotation(vectorToTarget);
             MoveTrain(vectorToTarget);
 
+            _boostAnimator.transform.rotation = Quaternion.identity;
+            
             if (Vector2.SqrMagnitude(vectorToTarget) < DistToChangeTarget)
             {
                 ChangeTargetPoint();
@@ -246,7 +250,7 @@ namespace Assets.Scripts.Controllers
                 {
                     Trains.Remove(trainToRemove);
                     trainToRemove.IsDead = true;
-                    Destroy(trainToRemove.gameObject, 1.5f);
+                    trainToRemove.ReturnToPool();
                 }
                 else
                 {
@@ -352,11 +356,12 @@ namespace Assets.Scripts.Controllers
         {
             var lastTrain = Trains.Last();
             var newTrainPos = lastTrain.LastTrainPos;
-            var newTrain = Instantiate(TrainPrefab, newTrainPos, Quaternion.identity);
-            var newTrainController = newTrain.GetComponent<TrainController>();
+            var newTrainController = _poolService.GetObject<TrainController>("Train", newTrainPos);
             newTrainController.NextTrain = lastTrain;
+            newTrainController.IsDead = false;
+            newTrainController.StartCoroutine(newTrainController.SetLastTrainPos());
             Trains.Add(newTrainController);
-            newTrain.GetComponent<SpriteRenderer>().sprite = _spriteRenderer.sprite;
+            newTrainController.spriteRenderer.sprite = spriteRenderer.sprite;
             _audioService.Play(AudioClipType.NewTrain);
         }
 

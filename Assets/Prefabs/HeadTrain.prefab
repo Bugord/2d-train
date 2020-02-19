@@ -5382,6 +5382,7 @@ MonoBehaviour:
   IsDead: 0
   IsBoosted: 0
   LastTrainPos: {x: 0, y: 0, z: 0}
+  spriteRenderer: {fileID: 5053681557952644127}
   gradient:
     serializedVersion: 2
     key0: {r: 0.39999998, g: 0.64269656, b: 1, a: 1}

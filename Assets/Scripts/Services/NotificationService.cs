@@ -21,6 +21,13 @@ namespace Services
             AndroidNotificationCenter.RegisterNotificationChannel(_channel);
 
             Application.quitting += () => { SetReminderNotification(1); };
+            
+            var notificationIntentData = AndroidNotificationCenter.GetLastNotificationIntent();
+            if (notificationIntentData != null)
+            {
+                Debug.Log("App was opened with notification!");
+                AndroidNotificationCenter.CancelAllDisplayedNotifications();
+            }
         }
 
         public void ShowTestNotification()
@@ -41,12 +48,6 @@ namespace Services
             };
 
             AndroidNotificationCenter.OnNotificationReceived += notificationReceivedCallback;
-
-            var notificationIntentData = AndroidNotificationCenter.GetLastNotificationIntent();
-            if (notificationIntentData != null)
-            {
-                Debug.Log("App was opened with notification!");
-            }
         }
 
         private void SetReminderNotification(float hours)

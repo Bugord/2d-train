@@ -6742,5 +6742,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1354795798715818929, guid: caaa548ed2e8de54ea4c3b4ad25d45dc,
+        type: 3}
+      propertyPath: _pools.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354795798715818929, guid: caaa548ed2e8de54ea4c3b4ad25d45dc,
+        type: 3}
+      propertyPath: _pools.Array.data[9].name
+      value: Train
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354795798715818929, guid: caaa548ed2e8de54ea4c3b4ad25d45dc,
+        type: 3}
+      propertyPath: _pools.Array.data[9].prefab
+      value: 
+      objectReference: {fileID: 114539656335959778, guid: 55797d3e8087b6248a403cc2bbdecf00,
+        type: 3}
+    - target: {fileID: 1354795798715818929, guid: caaa548ed2e8de54ea4c3b4ad25d45dc,
+        type: 3}
+      propertyPath: _pools.Array.data[9].count
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: caaa548ed2e8de54ea4c3b4ad25d45dc, type: 3}

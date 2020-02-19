@@ -15,7 +15,7 @@ MonoBehaviour:
   _typedAudioClipsList:
   - clip: {fileID: 8300000, guid: 7f871477562f9934c9b9c4edfef0a2d1, type: 3}
     clipType: 0
-  - clip: {fileID: 8300000, guid: c6371b676bfbf2d4f907ac42ad9afcac, type: 3}
+  - clip: {fileID: 8300000, guid: 8cf36c97c8db76a458ad5c8557584639, type: 3}
     clipType: 1
   - clip: {fileID: 8300000, guid: 2697a1291247398488e250b80b805e66, type: 3}
     clipType: 2
