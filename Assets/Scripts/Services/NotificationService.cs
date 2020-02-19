@@ -6,28 +6,33 @@ namespace Services
 {
     public class NotificationService
     {
-        private AndroidNotificationChannel _channel;
+        private AndroidNotificationChannel _reminderChannel;
+        private AndroidNotificationChannel _freeCoinsChannel;
         
         public NotificationService()
         {
-            _channel = new AndroidNotificationChannel()
+            _reminderChannel = new AndroidNotificationChannel()
             {
-                Id = "channel_id",
-                Name = "Default Channel",
+                Id = "channel_reminder",
+                Name = "Reminder Channel",
                 Importance = Importance.High,
-                Description = "Generic notifications",
+                Description = "Notifications to remind player to play game.",
             };
             
-            AndroidNotificationCenter.RegisterNotificationChannel(_channel);
+            _freeCoinsChannel = new AndroidNotificationChannel()
+            {
+                Id = "channel_free_coins",
+                Name = "Free Coins Channel",
+                Importance = Importance.High,
+                Description = "Notifications to remind player to collect free coins.",
+            };
+            
+            AndroidNotificationCenter.RegisterNotificationChannel(_reminderChannel);
+            AndroidNotificationCenter.RegisterNotificationChannel(_freeCoinsChannel);
 
             Application.quitting += () => { SetReminderNotification(1); };
             
-            var notificationIntentData = AndroidNotificationCenter.GetLastNotificationIntent();
-            if (notificationIntentData != null)
-            {
-                Debug.Log("App was opened with notification!");
-                AndroidNotificationCenter.CancelAllDisplayedNotifications();
-            }
+            AndroidNotificationCenter.CancelAllDisplayedNotifications();
         }
 
         public void ShowTestNotification()
@@ -39,7 +44,7 @@ namespace Services
                 FireTime = DateTime.Now.AddSeconds(5)
             };
 
-            var identifier = AndroidNotificationCenter.SendNotification(notification, _channel.Id);
+            var identifier = AndroidNotificationCenter.SendNotification(notification, _reminderChannel.Id);
             
             AndroidNotificationCenter.NotificationReceivedCallback notificationReceivedCallback = delegate(AndroidNotificationIntentData data)
             {
@@ -56,10 +61,13 @@ namespace Services
             {
                 Title = "Hey, come back!",
                 Text = "Collect ALL coins!",
-                FireTime = DateTime.Now.AddHours(hours)
+                FireTime = DateTime.Now.AddHours(hours),
+                SmallIcon = "default_icon"
             };
 
-            AndroidNotificationCenter.SendNotification(notification, _channel.Id);
+            AndroidNotificationCenter.DeleteNotificationChannel(_reminderChannel.Id);
+            AndroidNotificationCenter.RegisterNotificationChannel(_reminderChannel);
+            AndroidNotificationCenter.SendNotification(notification, _reminderChannel.Id);
         }
 
         public void ShowFreeCoinsNotification(float delay)
@@ -68,10 +76,13 @@ namespace Services
             {
                 Title = "Free coins!",
                 Text = "Collect your free coins now!",
-                FireTime = DateTime.Now.AddSeconds(delay)
+                FireTime = DateTime.Now.AddSeconds(delay),
+                SmallIcon = "default_icon"
             };
 
-            AndroidNotificationCenter.SendNotification(notification, _channel.Id);
+            AndroidNotificationCenter.DeleteNotificationChannel(_freeCoinsChannel.Id);
+            AndroidNotificationCenter.RegisterNotificationChannel(_freeCoinsChannel);
+            AndroidNotificationCenter.SendNotification(notification, _freeCoinsChannel.Id);
         }
     }
 }

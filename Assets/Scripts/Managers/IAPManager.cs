@@ -80,6 +80,55 @@ using UnityEngine.Purchasing;
                 }
             }
 
+            public string GetCoinsPrice(int coins)
+            {
+                if (IsInitialized())
+                {
+                    Product product = null;
+                    
+                    switch (coins)
+                    {
+                        case 2000:
+                            product = m_StoreController.products.WithID(PRODUCT_2000_COINS);
+                            break;
+                        case 5000:
+                            product = m_StoreController.products.WithID(PRODUCT_5000_COINS);
+                            break;
+                        case 12000:
+                            product = m_StoreController.products.WithID(PRODUCT_12000_COINS);
+                            break;
+                    }
+
+                    if (product != null) return product.metadata.localizedPriceString;;
+                }
+
+                return String.Empty;
+            }
+
+            public string GetRemoveAdsPrice()
+            {
+                if (IsInitialized())
+                {
+                    Product product = m_StoreController.products.WithID(PRODUCT_REMOVE_ADS);
+
+                    if (product != null) return product.metadata.localizedPriceString;;
+                }
+
+                return String.Empty;
+            }
+
+            public bool AreAdsRemoved()
+            {
+                if (IsInitialized())
+                {
+                    Product product = m_StoreController.products.WithID(PRODUCT_REMOVE_ADS);
+
+                    return product != null && !product.availableToPurchase;
+                }
+
+                return false;
+            }
+
             private void BuyProductID(string productId)
             {
                 // If Purchasing has been initialized ...

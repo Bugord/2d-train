@@ -17,10 +17,22 @@ namespace UI
 
         public event Action TimerEnded;
 
+        private IEnumerator _coroutine;
+        
         public void StartTimer(bool isClockwise, Action<float> callBack, float watch = 0)
         {
             _watch = watch;
-            StartCoroutine(RunTimer(isClockwise, callBack));
+
+            if (_coroutine == null)
+            {
+                _coroutine = RunTimer(isClockwise, callBack);
+                StartCoroutine(_coroutine);
+                return;
+            }
+            
+            StopCoroutine(_coroutine);
+            _coroutine = RunTimer(isClockwise, callBack);
+            StartCoroutine(_coroutine);
         }
 
         private IEnumerator RunTimer(bool isClockwise, Action<float> callBack = null)

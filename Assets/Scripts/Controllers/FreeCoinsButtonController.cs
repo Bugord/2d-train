@@ -80,6 +80,14 @@ namespace Controllers
             UpdateTimer(CallBack);
         }
 
+        void OnApplicationFocus(bool isOnFocus)
+        {
+            _button.interactable = false;
+            _text.color = _runningColor;
+            _lightObject.SetActive(false);
+            UpdateTimer(CallBack);
+        }
+        
         private void OnTimerEnded()
         {
             _text.text = "FREE COINS";

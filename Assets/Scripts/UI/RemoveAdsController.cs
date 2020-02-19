@@ -9,17 +9,30 @@ namespace UI
     {
         private static Button _removeAdsButton;
         private static AdsService _adsService;
+        [SerializeField] private Text _text;
         
         private void Awake()
         {
             _removeAdsButton = GetComponent<Button>();
             _adsService = ServiceLocator.GetService<AdsService>();
+            
             if (CloudVariables.IsAdsRemoved())
             {
                 DestroyButton();
                 return;
             }
-            _removeAdsButton.onClick.AddListener(RemoveAds);        
+
+            // if (IAPManager.Instance.AreAdsRemoved())
+            // {
+            //     DestroyButton();
+            //     return;
+            // }
+            
+            _removeAdsButton.onClick.AddListener(RemoveAds);
+            if (_text != null)
+            {
+                _text.text = IAPManager.Instance.GetRemoveAdsPrice();   
+            }
         }
 
         private void RemoveAds()

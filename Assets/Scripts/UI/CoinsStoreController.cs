@@ -32,6 +32,10 @@ public class CoinsStoreController : PanelBase
         _coins2000.onClick.AddListener(() => { BuyCoins(2000); });
         _coins5000.onClick.AddListener(() => { BuyCoins(5000); });
         _coins12000.onClick.AddListener(() => { BuyCoins(12000); });
+        
+        _coins2000.GetComponentInChildren<Text>().text = IAPManager.Instance.GetCoinsPrice(2000);
+        _coins5000.GetComponentInChildren<Text>().text = IAPManager.Instance.GetCoinsPrice(5000);
+        _coins12000.GetComponentInChildren<Text>().text = IAPManager.Instance.GetCoinsPrice(12000);
     }
 
     private void BuyCoins(int coins)

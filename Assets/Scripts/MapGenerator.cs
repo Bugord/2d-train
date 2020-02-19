@@ -598,6 +598,7 @@ namespace Assets.Scripts
                     {
                         canBoost = false;
                         _poolService.GetObject<PoolObject>(_boost.name, rail.PointPositions.First().position, Quaternion.identity);
+                        output.HasObject = true;
                     }
                     else
                     {

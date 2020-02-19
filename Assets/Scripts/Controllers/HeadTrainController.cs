@@ -312,7 +312,8 @@ namespace Assets.Scripts.Controllers
             Trains.ForEach(train =>
             {
                 if (train == this) return;
-                Destroy(train.gameObject);
+                
+                train.ReturnToPool();
             });
 
             Trains.Clear();
