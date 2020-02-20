@@ -46,14 +46,6 @@ namespace Services
             };
 
             var identifier = AndroidNotificationCenter.SendNotification(notification, _reminderChannel.Id);
-            
-            AndroidNotificationCenter.NotificationReceivedCallback notificationReceivedCallback = delegate(AndroidNotificationIntentData data)
-            {
-                var msg = "Notification recieved : " + data.Id;
-                Debug.Log(msg);
-            };
-
-            AndroidNotificationCenter.OnNotificationReceived += notificationReceivedCallback;
         }
 
         private void SetReminderNotification(float hours)
@@ -64,12 +56,15 @@ namespace Services
                 Text = "Collect ALL coins!",
                 FireTime = DateTime.Now.AddHours(hours),
                 LargeIcon = "default_icon",
-                SmallIcon = "icon_small"
+                SmallIcon = "icon_small",
+                RepeatInterval = TimeSpan.FromHours(3)
             };
 
             AndroidNotificationCenter.DeleteNotificationChannel(_reminderChannel.Id);
             AndroidNotificationCenter.RegisterNotificationChannel(_reminderChannel);
             AndroidNotificationCenter.SendNotification(notification, _reminderChannel.Id);
+            
+            AndroidNotificationCenter.OnNotificationReceived += NotificationReceivedCallback;
         }
 
         public void ShowFreeCoinsNotification(float delay)
@@ -86,6 +81,14 @@ namespace Services
             AndroidNotificationCenter.DeleteNotificationChannel(_freeCoinsChannel.Id);
             AndroidNotificationCenter.RegisterNotificationChannel(_freeCoinsChannel);
             AndroidNotificationCenter.SendNotification(notification, _freeCoinsChannel.Id);
+
+            AndroidNotificationCenter.OnNotificationReceived += NotificationReceivedCallback;
+        }
+        
+        private void NotificationReceivedCallback(AndroidNotificationIntentData data)
+        {
+            AndroidNotificationCenter.CancelAllDisplayedNotifications();
+            AndroidNotificationCenter.OnNotificationReceived -= NotificationReceivedCallback;
         }
     }
 }
