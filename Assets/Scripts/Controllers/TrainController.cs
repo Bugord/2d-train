@@ -28,28 +28,15 @@ namespace Assets.Scripts.Controllers
         
         public SpriteRenderer spriteRenderer;
         
-        public Gradient gradient;
-
-        public float gradientSmoothness;
-
         public float speed;
 
+        
         private void Start()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
             StartCoroutine(SetLastTrainPos());
-            //StartCoroutine(SetTrainColor());
         }
         
-        // private IEnumerator SetTrainColor()
-        // {
-        //     while (true)
-        //     {
-        //         _spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
-        //         yield return null;
-        //     }
-        // }
-
         private void FixedUpdate()
         {
             if (IsDead) return;
@@ -79,7 +66,7 @@ namespace Assets.Scripts.Controllers
             speed = NextTrain.speed;
             
             transform.position = Vector2.MoveTowards(transform.position, NextTrain.LastTrainPos,
-                speed*1.225f*Time.fixedDeltaTime);
+                speed*1.125f*Time.fixedDeltaTime);
         }
     }
 }

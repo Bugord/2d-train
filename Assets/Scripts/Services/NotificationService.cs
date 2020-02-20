@@ -32,6 +32,7 @@ namespace Services
 
             Application.quitting += () => { SetReminderNotification(1); };
             
+            AndroidNotificationCenter.CancelAllScheduledNotifications();
             AndroidNotificationCenter.CancelAllDisplayedNotifications();
         }
 

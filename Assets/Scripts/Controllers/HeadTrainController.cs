@@ -83,7 +83,6 @@ namespace Assets.Scripts.Controllers
 #if UNITY_EDITOR
         private void Update()
         {
-            //_spriteRenderer.color = gradient.Evaluate(Mathf.PingPong(Time.time/gradientSmoothness, 1));
             if (!_uiService.IsInGame) return;
             
             var touch = Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began;
@@ -226,7 +225,6 @@ namespace Assets.Scripts.Controllers
                 _achievementsService.UnlockAchievement(GPGSIds.achievement_first_coin);
 
                 if (Trains != null)
-                    //_audioService.Play(AudioClipType.Coin, 0.5f + _levelService.GetSpeed()*0.05f);
                     _audioService.Play(AudioClipType.Coin);
             }
             else if (col.CompareTag("Boost"))
