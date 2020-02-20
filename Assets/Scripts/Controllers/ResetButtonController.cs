@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Services;
+using Unity.Notifications.Android;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,9 @@ namespace Controllers
             PlayerPrefs.DeleteAll();
             _uiService.UpdateMainMenu();
             _uiService.ShowStoreUI();
+            AndroidNotificationCenter.CancelAllNotifications();
+            AndroidNotificationCenter.CancelAllDisplayedNotifications();
+            AndroidNotificationCenter.CancelAllScheduledNotifications();
         }
     }
 }
