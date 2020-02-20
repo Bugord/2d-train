@@ -24,6 +24,7 @@ namespace UI
         private PlayGamesService _playGamesService;
         private SkinService _skinService;
         private UIService _uiService;
+        private AchievementsService _achievementsService;
         
         public event Action UpdateStoreCoins;
 
@@ -32,6 +33,8 @@ namespace UI
             _uiService = ServiceLocator.GetService<UIService>();
             _playGamesService = ServiceLocator.GetService<PlayGamesService>();
             _skinService = ServiceLocator.GetService<SkinService>();
+            _achievementsService = ServiceLocator.GetService<AchievementsService>();
+            
             _skinsList = new List<SkinButton>();
             _getRandomSkin.onClick.AddListener(GetRandomSkin);
             _pages.ForEach(page => _skinsList.AddRange(page.GetComponentsInChildren<SkinButton>()));
@@ -86,6 +89,18 @@ namespace UI
                 _uiService.UpdateMainMenu();
                 UpdateStoreCoins?.Invoke();
                 _randomSkinButtonText.text = $"{GetSkinCost()} COINS";
+                
+                _achievementsService.UnlockAchievement(GPGSIds.achievement_new_customer);
+                
+                if (_skinsList.Count(skin => skin.IsUnlocked) == 6)
+                {
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_train_station);
+                }
+                
+                if (_skinsList.Count(skin => skin.IsUnlocked) == 16)
+                {
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_railway_tycoon);
+                }
             }
         }
 

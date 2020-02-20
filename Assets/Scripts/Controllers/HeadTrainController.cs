@@ -45,6 +45,9 @@ namespace Assets.Scripts.Controllers
         private bool LockControlls;
         private bool IsFirstTime;
 
+        private int _starsInOneRun = 0;
+        private int _stopsSurvived = 0;
+
         private void Awake()
         {
             LastTrainPos = transform.position;
@@ -232,6 +235,11 @@ namespace Assets.Scripts.Controllers
                 poolObject.ReturnToPool();
                 StartCoroutine(ActivateBoost());
                 _achievementsService.UnlockAchievement(GPGSIds.achievement_speed_of_light);
+                _starsInOneRun++;
+                if (_starsInOneRun == 5)
+                {
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_star_collector);
+                }
             }
             else if (col.CompareTag("Stop") && !IsBoosted)
             {
@@ -256,6 +264,11 @@ namespace Assets.Scripts.Controllers
                     _uiService.ShowReviveMenu(!_gameDataService.Revived);
                 }
                 _audioService.Play(AudioClipType.StopHit);
+                _stopsSurvived++;
+                if (_stopsSurvived == 15)
+                {
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_just_a_scratch);
+                }
             }
         }
 
@@ -319,6 +332,8 @@ namespace Assets.Scripts.Controllers
 
             IsBoosted = false;
             _trailObject.SetActive(false);
+            _starsInOneRun = 0;
+            _stopsSurvived = 0;
 
             GameObject.FindGameObjectsWithTag("Stop").ToList().Where(s => Vector3.Distance(s.transform.position, transform.position) < 20).ToList().
                 ForEach(stop => stop.GetComponent<PoolObject>().ReturnToPool());
@@ -362,6 +377,11 @@ namespace Assets.Scripts.Controllers
             Trains.Add(newTrainController);
             newTrainController.spriteRenderer.sprite = spriteRenderer.sprite;
             _audioService.Play(AudioClipType.NewTrain);
+
+            if (Trains.Count == 12)
+            {
+                _achievementsService.UnlockAchievement(GPGSIds.achievement_long_long_train);
+            }
         }
 
         private void ChangeTargetPoint(bool isLast = false)
@@ -402,6 +422,11 @@ namespace Assets.Scripts.Controllers
             TargetPoint = railPoint != null ? railPoint.localPosition : NextTrain.LastTrainPos;
 
             _gameDataService.Score = TargetRail.Row - MapGenerator.Instance.DeltaRow;
+
+            if (_gameDataService.Score == 500)
+            {
+                _achievementsService.UnlockAchievement(GPGSIds.achievement_on_a_rail);
+            }
         }
         
         public override void MoveTrain(Vector2 vectorToTarget)

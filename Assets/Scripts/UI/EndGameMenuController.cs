@@ -20,7 +20,8 @@ namespace UI
         private GameDataService _gameDataService;
         private UIService _uiService;
         private PlayGamesService _playGamesService;
-
+        private AchievementsService _achievementsService;
+        
         private void Awake()
         {
             _levelService = ServiceLocator.GetService<LevelService>();
@@ -28,6 +29,7 @@ namespace UI
             _gameDataService = ServiceLocator.GetService<GameDataService>();
             _uiService = ServiceLocator.GetService<UIService>();
             _playGamesService = ServiceLocator.GetService<PlayGamesService>();
+            _achievementsService = ServiceLocator.GetService<AchievementsService>();
 
             _bonusButton.onClick.AddListener(_adsService.ShowBonusVideoAdvertisement);
 
@@ -47,6 +49,9 @@ namespace UI
             SetEndGameData();
             SetActivePanel(true);
             _timerButton.StartTimer(false, null);
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_to_the_edge_of_the_world, _gameDataService.Score);
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_to_the_edge_of_the_galaxy, (int)(_gameDataService.Score*0.5f));
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_to_the_edge_of_the_universe, (int)(_gameDataService.Score*0.2f));
         }
 
         private void ExitToMainMenu()
@@ -71,6 +76,7 @@ namespace UI
             _gameDataService.Coins *= 2;
             SetEndGameData();
             _bonusButton.gameObject.SetActive(false);
+            _achievementsService.UnlockAchievement(GPGSIds.achievement_i_want_it_all);
         }
 
         private void SetEndGameData()

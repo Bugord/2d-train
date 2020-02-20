@@ -13,11 +13,14 @@ namespace UI
 
         private AdsService _adsService;
         private UIService _uiService;
+        private AchievementsService _achievementsService;
+        
         // Start is called before the first frame update
         void Awake()
         {
             _adsService = ServiceLocator.GetService<AdsService>();
             _uiService = ServiceLocator.GetService<UIService>();
+            _achievementsService = ServiceLocator.GetService<AchievementsService>();
 
             _uiService.OpenReviveMenu += Open;
             _reviveButton.onClick.AddListener(_adsService.ShowReviveVideoAdvertisement);
@@ -46,6 +49,7 @@ namespace UI
         {
             SetActivePanel(false);
             _uiService.SetPause();
+            _achievementsService.UnlockAchievement(GPGSIds.achievement_dont_stop_me_now);
         }
     }
 }
