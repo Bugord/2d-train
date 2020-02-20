@@ -225,21 +225,38 @@ namespace Assets.Scripts.Controllers
 
                 _gameDataService.Coins++;
                 _uiService.UpdateInGameCoins(_gameDataService.Coins);
-                _achievementsService.UnlockAchievement(GPGSIds.achievement_first_coin);
+                _achievementsService.UnlockAchievement(GPGSIds.achievement_coin_of_luck);
+                if (_gameDataService.Coins == 100)
+                {
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_small_collection);
+                } else if (_gameDataService.Coins == 500)
+                {
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_numismatist);
+                } else if (_gameDataService.Coins == 1000)
+                {
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_good_catch);
+                }
 
-                if (Trains != null)
-                    _audioService.Play(AudioClipType.Coin);
+                _audioService.Play(AudioClipType.Coin);
             }
             else if (col.CompareTag("Boost"))
             {
                 poolObject.ReturnToPool();
                 StartCoroutine(ActivateBoost());
-                _achievementsService.UnlockAchievement(GPGSIds.achievement_speed_of_light);
+                _achievementsService.UnlockAchievement(GPGSIds.achievement_lone_star);
                 _starsInOneRun++;
-                if (_starsInOneRun == 5)
+                if (_starsInOneRun == 3)
                 {
-                    _achievementsService.UnlockAchievement(GPGSIds.achievement_star_collector);
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_a_pinch_of_stardust);
+                } else if (_starsInOneRun == 5)
+                {
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_starlight);
+                } else if (_starsInOneRun == 10)
+                {
+                    _achievementsService.UnlockAchievement(GPGSIds.achievement_speed_of_light);
                 }
+                _achievementsService.IncrementAchievement(GPGSIds.achievement_constellation, 1);
+                _achievementsService.IncrementAchievement(GPGSIds.achievement_star_cluster, 1);
             }
             else if (col.CompareTag("Stop") && !IsBoosted)
             {
@@ -265,7 +282,7 @@ namespace Assets.Scripts.Controllers
                 }
                 _audioService.Play(AudioClipType.StopHit);
                 _stopsSurvived++;
-                if (_stopsSurvived == 15)
+                if (_stopsSurvived == 30)
                 {
                     _achievementsService.UnlockAchievement(GPGSIds.achievement_just_a_scratch);
                 }
@@ -378,10 +395,13 @@ namespace Assets.Scripts.Controllers
             newTrainController.spriteRenderer.sprite = spriteRenderer.sprite;
             _audioService.Play(AudioClipType.NewTrain);
 
-            if (Trains.Count == 12)
+            if (Trains.Count == 15)
             {
                 _achievementsService.UnlockAchievement(GPGSIds.achievement_long_long_train);
             }
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_little_factory, 1);
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_train_company, 1);
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_steam_baron, 1);
         }
 
         private void ChangeTargetPoint(bool isLast = false)
@@ -423,9 +443,21 @@ namespace Assets.Scripts.Controllers
 
             _gameDataService.Score = TargetRail.Row - MapGenerator.Instance.DeltaRow;
 
-            if (_gameDataService.Score == 500)
+            if (_gameDataService.Score == 100)
+            {
+                _achievementsService.UnlockAchievement(GPGSIds.achievement_first_steps);
+            } else if (_gameDataService.Score == 250)
+            {
+                _achievementsService.UnlockAchievement(GPGSIds.achievement_next_station);
+            } else  if (_gameDataService.Score == 500)
             {
                 _achievementsService.UnlockAchievement(GPGSIds.achievement_on_a_rail);
+            } else  if (_gameDataService.Score == 1000)
+            {
+                _achievementsService.UnlockAchievement(GPGSIds.achievement_long_journey);
+            } else  if (_gameDataService.Score == 2000)
+            {
+                _achievementsService.UnlockAchievement(GPGSIds.achievement_transcontinental_railway);
             }
         }
         

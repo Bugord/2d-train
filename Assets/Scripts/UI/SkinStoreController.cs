@@ -91,16 +91,8 @@ namespace UI
                 _randomSkinButtonText.text = $"{GetSkinCost()} COINS";
                 
                 _achievementsService.UnlockAchievement(GPGSIds.achievement_new_customer);
-                
-                if (_skinsList.Count(skin => skin.IsUnlocked) == 6)
-                {
-                    _achievementsService.UnlockAchievement(GPGSIds.achievement_train_station);
-                }
-                
-                if (_skinsList.Count(skin => skin.IsUnlocked) == 16)
-                {
-                    _achievementsService.UnlockAchievement(GPGSIds.achievement_railway_tycoon);
-                }
+                _achievementsService.IncrementAchievement(GPGSIds.achievement_train_station, 1);
+                _achievementsService.IncrementAchievement(GPGSIds.achievement_railway_tycoon, 1);
             }
         }
 

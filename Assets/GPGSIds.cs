@@ -24,21 +24,38 @@
 
 public static class GPGSIds
 {
-        public const string achievement_to_the_edge_of_the_universe = "CgkI5LWipdwNEAIQDw"; // <GPGSID>
-        public const string achievement_on_a_rail = "CgkI5LWipdwNEAIQBQ"; // <GPGSID>
-        public const string achievement_train_station = "CgkI5LWipdwNEAIQBw"; // <GPGSID>
-        public const string achievement_i_want_it_all = "CgkI5LWipdwNEAIQDA"; // <GPGSID>
-        public const string achievement_long_long_train = "CgkI5LWipdwNEAIQCQ"; // <GPGSID>
-        public const string leaderboard_high_score = "CgkI5LWipdwNEAIQAg"; // <GPGSID>
-        public const string achievement_railway_tycoon = "CgkI5LWipdwNEAIQCA"; // <GPGSID>
-        public const string achievement_to_the_edge_of_the_galaxy = "CgkI5LWipdwNEAIQDg"; // <GPGSID>
-        public const string achievement_just_a_scratch = "CgkI5LWipdwNEAIQCg"; // <GPGSID>
-        public const string achievement_to_the_edge_of_the_world = "CgkI5LWipdwNEAIQDQ"; // <GPGSID>
-        public const string achievement_dont_stop_me_now = "CgkI5LWipdwNEAIQCw"; // <GPGSID>
-        public const string achievement_star_collector = "CgkI5LWipdwNEAIQBA"; // <GPGSID>
-        public const string achievement_first_coin = "CgkI5LWipdwNEAIQAQ"; // <GPGSID>
-        public const string achievement_speed_of_light = "CgkI5LWipdwNEAIQAw"; // <GPGSID>
+        public const string achievement_first_steps = "CgkI5LWipdwNEAIQFA"; // <GPGSID>
+        public const string achievement_every_coin_counts = "CgkI5LWipdwNEAIQHg"; // <GPGSID>
+        public const string achievement_capitalist = "CgkI5LWipdwNEAIQIA"; // <GPGSID>
         public const string achievement_new_customer = "CgkI5LWipdwNEAIQBg"; // <GPGSID>
+        public const string achievement_good_catch = "CgkI5LWipdwNEAIQHQ"; // <GPGSID>
+        public const string achievement_dont_stop_me_now = "CgkI5LWipdwNEAIQCw"; // <GPGSID>
+        public const string achievement_train_station = "CgkI5LWipdwNEAIQBw"; // <GPGSID>
+        public const string achievement_railway_tycoon = "CgkI5LWipdwNEAIQCA"; // <GPGSID>
+        public const string achievement_just_a_scratch = "CgkI5LWipdwNEAIQCg"; // <GPGSID>
+        public const string achievement_on_a_rail = "CgkI5LWipdwNEAIQBQ"; // <GPGSID>
+        public const string achievement_steam_baron = "CgkI5LWipdwNEAIQGg"; // <GPGSID>
+        public const string achievement_to_the_edge_of_the_world = "CgkI5LWipdwNEAIQDQ"; // <GPGSID>
+        public const string achievement_long_journey = "CgkI5LWipdwNEAIQFg"; // <GPGSID>
+        public const string achievement_transcontinental_railway = "CgkI5LWipdwNEAIQFw"; // <GPGSID>
+        public const string achievement_numismatist = "CgkI5LWipdwNEAIQHA"; // <GPGSID>
+        public const string achievement_star_cluster = "CgkI5LWipdwNEAIQEw"; // <GPGSID>
+        public const string achievement_next_station = "CgkI5LWipdwNEAIQFQ"; // <GPGSID>
+        public const string achievement_little_factory = "CgkI5LWipdwNEAIQGA"; // <GPGSID>
+        public const string achievement_coin_of_luck = "CgkI5LWipdwNEAIQAQ"; // <GPGSID>
+        public const string achievement_small_collection = "CgkI5LWipdwNEAIQGw"; // <GPGSID>
+        public const string achievement_train_company = "CgkI5LWipdwNEAIQGQ"; // <GPGSID>
+        public const string achievement_to_the_edge_of_the_galaxy = "CgkI5LWipdwNEAIQDg"; // <GPGSID>
+        public const string achievement_i_want_it_all = "CgkI5LWipdwNEAIQDA"; // <GPGSID>
+        public const string achievement_startup_capital = "CgkI5LWipdwNEAIQHw"; // <GPGSID>
+        public const string achievement_starlight = "CgkI5LWipdwNEAIQBA"; // <GPGSID>
+        public const string achievement_long_long_train = "CgkI5LWipdwNEAIQCQ"; // <GPGSID>
+        public const string achievement_constellation = "CgkI5LWipdwNEAIQEg"; // <GPGSID>
+        public const string achievement_lone_star = "CgkI5LWipdwNEAIQAw"; // <GPGSID>
+        public const string achievement_speed_of_light = "CgkI5LWipdwNEAIQEQ"; // <GPGSID>
+        public const string achievement_a_pinch_of_stardust = "CgkI5LWipdwNEAIQEA"; // <GPGSID>
+        public const string leaderboard_high_score = "CgkI5LWipdwNEAIQAg"; // <GPGSID>
+        public const string achievement_to_the_edge_of_the_universe = "CgkI5LWipdwNEAIQDw"; // <GPGSID>
 
 }
 

@@ -49,9 +49,14 @@ namespace UI
             SetEndGameData();
             SetActivePanel(true);
             _timerButton.StartTimer(false, null);
+            
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_every_coin_counts, _gameDataService.Coins);
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_startup_capital, _gameDataService.Coins);
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_capitalist, _gameDataService.Score/3);
+            
             _achievementsService.IncrementAchievement(GPGSIds.achievement_to_the_edge_of_the_world, _gameDataService.Score);
             _achievementsService.IncrementAchievement(GPGSIds.achievement_to_the_edge_of_the_galaxy, (int)(_gameDataService.Score*0.5f));
-            _achievementsService.IncrementAchievement(GPGSIds.achievement_to_the_edge_of_the_universe, (int)(_gameDataService.Score*0.2f));
+            _achievementsService.IncrementAchievement(GPGSIds.achievement_to_the_edge_of_the_universe, (int)(_gameDataService.Score/4.2f));
         }
 
         private void ExitToMainMenu()
