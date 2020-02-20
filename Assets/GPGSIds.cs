@@ -24,9 +24,21 @@
 
 public static class GPGSIds
 {
+        public const string achievement_to_the_edge_of_the_universe = "CgkI5LWipdwNEAIQDw"; // <GPGSID>
+        public const string achievement_on_a_rail = "CgkI5LWipdwNEAIQBQ"; // <GPGSID>
+        public const string achievement_train_station = "CgkI5LWipdwNEAIQBw"; // <GPGSID>
+        public const string achievement_i_want_it_all = "CgkI5LWipdwNEAIQDA"; // <GPGSID>
+        public const string achievement_long_long_train = "CgkI5LWipdwNEAIQCQ"; // <GPGSID>
         public const string leaderboard_high_score = "CgkI5LWipdwNEAIQAg"; // <GPGSID>
+        public const string achievement_railway_tycoon = "CgkI5LWipdwNEAIQCA"; // <GPGSID>
+        public const string achievement_to_the_edge_of_the_galaxy = "CgkI5LWipdwNEAIQDg"; // <GPGSID>
+        public const string achievement_just_a_scratch = "CgkI5LWipdwNEAIQCg"; // <GPGSID>
+        public const string achievement_to_the_edge_of_the_world = "CgkI5LWipdwNEAIQDQ"; // <GPGSID>
+        public const string achievement_dont_stop_me_now = "CgkI5LWipdwNEAIQCw"; // <GPGSID>
+        public const string achievement_star_collector = "CgkI5LWipdwNEAIQBA"; // <GPGSID>
         public const string achievement_first_coin = "CgkI5LWipdwNEAIQAQ"; // <GPGSID>
         public const string achievement_speed_of_light = "CgkI5LWipdwNEAIQAw"; // <GPGSID>
+        public const string achievement_new_customer = "CgkI5LWipdwNEAIQBg"; // <GPGSID>
 
 }
 
