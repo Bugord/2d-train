@@ -29,11 +29,11 @@ namespace Services
             
             AndroidNotificationCenter.RegisterNotificationChannel(_reminderChannel);
             AndroidNotificationCenter.RegisterNotificationChannel(_freeCoinsChannel);
-
-            Application.quitting += () => { SetReminderNotification(1); };
             
             AndroidNotificationCenter.CancelAllScheduledNotifications();
             AndroidNotificationCenter.CancelAllDisplayedNotifications();
+            
+            SetReminderNotification(24);
         }
 
         public void ShowTestNotification()
@@ -60,8 +60,7 @@ namespace Services
                 RepeatInterval = TimeSpan.FromHours(3)
             };
 
-            AndroidNotificationCenter.DeleteNotificationChannel(_reminderChannel.Id);
-            AndroidNotificationCenter.RegisterNotificationChannel(_reminderChannel);
+            AndroidNotificationCenter.CancelAllScheduledNotifications();
             AndroidNotificationCenter.SendNotification(notification, _reminderChannel.Id);
             
             AndroidNotificationCenter.OnNotificationReceived += NotificationReceivedCallback;
@@ -77,11 +76,10 @@ namespace Services
                 LargeIcon = "default_icon",
                 SmallIcon = "icon_small"
             };
-
-            AndroidNotificationCenter.DeleteNotificationChannel(_freeCoinsChannel.Id);
-            AndroidNotificationCenter.RegisterNotificationChannel(_freeCoinsChannel);
+           
+            AndroidNotificationCenter.CancelAllScheduledNotifications();
             AndroidNotificationCenter.SendNotification(notification, _freeCoinsChannel.Id);
-
+            
             AndroidNotificationCenter.OnNotificationReceived += NotificationReceivedCallback;
         }
         

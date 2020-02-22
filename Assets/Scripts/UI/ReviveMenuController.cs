@@ -34,6 +34,11 @@ namespace UI
 
         private void Open()
         {
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                ShowEndGameMenu();
+                return;
+            }
             _uiService.CurrentPanel = this;
             SetActivePanel(true);
             _timerButton.StartTimer(false, null);

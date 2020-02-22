@@ -48,7 +48,16 @@ namespace UI
             _uiService.CurrentPanel = this;
             SetEndGameData();
             SetActivePanel(true);
-            _timerButton.StartTimer(false, null);
+            
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                _bonusButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                _bonusButton.gameObject.SetActive(true);
+                _timerButton.StartTimer(false, null);
+            }
             
             _achievementsService.IncrementAchievement(GPGSIds.achievement_every_coin_counts, _gameDataService.Coins);
             _achievementsService.IncrementAchievement(GPGSIds.achievement_startup_capital, _gameDataService.Coins);

@@ -19,4 +19,4 @@ MonoBehaviour:
   _bonusVideoPlacementId: BonusVideo
   _swipyRailsBannerPlacement: swipyRailsBannerPlacement
   _freeCoinsVideoPlacementId: SR_FreeCoins
-  _testMode: 1
+  _testMode: 0

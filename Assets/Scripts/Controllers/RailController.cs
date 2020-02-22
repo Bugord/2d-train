@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Enums;
 using Assets.Scripts.ObjectsPool;
@@ -49,7 +50,17 @@ namespace Assets.Scripts.Controllers
             NextRails = new List<RailController>();
             _camera = Camera.main;
         }
-        
+
+        private void LateUpdate()
+        {
+            if (IsActive)
+            {
+                float h, s, v;
+                Color.RGBToHSV(_camera.backgroundColor, out h, out s, out v);
+                _spriteRenderer.color = Color.HSVToRGB(h, s + 0.1f, v - 0.45f);
+            }
+        }
+
         public void SwitchRail()
         {
             if (NextRails.Count == 0) return;
@@ -122,7 +133,7 @@ namespace Assets.Scripts.Controllers
                     rail._spriteRenderer.sprite = rail._thinSprite;
                     float h, s, v;
                     Color.RGBToHSV(_camera.backgroundColor, out h, out s, out v);
-                    rail._spriteRenderer.color = Color.HSVToRGB(h, s +0.1f, v - 0.45f);
+                    rail._spriteRenderer.color = Color.HSVToRGB(h, s + 0.1f, v - 0.45f);
                     rail._spriteRenderer.sortingOrder = 1;
                     rail._spriteMask.enabled = false;
                     rail.IsActive = false;

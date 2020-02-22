@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Services;
+﻿using System;
+using Assets.Scripts.Services;
+using GooglePlayGames.BasicApi.Multiplayer;
 using Unity.Notifications.Android;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +20,13 @@ namespace Controllers
             _button.onClick.AddListener(ResetData);
             _playGamesService = ServiceLocator.GetService<PlayGamesService>();
             _uiService = ServiceLocator.GetService<UIService>();
+            
+            if (!PlayerPrefs.HasKey("NeedReset1"))
+            {
+                ResetData();
+                PlayerPrefs.SetString("NeedReset1", String.Empty);
+            }
+            Destroy(gameObject);
         }
 
         private void ResetData()
